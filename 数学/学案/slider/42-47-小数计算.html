@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>学案42–47 · 小数计算</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.hl  { color:#2980b9; font-weight:bold }
+.hl2 { color:#27ae60; font-weight:bold }
+.hl3 { color:#e74c3c; font-weight:bold }
+.hl4 { color:#e67e22; font-weight:bold }
+.rule-box {
+  border: 2.5px solid; border-radius: 10px;
+  padding: 10px 16px; text-align: center;
+  min-width: 160px; max-width: 200px;
+}
+.wrong-vert {
+  font-family: 'Courier New', monospace; font-size: 1.1em;
+  display: inline-block; line-height: 1.8;
+  background: #fff5f5; border: 1.5px solid #e74c3c;
+  border-radius: 6px; padding: 6px 14px; text-align: right;
+}
+.right-vert {
+  font-family: 'Courier New', monospace; font-size: 1.1em;
+  display: inline-block; line-height: 1.8;
+  background: #f0fff4; border: 1.5px solid #27ae60;
+  border-radius: 6px; padding: 6px 14px; text-align: right;
+}
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ① 封面
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section>
+  <div style="color:#888;font-size:.9em">四年级 · 数与计算</div>
+  <h1 style="font-size:1.9em;color:#2980b9;margin:.12em 0">小数计算</h1>
+  <p style="color:#555;margin:.3em 0">学案 42–47：加、减、乘、除全覆盖</p>
+  <div id="cover-line" style="margin:16px auto"></div>
+  <div style="margin-top:8px;font-size:.8em;color:#888">小数点，精准世界的"分界线"</div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ② 小数的数位
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section>
+  <h2>📊 小数的数位</h2>
+  <div id="place-table" style="margin:12px auto"></div>
+  <div class="mv-tip" style="max-width:500px;margin:10px auto">
+    <strong>小数点</strong>是整数与小数部分的<strong>分界线</strong><br>
+    左边：个位、十位、百位……（越往左越大）<br>
+    右边：<span class="hl">十分位</span>、<span class="hl2">百分位</span>、<span class="hl4">千分位</span>……（越往右越小）
+  </div>
+  <div class="fragment mv-info" style="max-width:500px;margin:8px auto">
+    例：<code>3.650</code> →
+    <span class="hl">3</span>在<strong>个位</strong>，
+    <span class="hl">6</span>在<strong>十分位</strong>，
+    <span class="hl2">5</span>在<strong>百分位</strong>，
+    <span class="hl4">0</span>在<strong>千分位</strong>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ③ 加减法原则：小数点对齐
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section>
+  <h2>➕ 加减法核心原则</h2>
+  <div class="mv-tip" style="max-width:500px;margin:8px auto;text-align:center;font-size:1.08em">
+    <strong>小数点对齐 = 相同数位对齐</strong>
+  </div>
+  <div id="align-viz" style="margin:14px auto"></div>
+  <div class="fragment mv-warn" style="max-width:500px;margin:8px auto">
+    ⚠️ 位数不够时，用 <strong>0</strong> 补齐再竖式<br>
+    （3.6 补写成 3.<span class="hl3">60</span>，补的 0 占位但不改变大小）
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ④ 学案42：小数加法
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section>
+  <h2>学案42 · 小数加法</h2>
+  <div class="mv-info" style="max-width:500px;margin:6px auto">
+    例：<strong>3.6 + 2.45 = ?</strong>
+  </div>
+  <div style="display:flex;justify-content:center;align-items:flex-start;gap:36px;margin-top:10px">
+    <div>
+      <div style="font-size:.8em;color:#666;margin-bottom:4px;text-align:center">
+        ① 3.6 → 3.<span class="hl3">60</span>（补零对齐）
+      </div>
+      <div id="add-vert"></div>
+    </div>
+    <div class="mv-col" style="gap:8px;padding-top:14px;font-size:.87em">
+      <div class="fragment mv-step">① 小数点<strong>对齐</strong></div>
+      <div class="fragment mv-step">② 从<strong>末位</strong>（百分位）加起</div>
+      <div class="fragment mv-step">③ 满十进位，结果小数点<strong>对齐写下</strong></div>
+      <div class="fragment mv-tip">答：3.6 + 2.45 = <strong>6.05</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ⑤ 学案43：小数减法
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section>
+  <h2>学案43 · 小数减法</h2>
+  <div class="mv-info" style="max-width:500px;margin:6px auto">
+    例：<strong>7.2 − 0.85 = ?</strong>
+  </div>
+  <div style="display:flex;justify-content:center;align-items:flex-start;gap:36px;margin-top:10px">
+    <div>
+      <div style="font-size:.8em;color:#666;margin-bottom:4px;text-align:center">
+        ① 7.2 → 7.<span class="hl3">20</span>（补零对齐）
+      </div>
+      <div id="sub-vert"></div>
+    </div>
+    <div class="mv-col" style="gap:8px;padding-top:14px;font-size:.87em">
+      <div class="fragment mv-step">百分位：0 − 5，<strong>向十分位借 1</strong></div>
+      <div class="fragment mv-step">十分位：1 − 8，<strong>向个位借 1</strong></div>
+      <div class="fragment mv-step">个位：6 − 0 = 6</div>
+      <div class="fragment mv-tip">答：7.2 − 0.85 = <strong>6.35</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ⑥ 学案44：小数乘整数
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section>
+  <h2>学案44 · 小数 × 整数</h2>
+  <div class="mv-tip" style="max-width:500px;margin:6px auto;text-align:center">
+    <strong>先当整数算，再数小数位</strong>
+  </div>
+  <div style="display:flex;justify-content:center;align-items:center;gap:24px;margin-top:10px;flex-wrap:wrap">
+    <div class="mv-col" style="gap:4px">
+      <div style="font-size:.8em;color:#666;text-align:center">① 当整数算：125 × 8</div>
+      <div id="mul-int-vert"></div>
+    </div>
+    <div style="font-size:2em;color:#aaa" class="fragment">→</div>
+    <div class="fragment mv-step" style="text-align:center;font-size:.95em;padding:14px 18px">
+      1.25 有 <span class="hl3">2</span> 位小数<br>
+      1000 向左点 <span class="hl3">2</span> 下<br>
+      = <span style="text-decoration:underline">10.</span><span class="hl3">00</span><br>
+      = <span class="hl2">10</span>
+    </div>
+  </div>
+  <div class="fragment mv-warn" style="max-width:500px;margin:10px auto">
+    口诀：<strong>因数有几位小数，积就向左点几下</strong>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ⑦ 学案45：小数 × 小数
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section>
+  <h2>学案45 · 小数 × 小数</h2>
+  <div class="mv-tip" style="max-width:500px;margin:6px auto;text-align:center">
+    <strong>两因数小数位之和 = 积的小数位数</strong>
+  </div>
+  <div style="display:flex;justify-content:center;align-items:center;gap:24px;margin-top:10px;flex-wrap:wrap">
+    <div class="mv-col" style="gap:4px">
+      <div style="font-size:.8em;color:#666;text-align:center">① 当整数算：24 × 5</div>
+      <div id="mul-dec-vert"></div>
+    </div>
+    <div style="font-size:2em;color:#aaa" class="fragment">→</div>
+    <div class="fragment mv-step" style="text-align:center;font-size:.95em;padding:14px 18px">
+      2.4 有 <span class="hl">1</span> 位，0.5 有 <span class="hl">1</span> 位<br>
+      共 <span class="hl3">2</span> 位小数<br>
+      120 → <strong>1.20</strong> = <span class="hl2">1.2</span>
+    </div>
+  </div>
+  <div class="fragment mv-warn" style="max-width:500px;margin:10px auto">
+    ⚠️ 积不够位数时，要在前面<strong>补 0</strong><br>
+    例：0.03 × 0.4 = 12 → <strong>0.012</strong>（共 3 位小数）
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ⑧ 学案46：小数 ÷ 整数
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section>
+  <h2>学案46 · 小数 ÷ 整数</h2>
+  <div class="mv-tip" style="max-width:500px;margin:6px auto;text-align:center">
+    <strong>商的小数点与被除数小数点对齐</strong>
+  </div>
+  <div style="display:flex;justify-content:center;align-items:flex-start;gap:36px;margin-top:12px">
+    <div id="div-int-svg"></div>
+    <div class="mv-col" style="gap:9px;padding-top:18px;font-size:.87em">
+      <div class="fragment mv-step">整数部分：6 ÷ 4 = <strong>1</strong> 余 2</div>
+      <div class="fragment mv-step">写<strong>小数点</strong>，然后"带下来" 4 → 24</div>
+      <div class="fragment mv-step">24 ÷ 4 = <strong>6</strong></div>
+      <div class="fragment mv-tip">答：6.4 ÷ 4 = <strong>1.6</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ⑨ 学案47：小数 ÷ 小数
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section>
+  <h2>学案47 · 小数 ÷ 小数</h2>
+  <div class="mv-tip" style="max-width:500px;margin:6px auto;text-align:center">
+    <strong>先移小数点，把除数变成整数，再按整数除</strong>
+  </div>
+  <div id="div-dec-viz" style="margin:14px auto"></div>
+  <div style="display:flex;justify-content:center;align-items:flex-start;gap:36px;margin-top:6px">
+    <div id="div-dec-vert" style="margin-top:4px"></div>
+    <div class="mv-col" style="gap:6px;font-size:.87em">
+      <div class="fragment mv-step">12.6 ÷ 6 → 按整数方式除</div>
+      <div class="fragment mv-step">商的小数点对齐 → 2.1</div>
+      <div class="fragment mv-tip">答：1.26 ÷ 0.6 = <strong>2.1</strong></div>
+    </div>
+  </div>
+  <div class="fragment mv-warn" style="max-width:500px;margin:8px auto">
+    ⚠️ 除数<strong>移几位</strong>，被除数也要<strong>移几位</strong>（商不变规律）
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ⑩ 口诀总结
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section>
+  <h2>📋 四大口诀总结</h2>
+  <div class="mv-row" style="flex-wrap:wrap;gap:14px;margin:14px 0;justify-content:center">
+    <div class="rule-box" style="border-color:#2980b9">
+      <div style="font-weight:bold;color:#2980b9;font-size:1.1em;margin-bottom:6px">➕ ➖ 加减</div>
+      <div style="font-size:.88em;line-height:1.6">小数点<strong>对齐</strong><br>位数不够<strong>补零</strong></div>
+    </div>
+    <div class="rule-box fragment" style="border-color:#27ae60">
+      <div style="font-weight:bold;color:#27ae60;font-size:1.1em;margin-bottom:6px">✖️ 乘整数</div>
+      <div style="font-size:.88em;line-height:1.6">先当<strong>整数</strong>算<br>积向左<strong>点小数位</strong></div>
+    </div>
+    <div class="rule-box fragment" style="border-color:#e67e22">
+      <div style="font-weight:bold;color:#e67e22;font-size:1.1em;margin-bottom:6px">✖️ 乘小数</div>
+      <div style="font-size:.88em;line-height:1.6">两个小数位<br><strong>相加</strong>是积的位数</div>
+    </div>
+    <div class="rule-box fragment" style="border-color:#e74c3c">
+      <div style="font-weight:bold;color:#e74c3c;font-size:1.1em;margin-bottom:6px">÷ 除小数</div>
+      <div style="font-size:.88em;line-height:1.6">先移点使除数<strong>变整</strong><br>被除数<strong>同步移</strong></div>
+    </div>
+  </div>
+  <div class="fragment mv-info" style="max-width:500px;margin:6px auto">
+    关键词：<span class="hl"><strong>对齐</strong></span> &amp;
+    <span class="hl2"><strong>数位</strong></span> &amp;
+    <span class="hl3"><strong>补零</strong></span> &amp;
+    <span class="hl4"><strong>移点</strong></span>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ⑪ 常见错误
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section>
+  <h2>⚠️ 三大常见错误</h2>
+  <div class="mv-row" style="flex-wrap:wrap;gap:16px;margin:12px 0;justify-content:center;align-items:flex-start">
+
+    <!-- Error 1: misalignment -->
+    <div class="mv-step" style="border-color:#e74c3c;max-width:190px;text-align:center">
+      <div style="color:#e74c3c;font-weight:bold;margin-bottom:6px">错误一：按末位对齐</div>
+      <div class="mv-row" style="gap:12px;justify-content:center">
+        <div>
+          <div style="font-size:.72em;color:#e74c3c;margin-bottom:2px">❌ 错</div>
+          <div class="wrong-vert">
+            3.6&nbsp;&nbsp;<br>
+            +2.45<br>
+            <span style="border-top:2px solid #888;display:block">5.05</span>
+          </div>
+        </div>
+        <div class="fragment">
+          <div style="font-size:.72em;color:#27ae60;margin-bottom:2px">✅ 对</div>
+          <div class="right-vert">
+            3.60<br>
+            +2.45<br>
+            <span style="border-top:2px solid #333;display:block">6.05</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error 2: wrong decimal count in multiplication -->
+    <div class="mv-step fragment" style="border-color:#e74c3c;max-width:220px;text-align:center">
+      <div style="color:#e74c3c;font-weight:bold;margin-bottom:6px">错误二：小数位数数错</div>
+      <div style="font-size:.9em;line-height:1.8;text-align:left">
+        1.25 × 8<br>
+        ❌ 125 × 8 = 1000<br>
+        &nbsp;&nbsp;&nbsp;→ 1.000（只点1位）<br>
+        <span style="color:#27ae60">✅ 1.25 有 <strong>2</strong> 位</span><br>
+        <span style="color:#27ae60">&nbsp;&nbsp;&nbsp;→ 10.00 = 10</span>
+      </div>
+    </div>
+
+    <!-- Error 3: only move divisor -->
+    <div class="mv-step fragment" style="border-color:#e74c3c;max-width:220px;text-align:center">
+      <div style="color:#e74c3c;font-weight:bold;margin-bottom:6px">错误三：只移除数忘移被除数</div>
+      <div style="font-size:.9em;line-height:1.8;text-align:left">
+        1.26 ÷ 0.6<br>
+        ❌ 1.26 ÷ <strong>6</strong>（只×10了0.6）<br>
+        <span style="color:#27ae60">✅ <strong>12.6</strong> ÷ <strong>6</strong></span><br>
+        <span style="color:#27ae60">&nbsp;&nbsp;&nbsp;两个都要×10！</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ⑫ 综合练习
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section>
+  <h2>✏️ 综合练习（42–47课）</h2>
+  <table class="mv-qt" style="width:660px;font-size:.81em">
+    <tr><th style="width:380px">题目</th><th>答案</th></tr>
+    <tr><td>1.&nbsp; 3.42 + 2.65 = __</td>
+        <td class="fragment hl2">6.07</td></tr>
+    <tr><td>2.&nbsp; 8.1 − 2.28 = __</td>
+        <td class="fragment hl2">5.82</td></tr>
+    <tr><td>3.&nbsp; 0.6 × 3 = __</td>
+        <td class="fragment hl2">1.8</td></tr>
+    <tr><td>4.&nbsp; 2.4 × 0.5 = __</td>
+        <td class="fragment hl2">1.2</td></tr>
+    <tr><td>5.&nbsp; 5.6 ÷ 4 = __</td>
+        <td class="fragment hl2">1.4</td></tr>
+    <tr><td>6.&nbsp; 1.5 ÷ 0.6 = __</td>
+        <td class="fragment hl2">2.5</td></tr>
+    <tr><td>7.&nbsp; 判断：2.4 × 0.1 = 0.024&nbsp;&nbsp;（&nbsp;&nbsp;）</td>
+        <td class="fragment hl3">× &nbsp;（应为 0.24）</td></tr>
+    <tr><td>8.&nbsp; 判断：小数末尾的 0 可以去掉，大小不变&nbsp;&nbsp;（&nbsp;&nbsp;）</td>
+        <td class="fragment hl2">√</td></tr>
+    <tr><td>9.&nbsp; 判断：0.72÷0.6，除数被除数同时×10，商不变&nbsp;&nbsp;（&nbsp;&nbsp;）</td>
+        <td class="fragment hl2">√</td></tr>
+    <tr><td>10. 木条 3.5 米，截去 2.1 米，还剩 __ 米</td>
+        <td class="fragment hl2">1.4 米</td></tr>
+    <tr><td>11. 鸡蛋 6 元/千克，买 5 千克，共 __ 元</td>
+        <td class="fragment hl2">30 元</td></tr>
+    <tr><td>12. 3 支铅笔共 6.6 元，每支 __ 元</td>
+        <td class="fragment hl2">2.2 元</td></tr>
+  </table>
+</section>
+
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+// ═══════════════════════════════════════════════
+// decVert — 小数竖式 SVG 生成器
+// rows: [{val:'3.60', op:'+', color, frag, bold}, {line:true}, ...]
+// opts: {cw, dw, ch, fs, showDotLine, dotColor}
+// ═══════════════════════════════════════════════
+function decVert(rows, opts) {
+  opts = opts || {};
+  var cw = opts.cw || 30;   // digit column width
+  var dw = opts.dw || 16;   // decimal-point column width
+  var ch = opts.ch || 44;   // row height
+  var fs = opts.fs || 24;   // font size
+  var opW = 32;             // left space for operator
+  var padR = 12;            // right padding
+
+  // Find maxInt and maxDec across all value rows
+  var maxInt = 0, maxDec = 0;
+  rows.forEach(function (r) {
+    if (r.line || r.val === undefined) return;
+    var s = String(r.val), di = s.indexOf('.');
+    if (di < 0) { maxInt = Math.max(maxInt, s.length); }
+    else {
+      maxInt = Math.max(maxInt, di);
+      maxDec = Math.max(maxDec, s.length - di - 1);
+    }
+  });
+
+  var hasDec = maxDec > 0;
+  var W = opW + maxInt * cw + (hasDec ? dw + maxDec * cw : 0) + padR;
+
+  var lineCount = 0, numCount = 0;
+  rows.forEach(function (r) { r.line ? lineCount++ : numCount++; });
+  var H = 8 + numCount * ch + lineCount * 16 + 8;
+
+  // x-position for the decimal point glyph centre
+  var dotX = opW + maxInt * cw + dw / 2;
+
+  var svg = '';
+  var dotColor = opts.dotColor || MV.C.red;
+
+  // Vertical dashed guide at decimal point position
+  if (opts.showDotLine) {
+    var gx = dotX - dw / 2 - 1;
+    svg += '<line x1="' + gx + '" y1="2" x2="' + gx + '" y2="' + (H - 2) +
+      '" stroke="' + dotColor + '" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.45"/>';
+  }
+
+  var y = 8;
+  rows.forEach(function (row) {
+    if (row.line) {
+      var lY = y + 6;
+      svg += '<line x1="' + (opW - 6) + '" y1="' + lY + '" x2="' + (W - 3) +
+        '" y2="' + lY + '" stroke="#333" stroke-width="2.5"/>';
+      y += 16;
+      return;
+    }
+
+    var bl    = y + Math.round(ch * 0.72);
+    var color = row.color || '#222';
+    var bold  = row.bold  ? 'bold' : 'normal';
+
+    // Operator (left of first digit)
+    if (row.op) {
+      svg += '<text x="' + (opW - 4) + '" y="' + bl +
+        '" text-anchor="end" font-size="' + fs + '" fill="' + color + '">' + row.op + '</text>';
+    }
+
+    if (row.frag !== undefined) {
+      svg += '<g class="fragment" data-fragment-index="' + row.frag + '">';
+    }
+
+    if (row.val !== undefined) {
+      var s = String(row.val), di = s.indexOf('.');
+      if (di < 0) {
+        // Integer-only value: right-align before dotX
+        for (var i = 0; i < s.length; i++) {
+          var fr = s.length - 1 - i;
+          var cx = dotX - dw / 2 - (fr + 0.5) * cw;
+          svg += '<text x="' + cx + '" y="' + bl +
+            '" text-anchor="middle" font-size="' + fs +
+            '" fill="' + color + '" font-weight="' + bold + '">' + s[i] + '</text>';
+        }
+      } else {
+        var intP = s.substring(0, di);
+        var decP = s.substring(di + 1);
+        // Integer digits
+        for (var i = 0; i < intP.length; i++) {
+          var fr = intP.length - 1 - i;
+          var cx = dotX - dw / 2 - (fr + 0.5) * cw;
+          svg += '<text x="' + cx + '" y="' + bl +
+            '" text-anchor="middle" font-size="' + fs +
+            '" fill="' + color + '" font-weight="' + bold + '">' + intP[i] + '</text>';
+        }
+        // Decimal point — always highlighted
+        var dc = row.dotColor || dotColor;
+        svg += '<text x="' + dotX + '" y="' + bl +
+          '" text-anchor="middle" font-size="' + fs +
+          '" fill="' + dc + '" font-weight="bold">.</text>';
+        // Decimal digits
+        for (var i = 0; i < decP.length; i++) {
+          var cx = dotX + dw / 2 + (i + 0.5) * cw;
+          svg += '<text x="' + cx + '" y="' + bl +
+            '" text-anchor="middle" font-size="' + fs +
+            '" fill="' + color + '" font-weight="' + bold + '">' + decP[i] + '</text>';
+        }
+      }
+    }
+
+    if (row.frag !== undefined) svg += '</g>';
+    y += ch;
+  });
+
+  return '<div style="display:inline-block"><svg width="' + W + '" height="' + H + '">' + svg + '</svg></div>';
+}
+
+// ═══════════════════════════════════════════════
+// buildDivIntSVG — 6.4 ÷ 4 = 1.6 长除法 SVG
+// ═══════════════════════════════════════════════
+function buildDivIntSVG() {
+  var W = 190, H = 195;
+  var fs = 21;
+  // Column x positions
+  var x6 = 66, xDot = 90, x4 = 114;
+  var dotC = MV.C.red;
+  var s = '';
+
+  // Divisor
+  s += '<text x="40" y="54" text-anchor="end" font-size="' + fs + '" fill="#333" font-weight="bold">4</text>';
+  // Bracket: down then right
+  s += '<path d="M43,22 L43,58 L128,58" fill="none" stroke="#333" stroke-width="2.5"/>';
+
+  // Dividend: 6 . 4
+  s += '<text x="' + x6  + '" y="54" text-anchor="middle" font-size="' + fs + '" fill="#222">6</text>';
+  s += '<text x="' + xDot + '" y="54" text-anchor="middle" font-size="' + fs + '" fill="' + dotC + '" font-weight="bold">.</text>';
+  s += '<text x="' + x4  + '" y="54" text-anchor="middle" font-size="' + fs + '" fill="#222">4</text>';
+
+  // frag 0: quotient 1 + first subtraction (4×1=4)
+  s += '<g class="fragment" data-fragment-index="0">';
+  s += '<text x="' + x6 + '" y="26" text-anchor="middle" font-size="' + fs + '" fill="' + MV.C.blue + '" font-weight="bold">1</text>';
+  s += '<text x="' + x6 + '" y="88" text-anchor="middle" font-size="' + fs + '" fill="' + MV.C.orange + '">4</text>';
+  s += '<line x1="50" y1="97" x2="80" y2="97" stroke="#555" stroke-width="1.5"/>';
+  s += '</g>';
+
+  // frag 1: decimal point in quotient + bring-down (remainder 2, digit 4)
+  s += '<g class="fragment" data-fragment-index="1">';
+  s += '<text x="' + xDot + '" y="26" text-anchor="middle" font-size="' + fs + '" fill="' + dotC + '" font-weight="bold">.</text>';
+  s += '<text x="' + x6  + '" y="118" text-anchor="middle" font-size="' + fs + '" fill="#555">2</text>';
+  s += '<text x="' + x4  + '" y="118" text-anchor="middle" font-size="' + fs + '" fill="#555">4</text>';
+  s += '</g>';
+
+  // frag 2: quotient 6 + second subtraction (4×6=24) + remainder 0
+  s += '<g class="fragment" data-fragment-index="2">';
+  s += '<text x="' + x4 + '" y="26" text-anchor="middle" font-size="' + fs + '" fill="' + MV.C.blue + '" font-weight="bold">6</text>';
+  s += '<text x="' + x6 + '" y="150" text-anchor="middle" font-size="' + fs + '" fill="' + MV.C.orange + '">2</text>';
+  s += '<text x="' + x4 + '" y="150" text-anchor="middle" font-size="' + fs + '" fill="' + MV.C.orange + '">4</text>';
+  s += '<line x1="50" y1="159" x2="126" y2="159" stroke="#555" stroke-width="1.5"/>';
+  s += '<text x="' + x4 + '" y="181" text-anchor="middle" font-size="' + fs + '" fill="' + MV.C.green + '" font-weight="bold">0</text>';
+  s += '</g>';
+
+  return '<div style="display:inline-block"><svg width="' + W + '" height="' + H + '">' + s + '</svg></div>';
+}
+
+// ═══════════════════════════════════════════════
+// buildDivDecViz — 1.26 ÷ 0.6 变换可视化
+// ═══════════════════════════════════════════════
+function buildDivDecViz() {
+  var W = 480, H = 108;
+  var fs = 22, fss = 13;
+  var s = '';
+
+  // Arrow marker defs
+  s += '<defs><marker id="mv-darr" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto">' +
+       '<path d="M0,0 L8,3.5 L0,7 Z" fill="' + MV.C.orange + '"/></marker></defs>';
+
+  // Background highlight boxes
+  s += '<rect x="2" y="20" width="146" height="54" fill="' + MV.C.lyellow + '" rx="6" opacity="0.7"/>';
+  s += '<rect x="200" y="20" width="126" height="54" fill="' + MV.C.lgreen + '" rx="6" opacity="0.7"/>';
+
+  // Original: 1.26 ÷ 0.6
+  s += '<text x="12"  y="52" font-size="' + fs + '" font-family="Courier New,monospace" fill="#555">1.26</text>';
+  s += '<text x="72"  y="52" font-size="' + fs + '" fill="#888"> ÷ </text>';
+  s += '<text x="96"  y="52" font-size="' + fs + '" font-family="Courier New,monospace" fill="#555">0.6</text>';
+
+  // ×10 arrows (down from original to transformed row)
+  s += '<line x1="32"  y1="75" x2="32"  y2="93" stroke="' + MV.C.orange + '" stroke-width="2" marker-end="url(#mv-darr)"/>';
+  s += '<text x="37"  y="89" font-size="' + fss + '" fill="' + MV.C.orange + '" font-weight="bold">×10</text>';
+  s += '<line x1="111" y1="75" x2="111" y2="93" stroke="' + MV.C.orange + '" stroke-width="2" marker-end="url(#mv-darr)"/>';
+  s += '<text x="116" y="89" font-size="' + fss + '" fill="' + MV.C.orange + '" font-weight="bold">×10</text>';
+
+  // Arrow: → between panels
+  s += '<text x="158" y="52" font-size="28" fill="#aaa">→</text>';
+
+  // Transformed: 12.6 ÷ 6
+  s += '<text x="206" y="52" font-size="' + fs + '" font-family="Courier New,monospace" fill="' + MV.C.green + '" font-weight="bold">12.6</text>';
+  s += '<text x="268" y="52" font-size="' + fs + '" fill="#888"> ÷ </text>';
+  s += '<text x="291" y="52" font-size="' + fs + '" font-family="Courier New,monospace" fill="' + MV.C.green + '" font-weight="bold">6</text>';
+
+  // = 2.1
+  s += '<text x="330" y="52" font-size="' + fs + '" fill="#888"> = </text>';
+  s += '<text x="358" y="52" font-size="' + fs + '" font-family="Courier New,monospace" fill="' + MV.C.blue + '" font-weight="bold">2.1</text>';
+
+  // Label
+  s += '<text x="240" y="17" text-anchor="middle" font-size="11" fill="#27ae60">除数变整数，再按整数除</text>';
+
+  return '<div style="display:inline-block"><svg width="' + W + '" height="' + H + '">' + s + '</svg></div>';
+}
+
+// ═══════════════════════════════════════════════
+// Reveal init & setup
+// ═══════════════════════════════════════════════
+MV.init();
+MV.setup(function () {
+
+  // ── Cover: number line 0→1 ──
+  document.getElementById('cover-line').innerHTML = MV.numberLine(0, 1, [
+    { val: 0,    label: '0',    dot: true, color: '#333' },
+    { val: 0.1,  label: '0.1', dot: true, color: MV.C.gray },
+    { val: 0.2,  label: '0.2', dot: true, color: MV.C.gray },
+    { val: 0.25, label: '¼',  above: '0.25', dot: true, color: MV.C.blue },
+    { val: 0.3,  label: '0.3', dot: true, color: MV.C.gray },
+    { val: 0.4,  label: '0.4', dot: true, color: MV.C.gray },
+    { val: 0.5,  label: '½',  above: '0.5',  dot: true, color: MV.C.orange },
+    { val: 0.6,  label: '0.6', dot: true, color: MV.C.gray },
+    { val: 0.7,  label: '0.7', dot: true, color: MV.C.gray },
+    { val: 0.75, label: '¾',  above: '0.75', dot: true, color: MV.C.blue },
+    { val: 0.8,  label: '0.8', dot: true, color: MV.C.gray },
+    { val: 0.9,  label: '0.9', dot: true, color: MV.C.gray },
+    { val: 1,    label: '1',   dot: true, color: '#333' }
+  ], 560);
+
+  // ── Place value table ──
+  // Custom SVG table so the decimal point column stands out
+  (function () {
+    var cols = [
+      { h: '千', v: '',  bg: '#ecf0f1', hc: '#888' },
+      { h: '百', v: '',  bg: '#ecf0f1', hc: '#888' },
+      { h: '十', v: '',  bg: '#ecf0f1', hc: '#888' },
+      { h: '个', v: '3', bg: MV.C.lblue, hc: MV.C.blue },
+      { h: '·',  v: '',  bg: '#fff3cd', hc: MV.C.red, vc: MV.C.red, vfs: 28 },
+      { h: '十分', v: '6', bg: '#d5f5e3', hc: '#27ae60' },
+      { h: '百分', v: '5', bg: '#d5f5e3', hc: '#27ae60' },
+      { h: '千分', v: '0', bg: '#f8f8f8', hc: '#aaa' },
+    ];
+    var cw = 58, H = 78, pad = 10;
+    var W = cols.length * cw + 2 * pad;
+    var c = '';
+    cols.forEach(function (col, i) {
+      var x = pad + i * cw;
+      c += '<rect x="' + x + '" y="4" width="52" height="28" fill="' + (col.bg || MV.C.lblue) + '" stroke="#bbb" stroke-width="1"/>';
+      c += '<rect x="' + x + '" y="32" width="52" height="36" fill="white" stroke="#bbb" stroke-width="1"/>';
+      c += '<text x="' + (x + 26) + '" y="23" text-anchor="middle" font-size="12" fill="' + (col.hc || '#555') + '" font-weight="bold">' + col.h + '</text>';
+      if (col.v) {
+        c += '<text x="' + (x + 26) + '" y="57" text-anchor="middle" font-size="' + (col.vfs || 20) + '" fill="' + (col.vc || col.hc || MV.C.blue) + '" font-weight="bold">' + col.v + '</text>';
+      }
+    });
+    document.getElementById('place-table').innerHTML =
+      '<div style="display:inline-block">' + MV.svg(W, H, c) + '</div>';
+  })();
+
+  // ── Alignment visual (slide 3) ──
+  // Show 3.60 and 2.45 aligned at decimal point with column headers
+  (function () {
+    var W = 310, H = 118;
+    var dotX = 142; // x-center of decimal point column
+    var cw = 32;
+    var s = '';
+    // column background for decimal point column
+    s += '<rect x="' + (dotX - 12) + '" y="0" width="24" height="' + H + '" fill="#fff3cd" rx="3" opacity="0.7"/>';
+    // column headers
+    var headers = [
+      { x: dotX - 32 - cw/2, t: '十位' },
+      { x: dotX - cw/2,      t: '个位' },
+      { x: dotX,             t: '小数点', c: MV.C.red, fs: 10 },
+      { x: dotX + cw/2 + 8,  t: '十分' },
+      { x: dotX + cw*1.5+8,  t: '百分' },
+    ];
+    headers.forEach(function (h) {
+      s += '<text x="' + h.x + '" y="14" text-anchor="middle" font-size="' + (h.fs || 11) + '" fill="' + (h.c || '#888') + '">' + h.t + '</text>';
+    });
+    // Row 1: 3.60 (blue)
+    var y1 = 44, y2 = 82;
+    function digit(x, y, ch, c, bold) {
+      s += '<text x="' + x + '" y="' + y + '" text-anchor="middle" font-size="24" font-family="Courier New,monospace" fill="' + (c || '#333') + '" font-weight="' + (bold ? 'bold' : 'normal') + '">' + ch + '</text>';
+    }
+    // 3.60
+    digit(dotX - cw/2, y1, '3', MV.C.blue, true);
+    digit(dotX,        y1, '.', MV.C.red,  true);
+    digit(dotX+cw/2+8, y1, '6', MV.C.blue);
+    digit(dotX+cw*1.5+8, y1, '0', '#aaa');
+    // + 2.45
+    s += '<text x="' + (dotX - cw - 10) + '" y="' + y2 + '" text-anchor="end" font-size="22" fill="#888">+</text>';
+    digit(dotX - cw/2, y2, '2', MV.C.green, true);
+    digit(dotX,        y2, '.', MV.C.red,  true);
+    digit(dotX+cw/2+8, y2, '4', MV.C.green);
+    digit(dotX+cw*1.5+8, y2, '5', MV.C.green);
+    // Separator line
+    s += '<line x1="30" y1="95" x2="' + (W - 10) + '" y2="95" stroke="#888" stroke-width="1.5" stroke-dasharray="4,3"/>';
+    // Alignment annotation
+    s += '<line x1="' + dotX + '" y1="' + (y1 - 20) + '" x2="' + dotX + '" y2="' + (y2 + 12) + '" stroke="' + MV.C.red + '" stroke-width="2" stroke-dasharray="5,4" opacity="0.5"/>';
+    document.getElementById('align-viz').innerHTML =
+      '<div style="display:inline-block">' + MV.svg(W, H, s) + '</div>';
+  })();
+
+  // ── Addition 竖式: 3.60 + 2.45 = 6.05 ──
+  document.getElementById('add-vert').innerHTML = decVert([
+    { val: '3.60' },
+    { val: '2.45', op: '+' },
+    { line: true },
+    { val: '6.05', bold: true, frag: 3 }
+  ], { showDotLine: true, dotColor: MV.C.red });
+
+  // ── Subtraction 竖式: 7.20 - 0.85 = 6.35 ──
+  document.getElementById('sub-vert').innerHTML = decVert([
+    { val: '7.20' },
+    { val: '0.85', op: '−' },
+    { line: true },
+    { val: '6.35', bold: true, frag: 3 }
+  ], { showDotLine: true, dotColor: MV.C.red });
+
+  // ── Multiplication 竖式: 125 × 8 = 1000 ──
+  document.getElementById('mul-int-vert').innerHTML = MV.vert([
+    { n: 125 },
+    { n: 8, op: '×' },
+    { line: true },
+    { n: 1000, bold: true, frag: 0, color: MV.C.blue }
+  ]);
+
+  // ── Decimal × decimal 竖式: 24 × 5 = 120 ──
+  document.getElementById('mul-dec-vert').innerHTML = MV.vert([
+    { n: 24 },
+    { n: 5, op: '×' },
+    { line: true },
+    { n: 120, bold: true, frag: 0, color: MV.C.blue }
+  ]);
+
+  // ── Division: 6.4 ÷ 4 = 1.6 ──
+  document.getElementById('div-int-svg').innerHTML = buildDivIntSVG();
+
+  // ── Decimal ÷ decimal transformation ──
+  document.getElementById('div-dec-viz').innerHTML = buildDivDecViz();
+
+  // ── Decimal ÷ decimal 竖式: 12.6 ÷ 6 = 2.1 ──
+  document.getElementById('div-dec-vert').innerHTML = decVert([
+    { val: '12.6' },
+    { val: '6', op: '÷' },
+    { line: true },
+    { val: '2.1', bold: true, frag: 1, color: MV.C.blue }
+  ], { showDotLine: true, dotColor: MV.C.red, ch: 40, fs: 22 });
+
+});
+</script>
+</body>
+</html>
