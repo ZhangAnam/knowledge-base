@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数O1 · 加减法巧算</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.hl  { color:#2980b9; font-weight:bold }
+.hl2 { color:#27ae60; font-weight:bold }
+.hl3 { color:#e74c3c; font-weight:bold }
+.hl4 { color:#e67e22; font-weight:bold }
+.calc { font-family:'Courier New',monospace; background:#f0f0f0;
+        border-radius:4px; padding:2px 9px; font-size:1em; display:inline-block }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 1. 封面                                        -->
+<!-- ══════════════════════════════════════════════ -->
+<section>
+  <div style="color:#888;font-size:.9em">三年级 · 奥数计算模块 A1</div>
+  <h1 style="font-size:2em;color:#2980b9;margin:.15em 0">加减法巧算</h1>
+  <p style="color:#555">凑整 &nbsp;·&nbsp; 配对 &nbsp;·&nbsp; 带符号搬家 &nbsp;·&nbsp; 去括号</p>
+  <div id="cov" style="margin:16px auto;text-align:center"></div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 2. 四种方法总览                                 -->
+<!-- ══════════════════════════════════════════════ -->
+<section>
+  <h2>四种巧算方法</h2>
+  <div class="mv-row" style="gap:16px;flex-wrap:wrap;justify-content:center;margin-top:18px">
+    <div class="mv-step" style="border-color:#2980b9;min-width:170px;text-align:center">
+      <div style="font-size:2em">🎯</div>
+      <div style="font-weight:bold;color:#2980b9;margin:6px 0">凑整法</div>
+      <div style="font-size:.82em;color:#555">接近整百整千<br>先补整再还差</div>
+    </div>
+    <div class="mv-step fragment" style="border-color:#27ae60;min-width:170px;text-align:center" data-fragment-index="1">
+      <div style="font-size:2em">🔗</div>
+      <div style="font-weight:bold;color:#27ae60;margin:6px 0">配对法</div>
+      <div style="font-size:.82em;color:#555">两数相加得整数<br>先配对再合并</div>
+    </div>
+    <div class="mv-step fragment" style="border-color:#e67e22;min-width:170px;text-align:center" data-fragment-index="2">
+      <div style="font-size:2em">🚌</div>
+      <div style="font-weight:bold;color:#e67e22;margin:6px 0">带符号搬家</div>
+      <div style="font-size:.82em;color:#555">符号跟着走<br>重新凑整合并</div>
+    </div>
+    <div class="mv-step fragment" style="border-color:#e74c3c;min-width:170px;text-align:center" data-fragment-index="3">
+      <div style="font-size:2em">📦</div>
+      <div style="font-weight:bold;color:#e74c3c;margin:6px 0">去括号</div>
+      <div style="font-size:.82em;color:#555">减号括号变号<br>加号括号不变</div>
+    </div>
+  </div>
+  <div class="mv-tip fragment" data-fragment-index="4" style="max-width:460px;margin:16px auto">
+    先看清式子结构，再选合适的方法！
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 3. 凑整法① 补整再还差                          -->
+<!-- ══════════════════════════════════════════════ -->
+<section>
+  <h2>🎯 凑整法 — 补整再还差</h2>
+  <div class="mv-tip" style="max-width:540px;margin:0 auto 12px">
+    接近整百整千的数 → 先当整数算 → 再补回差值
+  </div>
+  <div id="cz1" style="margin:0 auto 14px;text-align:center"></div>
+  <div class="mv-row" style="gap:20px;justify-content:center;flex-wrap:wrap">
+    <div class="mv-step" style="min-width:200px">
+      <div style="color:#888;font-size:.82em;margin-bottom:6px">例1：加法凑整</div>
+      <span class="calc">99 + 78</span>
+      <div class="fragment" data-fragment-index="1">= (100 − 1) + 78</div>
+      <div class="fragment" data-fragment-index="2">= 100 + 78 − 1 = <strong class="hl">177</strong></div>
+    </div>
+    <div class="mv-step" style="min-width:200px">
+      <div style="color:#888;font-size:.82em;margin-bottom:6px">例2：减法凑整</div>
+      <span class="calc">156 − 98</span>
+      <div class="fragment" data-fragment-index="3">= 156 − 100 + 2</div>
+      <div class="fragment" data-fragment-index="4">= <strong class="hl2">58</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 4. 凑整法② 多数中找搭档                        -->
+<!-- ══════════════════════════════════════════════ -->
+<section>
+  <h2>🎯 凑整法 — 多数中找搭档</h2>
+  <div id="cz2" style="margin:6px auto 14px;text-align:center"></div>
+  <div class="mv-row" style="gap:28px;justify-content:center;flex-wrap:wrap">
+    <div class="mv-col" style="text-align:left">
+      <div style="color:#888;font-size:.82em;margin-bottom:4px">例3</div>
+      <span class="calc">997 + 3 + 45</span>
+      <div class="fragment" data-fragment-index="1" style="margin-top:6px">= <span class="hl">(997 + 3)</span> + 45</div>
+      <div class="fragment" data-fragment-index="2">= <span class="hl">1000</span> + 45 = <strong class="hl">1045</strong></div>
+    </div>
+    <div class="mv-col" style="text-align:left">
+      <div style="color:#888;font-size:.82em;margin-bottom:4px">例4</div>
+      <span class="calc">364 + 287 + 36 + 13</span>
+      <div class="fragment" data-fragment-index="3" style="margin-top:6px">= <span class="hl">(364+36)</span> + <span class="hl2">(287+13)</span></div>
+      <div class="fragment" data-fragment-index="4">= <span class="hl">400</span> + <span class="hl2">300</span> = <strong>700</strong></div>
+    </div>
+  </div>
+  <div class="mv-tip fragment" data-fragment-index="5" style="max-width:460px;margin:12px auto">
+    先扫一遍，找哪些数字能凑成整百整千
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 5. 配对法                                       -->
+<!-- ══════════════════════════════════════════════ -->
+<section>
+  <h2>🔗 配对法 — 两两凑整</h2>
+  <div class="mv-tip" style="max-width:520px;margin:0 auto 10px">
+    找出相加恰好得整数的两项，优先配对
+  </div>
+  <div style="margin-bottom:10px">
+    <span class="calc">1/9 + 2/9 + 3/9 + 4/9 + 5/9 + 6/9 + 7/9 + 8/9</span>
+  </div>
+  <div id="pair" style="margin:0 auto;text-align:center"></div>
+  <div class="mv-step" style="max-width:460px;margin:10px auto">
+    <div class="fragment" data-fragment-index="5">= 1 + 1 + 1 + 1 = <strong class="hl">4</strong></div>
+  </div>
+  <div class="mv-step fragment" data-fragment-index="6" style="max-width:480px;margin:8px auto;border-color:#27ae60">
+    <div style="font-size:.85em;color:#888">拓展：189 − 45 + 55</div>
+    <div class="fragment" data-fragment-index="7">= 189 + <span class="hl2">(55 − 45)</span> = 189 + 10 = <strong class="hl2">199</strong></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 6. 带着符号搬家                                 -->
+<!-- ══════════════════════════════════════════════ -->
+<section>
+  <h2>🚌 带着符号搬家</h2>
+  <div class="mv-warn" style="max-width:520px;margin:0 auto 10px">
+    加减混合时，<strong>符号和数字必须一起移动</strong>，单独搬数字会算错！
+  </div>
+  <div id="mv1" style="margin:0 auto 12px;text-align:center"></div>
+  <div class="mv-row" style="gap:20px;justify-content:center;flex-wrap:wrap">
+    <div class="mv-step" style="min-width:210px">
+      <div style="color:#888;font-size:.82em">例：500 − 198 − 102</div>
+      <div class="fragment" data-fragment-index="1">两减数合并：</div>
+      <div class="fragment" data-fragment-index="2">= 500 − (198 + 102)</div>
+      <div class="fragment" data-fragment-index="3">= 500 − 300 = <strong class="hl2">200</strong></div>
+    </div>
+    <div class="mv-step" style="min-width:210px">
+      <div style="color:#888;font-size:.82em">例：532 − 97</div>
+      <div class="fragment" data-fragment-index="4">97 接近 100：</div>
+      <div class="fragment" data-fragment-index="5">= 532 − 100 + 3</div>
+      <div class="fragment" data-fragment-index="6">= 432 + 3 = <strong class="hl2">435</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 7. 带符号搬家 奥数规律题                        -->
+<!-- ══════════════════════════════════════════════ -->
+<section>
+  <h2>🚌 带符号搬家 — 奥数规律题</h2>
+  <div id="mv2" style="margin:0 auto 12px;text-align:center"></div>
+  <div class="mv-step" style="max-width:600px;margin:0 auto">
+    <span class="calc">999 − 998 + 997 − 996 + ··· + 3 − 2 + 1</span>
+    <div class="fragment" data-fragment-index="1" style="margin-top:8px">
+      = <span class="hl">(999−998)</span> + <span class="hl2">(997−996)</span> + ··· + <span class="hl4">(3−2)</span> + 1
+    </div>
+    <div class="fragment" data-fragment-index="2" style="margin-top:6px">
+      每对差为 1，从 999 到 3 共 <strong>499 对</strong>，再加最后 +1
+    </div>
+    <div class="fragment" data-fragment-index="3" style="margin-top:6px">
+      = 499 × 1 + 1 = <strong class="hl3">500</strong>
+    </div>
+  </div>
+  <div class="mv-tip fragment" data-fragment-index="4" style="max-width:460px;margin:12px auto">
+    ① 确认每对差值 &nbsp; ② 数共几对 &nbsp; ③ 查有无多余项
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 8. 去括号规则                                   -->
+<!-- ══════════════════════════════════════════════ -->
+<section>
+  <h2>📦 去括号规则</h2>
+  <div id="brac" style="margin:0 auto 12px;text-align:center"></div>
+  <div class="mv-row" style="gap:20px;justify-content:center;flex-wrap:wrap">
+    <div class="mv-step" style="border-color:#27ae60;min-width:210px">
+      <div style="font-weight:bold;color:#27ae60">➕ 括号前是加号</div>
+      <div style="font-size:.85em;margin:4px 0">括号内符号<strong>不变</strong></div>
+      <span class="calc" style="font-size:.9em">365 − (65 + 48)</span>
+      <div class="fragment" data-fragment-index="1">= 365 − 65 − 48</div>
+      <div class="fragment" data-fragment-index="2">= 300 − 48 = <strong class="hl2">252</strong></div>
+    </div>
+    <div class="mv-step" style="border-color:#e74c3c;min-width:210px">
+      <div style="font-weight:bold;color:#e74c3c">➖ 括号前是减号</div>
+      <div style="font-size:.85em;margin:4px 0">括号内符号<strong>全部取反</strong></div>
+      <span class="calc" style="font-size:.9em">456 − (156 − 44)</span>
+      <div class="fragment" data-fragment-index="3">= 456 − 156 <strong class="hl3">+</strong> 44</div>
+      <div class="fragment" data-fragment-index="4">= 300 + 44 = <strong class="hl3">344</strong></div>
+    </div>
+  </div>
+  <div class="mv-step fragment" data-fragment-index="5" style="max-width:460px;margin:12px auto;border-color:#2980b9;text-align:center">
+    <span class="calc">1000 − (123 + 456)</span>
+    <span class="fragment" data-fragment-index="6"> = 1000 − 123 − 456 = <strong class="hl">421</strong></span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 9. 易错点                                       -->
+<!-- ══════════════════════════════════════════════ -->
+<section>
+  <h2>⚠️ 三大易错点</h2>
+  <div class="mv-row" style="gap:16px;flex-wrap:wrap;justify-content:center;margin-top:18px">
+    <div class="mv-warn" style="max-width:240px">
+      <strong>① 减法不能随意换位</strong><br>
+      <code>100 − 36 − 14</code><br>
+      写成 <code>100 − (36+14)</code> 才对<br>
+      不是因为减法有交换律<br>
+      而是"连减等于减去总和"
+    </div>
+    <div class="mv-warn fragment" data-fragment-index="1" style="max-width:240px">
+      <strong>② 搬家必须带符号</strong><br>
+      <code>189 <span class="hl3">−45</span> +55</code><br>
+      搬 <code>+55</code> 时整体搬：<br>
+      ✅ <code>189 + 55 <span class="hl3">− 45</span></code><br>
+      ❌ <code>189 + 55 + 45</code>（丢了负号）
+    </div>
+    <div class="mv-warn fragment" data-fragment-index="2" style="max-width:240px">
+      <strong>③ 减号括号必须全变号</strong><br>
+      <code>80 − (25 + 7)</code><br>
+      ✅ <code>80 − 25 − 7 = 48</code><br>
+      ❌ <code>80 − 25 + 7 = 62</code><br>
+      括号前是减，里面全变！
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 10. 综合练习                                    -->
+<!-- ══════════════════════════════════════════════ -->
+<section>
+  <h2>✏️ 综合练习</h2>
+  <table class="mv-qt" style="width:690px">
+    <tr><th style="width:300px">题目</th><th style="width:130px">方法提示</th><th>答案</th></tr>
+    <tr><td>1. 98 + 67</td><td>凑整法</td>
+        <td class="fragment hl"  data-fragment-index="1">165</td></tr>
+    <tr><td>2. 203 − 99</td><td>凑整法</td>
+        <td class="fragment hl"  data-fragment-index="2">104</td></tr>
+    <tr><td>3. 234 + 66 − 34</td><td>配对法</td>
+        <td class="fragment hl2" data-fragment-index="3">266</td></tr>
+    <tr><td>4. 560 − (160 + 240)</td><td>去括号</td>
+        <td class="fragment hl3" data-fragment-index="4">160</td></tr>
+    <tr><td>5. 725 − 198 + 75</td><td>搬家 + 凑整</td>
+        <td class="fragment hl2" data-fragment-index="5">602</td></tr>
+    <tr><td>6. 1000 − 387 − 613</td><td>去括号</td>
+        <td class="fragment hl3" data-fragment-index="6">0</td></tr>
+    <tr><td>7. 398 + 497 + 103</td><td>凑整法</td>
+        <td class="fragment hl"  data-fragment-index="7">998</td></tr>
+    <tr><td>8. 368 + 199 − 68</td><td>搬家 + 凑整</td>
+        <td class="fragment hl4" data-fragment-index="8">499</td></tr>
+  </table>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+  var C = MV.C;
+
+  /* ── tiny helpers ─────────────────────────────── */
+  function nb(x, y, text, col, lcol, fw) {
+    var s = String(text);
+    var w = fw !== undefined ? fw : Math.max(52, s.length * 17 + 18);
+    return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="48"'
+      + ' fill="' + lcol + '" rx="8" stroke="' + col + '" stroke-width="2.5"/>'
+      + '<text x="' + (x + w / 2) + '" y="' + (y + 32) + '"'
+      + ' text-anchor="middle" font-size="21" font-weight="bold" fill="' + col + '">' + s + '</text>';
+  }
+  function op(x, y, sign) {
+    return '<text x="' + x + '" y="' + (y + 32) + '"'
+      + ' text-anchor="middle" font-size="22" fill="#666">' + sign + '</text>';
+  }
+  function arrowM(id, col) {
+    return '<marker id="' + id + '" markerWidth="8" markerHeight="8"'
+      + ' refX="6" refY="3.5" orient="auto">'
+      + '<path d="M0,0 L7,3.5 L0,7 Z" fill="' + col + '"/></marker>';
+  }
+
+  /* ── 1. Cover: 364+287+36+13=700 with grouping arcs ── */
+  (function () {
+    var y = 12;
+    var s = '';
+    s += nb(10,  y, '364', C.blue,   C.lblue,   68);
+    s += op(90,  y, '+');
+    s += nb(104, y, '287', C.orange, C.lorange, 68);
+    s += op(184, y, '+');
+    s += nb(198, y, '36',  C.blue,   C.lblue,   52);
+    s += op(262, y, '+');
+    s += nb(276, y, '13',  C.orange, C.lorange, 52);
+    s += op(340, y, '=');
+    s += nb(358, y, '700', C.red,    '#fff3e0', 68);
+    // blue arc: 364 + 36 (box centres: 44, 224)
+    s += '<path d="M44,64 Q134,94 224,64" fill="none" stroke="'
+      + C.blue + '" stroke-width="2" stroke-dasharray="4,2"/>';
+    s += '<text x="134" y="92" text-anchor="middle" font-size="12" fill="'
+      + C.blue + '">(364+36=400)</text>';
+    // orange arc: 287 + 13 (centres: 138, 302)
+    s += '<path d="M138,64 Q220,82 302,64" fill="none" stroke="'
+      + C.orange + '" stroke-width="2" stroke-dasharray="4,2"/>';
+    s += '<text x="220" y="80" text-anchor="middle" font-size="12" fill="'
+      + C.orange + '">(287+13=300)</text>';
+    document.getElementById('cov').innerHTML = MV.svg(440, 102, s);
+  }());
+
+  /* ── 2. cz1: 99→100 补整流程图 ─────────────────── */
+  (function () {
+    var s = '<defs>' + arrowM('arG', C.green) + arrowM('arR', C.red) + '</defs>';
+    var y = 8;
+    s += nb(10,  y, '99',  C.blue,   C.lblue,  60);
+    s += '<line x1="74" y1="32" x2="106" y2="32" stroke="' + C.green
+      + '" stroke-width="2" marker-end="url(#arG)"/>';
+    s += '<text x="90" y="26" text-anchor="middle" font-size="11" fill="' + C.green + '">+1</text>';
+    s += nb(110, y, '100', C.green,  C.lgreen, 70);
+    s += op(192, y, '+');
+    s += nb(208, y, '78',  C.orange, C.lorange, 58);
+    s += op(278, y, '=');
+    s += nb(294, y, '178', '#999',   '#f0f0f0', 70);
+    s += '<line x1="368" y1="32" x2="400" y2="32" stroke="' + C.red
+      + '" stroke-width="2" marker-end="url(#arR)"/>';
+    s += '<text x="384" y="26" text-anchor="middle" font-size="11" fill="' + C.red + '">−1</text>';
+    s += nb(404, y, '177', C.red,    '#ffeaea', 70);
+    document.getElementById('cz1').innerHTML = MV.svg(484, 64, s);
+  }());
+
+  /* ── 3. cz2: 364+287+36+13 grouping arcs (fragment) ── */
+  (function () {
+    var y = 8;
+    var s = '';
+    s += nb(10,  y, '364', C.blue,   C.lblue,  68);
+    s += op(90,  y, '+');
+    s += nb(104, y, '287', C.orange, C.lorange, 68);
+    s += op(184, y, '+');
+    s += nb(198, y, '36',  C.blue,   C.lblue,  52);
+    s += op(262, y, '+');
+    s += nb(276, y, '13',  C.orange, C.lorange, 52);
+    // blue arc fragment 3
+    s += '<g class="fragment" data-fragment-index="3">';
+    s += '<path d="M44,60 Q134,90 224,60" fill="none" stroke="' + C.blue + '" stroke-width="2.5"/>';
+    s += '<text x="134" y="88" text-anchor="middle" font-size="13" fill="' + C.blue + '">364+36=400</text>';
+    s += '</g>';
+    // orange arc fragment 3
+    s += '<g class="fragment" data-fragment-index="3">';
+    s += '<path d="M138,60 Q220,78 302,60" fill="none" stroke="' + C.orange + '" stroke-width="2.5"/>';
+    s += '<text x="220" y="76" text-anchor="middle" font-size="13" fill="' + C.orange + '">287+13=300</text>';
+    s += '</g>';
+    document.getElementById('cz2').innerHTML = MV.svg(342, 98, s);
+  }());
+
+  /* ── 4. pair: 分数配对弧 ────────────────────────── */
+  (function () {
+    var boxW = 44, boxH = 54, step = 54, startX = 10, boxY = 6;
+    var colors = [C.blue, C.green, C.orange, C.purple];
+    var s = '';
+    // 8 fraction boxes
+    for (var i = 0; i < 8; i++) {
+      var bx = startX + i * step;
+      s += '<rect x="' + bx + '" y="' + boxY + '" width="' + boxW + '" height="' + boxH
+        + '" fill="#f8f8f8" rx="6" stroke="#bbb" stroke-width="1.5"/>';
+      s += '<text x="' + (bx + boxW / 2) + '" y="' + (boxY + 22)
+        + '" text-anchor="middle" font-size="17" fill="#333">' + (i + 1) + '</text>';
+      s += '<line x1="' + (bx + 8) + '" y1="' + (boxY + 30)
+        + '" x2="' + (bx + 36) + '" y2="' + (boxY + 30) + '" stroke="#555" stroke-width="1.5"/>';
+      s += '<text x="' + (bx + boxW / 2) + '" y="' + (boxY + 47)
+        + '" text-anchor="middle" font-size="17" fill="#333">9</text>';
+    }
+    // pairing arcs with fragments
+    var pairs     = [[0, 7], [1, 6], [2, 5], [3, 4]];
+    var arcBottoms = [128, 110, 94, 82];
+    pairs.forEach(function (pr, idx) {
+      var x1   = startX + pr[0] * step + boxW / 2;
+      var x2   = startX + pr[1] * step + boxW / 2;
+      var midX = (x1 + x2) / 2;
+      var arcY = arcBottoms[idx];
+      s += '<g class="fragment" data-fragment-index="' + (idx + 1) + '">';
+      s += '<path d="M' + x1 + ',' + (boxY + boxH) + ' Q' + midX + ',' + arcY
+        + ' ' + x2 + ',' + (boxY + boxH) + '" fill="none" stroke="' + colors[idx]
+        + '" stroke-width="2.5"/>';
+      s += '<text x="' + midX + '" y="' + (arcY + 14)
+        + '" text-anchor="middle" font-size="12" fill="' + colors[idx] + '">=1</text>';
+      s += '</g>';
+    });
+    var totalW = startX * 2 + 8 * step - (step - boxW);
+    document.getElementById('pair').innerHTML = MV.svg(totalW, 144, s);
+  }());
+
+  /* ── 5. mv1: 搬家示意 500−198−102 ──────────────── */
+  (function () {
+    var s = '<defs>' + arrowM('arB', C.blue) + '</defs>';
+    // Row 1
+    s += nb(10,  6, '500', C.blue, C.lblue,  68);
+    s += op(90,  6, '−');
+    s += nb(104, 6, '198', C.red,  '#ffeaea', 68);
+    s += op(184, 6, '−');
+    s += nb(198, 6, '102', C.red,  '#ffeaea', 68);
+    // arrow
+    s += '<text x="148" y="80" text-anchor="middle" font-size="19" fill="' + C.green + '">↓ 合并两个减数</text>';
+    // Row 2
+    var y2 = 92;
+    s += nb(10,  y2, '500', C.blue,  C.lblue,  68);
+    s += op(90,  y2, '−');
+    s += '<rect x="102" y="' + (y2 + 2) + '" width="170" height="44"'
+      + ' fill="#ffeaea" rx="8" stroke="' + C.red + '" stroke-width="2"/>';
+    s += '<text x="187" y="' + (y2 + 29) + '" text-anchor="middle" font-size="17"'
+      + ' font-weight="bold" fill="' + C.red + '">(198 + 102)</text>';
+    s += op(284, y2, '=');
+    s += nb(300, y2, '200', C.green, C.lgreen, 68);
+    document.getElementById('mv1').innerHTML = MV.svg(378, 150, s);
+  }());
+
+  /* ── 6. mv2: 规律题 pattern visual ─────────────── */
+  (function () {
+    var groups  = [['999', '−998'], ['997', '−996'], ['···', '···'], ['3', '−2']];
+    var gcols   = [C.blue, C.green, C.orange, C.purple];
+    var glfills = [C.lblue, C.lgreen, C.lorange, C.lpurple];
+    var s = '';
+    var x = 10;
+    groups.forEach(function (g, i) {
+      var col  = i === 2 ? '#aaa'     : gcols[i];
+      var fill = i === 2 ? '#f5f5f5'  : glfills[i];
+      s += '<rect x="' + x + '" y="10" width="88" height="58" fill="' + fill
+        + '" rx="8" stroke="' + col + '" stroke-width="2"/>';
+      s += '<text x="' + (x + 44) + '" y="34" text-anchor="middle" font-size="16"'
+        + ' font-weight="bold" fill="' + col + '">' + g[0] + '</text>';
+      s += '<text x="' + (x + 44) + '" y="58" text-anchor="middle" font-size="15"'
+        + ' fill="' + col + '">' + g[1] + '</text>';
+      if (i < 3) {
+        s += '<text x="' + (x + 98) + '" y="44" text-anchor="middle" font-size="18" fill="#888">+</text>';
+      }
+      x += 106;
+    });
+    // "+1" box
+    s += '<rect x="' + x + '" y="10" width="52" height="58" fill="#fef9e7"'
+      + ' rx="8" stroke="' + C.yellow + '" stroke-width="2"/>';
+    s += '<text x="' + (x + 26) + '" y="45" text-anchor="middle" font-size="19"'
+      + ' font-weight="bold" fill="' + C.orange + '">+1</text>';
+    // "=1" labels (fragment 1)
+    s += '<g class="fragment" data-fragment-index="1">';
+    var xx = 10;
+    for (var i = 0; i < 4; i++) {
+      if (i !== 2) {
+        s += '<text x="' + (xx + 44) + '" y="80" text-anchor="middle"'
+          + ' font-size="13" fill="#666">=1</text>';
+      }
+      xx += 106;
+    }
+    s += '</g>';
+    document.getElementById('mv2').innerHTML = MV.svg(x + 62, 88, s);
+  }());
+
+  /* ── 7. brac: 去括号 sign-change banner ────────── */
+  (function () {
+    var s = '';
+    // Green box: + before bracket
+    s += '<rect x="10" y="8" width="200" height="66" fill="' + C.lgreen
+      + '" rx="10" stroke="' + C.green + '" stroke-width="2.5"/>';
+    s += '<text x="110" y="26" text-anchor="middle" font-size="13"'
+      + ' font-weight="bold" fill="' + C.green + '">括号前是 +</text>';
+    s += '<text x="110" y="46" text-anchor="middle" font-size="15" fill="#333">a + (b − c)</text>';
+    s += '<text x="110" y="65" text-anchor="middle" font-size="13" fill="' + C.green
+      + '">= a + b − c &nbsp;（符号不变）</text>';
+    // Red box: − before bracket
+    s += '<rect x="230" y="8" width="210" height="66" fill="#ffeaea"'
+      + ' rx="10" stroke="' + C.red + '" stroke-width="2.5"/>';
+    s += '<text x="335" y="26" text-anchor="middle" font-size="13"'
+      + ' font-weight="bold" fill="' + C.red + '">括号前是 −</text>';
+    s += '<text x="335" y="46" text-anchor="middle" font-size="15" fill="#333">a − (b + c)</text>';
+    s += '<text x="335" y="65" text-anchor="middle" font-size="13" fill="' + C.red
+      + '">= a − b − c &nbsp;（全部变号）</text>';
+    document.getElementById('brac').innerHTML = MV.svg(454, 82, s);
+  }());
+});
+</script>
+</body>
+</html>
