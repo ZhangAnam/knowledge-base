@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>学案37 · 除数是两位数的除法</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.hl{color:#2980b9;font-weight:bold}.hl2{color:#27ae60;font-weight:bold}.hl3{color:#e74c3c;font-weight:bold}
+.two-col{display:flex;justify-content:center;align-items:flex-start;gap:36px;flex-wrap:wrap}
+.rule-card{border:2px solid;border-radius:10px;padding:12px 18px;text-align:center;min-width:200px}
+.adj-box{border:2px solid;border-radius:8px;padding:10px 14px;min-width:220px;font-size:.9em}
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- 封面 -->
+<section>
+  <div style="color:#888;font-size:.9em">四年级 · 除法</div>
+  <h1 style="font-size:2em;color:#2980b9;margin:.1em 0">除数是两位数的除法</h1>
+  <p style="color:#555">四舍五入试商 · 判断商的位置 · 调商</p>
+  <div id="cover-grid" style="margin-top:20px"></div>
+</section>
+
+<!-- 试商方法 -->
+<section>
+  <h2>💡 怎样<span class="hl">试商</span>？</h2>
+  <div class="two-col" style="margin:12px 0;align-items:center">
+    <div class="mv-col" style="gap:10px;align-items:flex-start;max-width:340px;font-size:.95em">
+      <div>① 把除数<span class="hl">四舍五入</span>到整十数</div>
+      <div class="fragment">② 用整十数做除数<span class="hl2">估算</span>商</div>
+      <div class="fragment">③ 用估出的商<span class="hl3">试除</span>，再根据结果调整</div>
+      <div class="fragment mv-tip">口诀：<strong>四舍五入变整十，除一除，再调整</strong></div>
+    </div>
+    <div class="mv-col" style="gap:14px;align-items:center">
+      <div id="nl-46" class="fragment"></div>
+      <div id="nl-24" class="fragment"></div>
+    </div>
+  </div>
+  <div class="fragment mv-warn" style="margin-top:6px">
+    <strong>46</strong> → 四舍五入到 <strong>50</strong>（个位 6 ≥ 5，进位）&emsp;
+    <strong>24</strong> → 四舍五入到 <strong>20</strong>（个位 4 &lt; 5，舍去）
+  </div>
+</section>
+
+<!-- 商写哪位 -->
+<section>
+  <h2>📍 商写在哪一位？</h2>
+  <div class="two-col" style="margin:16px 0;gap:28px">
+    <div class="rule-card fragment" style="border-color:#2980b9">
+      <div style="font-size:1.1em;font-weight:bold;color:#2980b9;margin-bottom:8px">前两位 ≥ 除数</div>
+      <div>商写在<span class="hl">十位</span></div>
+      <div style="font-size:.85em;color:#666;margin-top:6px">结果是<strong>两位数</strong></div>
+      <div style="margin-top:10px;font-size:.9em">
+        例：612 ÷ 24<br>
+        前两位 <span class="hl">61</span> ≥ 24 ✓
+      </div>
+    </div>
+    <div class="rule-card fragment" style="border-color:#e74c3c">
+      <div style="font-size:1.1em;font-weight:bold;color:#e74c3c;margin-bottom:8px">前两位 &lt; 除数</div>
+      <div>看<span class="hl3">前三位</span>，商写<span class="hl3">个位</span></div>
+      <div style="font-size:.85em;color:#666;margin-top:6px">结果是<strong>一位数</strong></div>
+      <div style="margin-top:10px;font-size:.9em">
+        例：368 ÷ 46<br>
+        前两位 <span class="hl3">36</span> &lt; 46 ✗<br>
+        看 <span class="hl2">368</span>，商一位数
+      </div>
+    </div>
+  </div>
+  <div class="fragment" style="margin-top:8px">
+    <div id="pos-table"></div>
+  </div>
+</section>
+
+<!-- 例1：368÷46 一位数商 -->
+<section>
+  <section>
+    <h2>📝 例1：一位数商 &nbsp; 368 ÷ 46</h2>
+    <div class="two-col">
+      <div id="ex1-div"></div>
+      <div class="mv-col" style="align-items:flex-start;gap:8px;max-width:320px;font-size:.93em">
+        <div>前两位 <span class="hl3">36</span> &lt; 46，商是<strong>一位数</strong></div>
+        <div class="fragment">46 四舍五入 → <span class="hl">50</span></div>
+        <div class="fragment">36 ÷ 5 ≈ 7，先试 <span class="hl">7</span></div>
+        <div class="fragment">46 × 7 = 322，368 − 322 = <span class="hl3">46</span></div>
+        <div class="fragment">余数 46 = 除数 46，调大：试 <span class="hl2">8</span></div>
+        <div class="fragment">46 × 8 = 368，余数 = <span class="hl2">0</span></div>
+        <div class="fragment mv-tip">368 ÷ 46 = <strong>8</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 例2：612÷24 两位数商 -->
+  <section>
+    <h2>📝 例2：两位数商 &nbsp; 612 ÷ 24</h2>
+    <div class="two-col">
+      <div id="ex2-div"></div>
+      <div class="mv-col" style="align-items:flex-start;gap:8px;max-width:320px;font-size:.93em">
+        <div>前两位 <span class="hl">61</span> ≥ 24，商在<strong>十位</strong></div>
+        <div class="fragment">24 四舍五入 → <span class="hl">20</span></div>
+        <div class="fragment">6 ÷ 2 = 3，先在十位试商 <span class="hl">2</span>（偏大调小）</div>
+        <div class="fragment">十位商 <span class="hl2">2</span>：24×2=48，61−48=13，落下 2</div>
+        <div class="fragment">个位：132 ÷ 24，13÷2≈6，试 <span class="hl">5</span></div>
+        <div class="fragment">24×5=120，132−120=<span class="hl2">12</span></div>
+        <div class="fragment mv-tip">612 ÷ 24 = <strong>25……12</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 例3：425÷58 有余数 -->
+  <section>
+    <h2>📝 例3：有余数 &nbsp; 425 ÷ 58</h2>
+    <div class="two-col">
+      <div id="ex3-div"></div>
+      <div class="mv-col" style="align-items:flex-start;gap:8px;max-width:320px;font-size:.93em">
+        <div>前两位 <span class="hl3">42</span> &lt; 58，商是<strong>一位数</strong></div>
+        <div class="fragment">58 四舍五入 → <span class="hl">60</span></div>
+        <div class="fragment">42 ÷ 6 = 7，试商 <span class="hl">7</span></div>
+        <div class="fragment">58 × 7 = 406</div>
+        <div class="fragment">425 − 406 = <span class="hl2">19</span>（余数 19 &lt; 58 ✓）</div>
+        <div class="fragment mv-tip">425 ÷ 58 = <strong>7……19</strong></div>
+        <div class="fragment mv-warn" style="font-size:.85em">验算：58×7+19=406+19=425 ✓</div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- 调商技巧 -->
+<section>
+  <h2>🔧 调商技巧</h2>
+  <div class="two-col" style="margin:14px 0;gap:24px">
+    <div class="adj-box fragment" style="border-color:#e74c3c">
+      <div style="color:#e74c3c;font-weight:bold;font-size:1.05em;margin-bottom:8px">
+        ❌ 商大了 → 调小 1
+      </div>
+      <div>试商后：<strong>乘积 &gt; 当前被除数</strong></div>
+      <div style="margin:8px 0;background:#fef9f9;border-radius:6px;padding:6px">
+        272 ÷ 34，34≈<span style="color:#e74c3c">30</span><br>
+        27÷3≈9，试 9<br>
+        34×9 = <span class="hl3">306 &gt; 272</span> ✗<br>
+        ↓ 调小到 <span class="hl2">8</span><br>
+        34×8 = 272 ✓
+      </div>
+      <div id="adj-big"></div>
+    </div>
+    <div class="adj-box fragment" style="border-color:#27ae60">
+      <div style="color:#27ae60;font-weight:bold;font-size:1.05em;margin-bottom:8px">
+        ❌ 商小了 → 调大 1
+      </div>
+      <div>试商后：<strong>余数 ≥ 除数</strong></div>
+      <div style="margin:8px 0;background:#f0fff4;border-radius:6px;padding:6px">
+        288 ÷ 36，36≈<span style="color:#2980b9">40</span><br>
+        28÷4=7，试 7<br>
+        36×7 = 252，288−252=<span class="hl3">36 ≥ 36</span> ✗<br>
+        ↓ 调大到 <span class="hl2">8</span><br>
+        36×8 = 288 ✓
+      </div>
+      <div id="adj-small"></div>
+    </div>
+  </div>
+  <div class="fragment mv-tip" style="margin-top:8px">
+    乘积 &gt; 被除数 → 调小；余数 ≥ 除数 → 调大。每次只调 <strong>1</strong>！
+  </div>
+</section>
+
+<!-- 易错辨析 -->
+<section>
+  <h2>⚠️ 易错辨析：272 ÷ 34</h2>
+  <div class="two-col" style="margin:16px 0">
+    <div>
+      <div style="color:#e74c3c;font-size:.88em;font-weight:bold;margin-bottom:6px">
+        ❌ 错误：34 四舍五入成 <span class="hl3">30</span>，试商 9
+      </div>
+      <div id="err-wrong"></div>
+      <div style="margin-top:8px;font-size:.88em;color:#e74c3c">
+        34×9 = 306 &gt; 272<br>
+        <strong>商写不下！</strong>
+      </div>
+    </div>
+    <div class="fragment">
+      <div style="color:#27ae60;font-size:.88em;font-weight:bold;margin-bottom:6px">
+        ✅ 正确：34 四舍五入成 <span class="hl2">30</span>，试 9 → 偏大 → 改 8
+      </div>
+      <div id="err-right"></div>
+      <div style="margin-top:8px;font-size:.88em;color:#27ae60">
+        34×8 = 272，余数 0<br>
+        <strong>272 ÷ 34 = 8</strong>
+      </div>
+    </div>
+  </div>
+  <div class="fragment mv-warn">
+    个位是 <strong>4</strong> 的除数，四舍五入后是 <strong>整十数偏小</strong>，
+    试商往往<strong>偏大</strong>，要留意调小！
+  </div>
+</section>
+
+<!-- 验算方法 -->
+<section>
+  <h2>✔️ 验算方法</h2>
+  <div style="font-size:1.15em;text-align:center;margin:14px 0">
+    <div class="mv-tip" style="display:inline-block;min-width:360px">
+      <span class="hl">商</span> × <span class="hl2">除数</span> + <span class="hl3">余数</span>
+      = <strong>被除数</strong>
+    </div>
+  </div>
+  <div class="two-col" style="margin:12px 0;gap:20px">
+    <div class="mv-step fragment" style="min-width:220px;font-size:.9em">
+      368 ÷ 46 = 8<br>
+      验算：46 × <span class="hl">8</span> + <span class="hl3">0</span><br>
+      = 368 ✓
+    </div>
+    <div class="mv-step fragment" style="min-width:220px;font-size:.9em">
+      612 ÷ 24 = 25……12<br>
+      验算：24 × <span class="hl">25</span> + <span class="hl3">12</span><br>
+      = 600 + 12 = 612 ✓
+    </div>
+    <div class="mv-step fragment" style="min-width:220px;font-size:.9em">
+      425 ÷ 58 = 7……19<br>
+      验算：58 × <span class="hl">7</span> + <span class="hl3">19</span><br>
+      = 406 + 19 = 425 ✓
+    </div>
+  </div>
+  <div class="fragment mv-warn" style="margin-top:8px">
+    必须满足：<strong>余数 &lt; 除数</strong>，否则还要继续除！
+  </div>
+</section>
+
+<!-- 练习 -->
+<section>
+  <section>
+    <h2>✏️ 练习一：直接计算</h2>
+    <table class="mv-qt" style="width:640px">
+      <tr><th>题目</th><th>答案</th><th>题目</th><th>答案</th></tr>
+      <tr>
+        <td>1. 336 ÷ 28</td>
+        <td class="fragment hl">12</td>
+        <td>2. 576 ÷ 24</td>
+        <td class="fragment hl">24</td>
+      </tr>
+      <tr>
+        <td>3. 425 ÷ 58</td>
+        <td class="fragment hl">7……19</td>
+        <td>4. 264 ÷ 22</td>
+        <td class="fragment hl">12</td>
+      </tr>
+      <tr>
+        <td>5. 321 ÷ 16</td>
+        <td class="fragment hl">20……1</td>
+        <td></td><td></td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>✏️ 练习二：判断 &amp; 应用</h2>
+    <table class="mv-qt" style="width:660px;margin-bottom:14px">
+      <tr><th>判断题</th><th>答</th></tr>
+      <tr>
+        <td style="text-align:left">6. 计算 368÷46 时，把 46 四舍五入成 40 来试商。</td>
+        <td class="fragment hl3">×</td>
+      </tr>
+      <tr>
+        <td style="text-align:left">7. 612÷24 中，前两位 61&gt;24，所以商在十位。</td>
+        <td class="fragment hl2">√</td>
+      </tr>
+    </table>
+    <table class="mv-qt" style="width:660px;font-size:.9em">
+      <tr><th>应用题</th><th>答案</th></tr>
+      <tr>
+        <td style="text-align:left">8. 720千克橘子，每袋30千克，可以装几袋？</td>
+        <td class="fragment">720÷30=<strong>24袋</strong></td>
+      </tr>
+      <tr>
+        <td style="text-align:left">9. 624本书用卡车运，每辆运52本，需要几辆？</td>
+        <td class="fragment">624÷52=<strong>12辆</strong></td>
+      </tr>
+      <tr>
+        <td style="text-align:left">10. 一本书6400字，每页32字，共多少页？</td>
+        <td class="fragment">6400÷32=<strong>200页</strong></td>
+      </tr>
+    </table>
+  </section>
+</section>
+
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+
+MV.setup(function () {
+
+  // ── 封面：方格展示分组 ──────────────────────
+  var coverColors = [];
+  for (var i = 0; i < 48; i++) {
+    var group = Math.floor(i / 12);
+    coverColors.push([MV.C.blue, MV.C.orange, MV.C.green, MV.C.purple][group]);
+  }
+  document.getElementById('cover-grid').innerHTML =
+    MV.row(
+      MV.grid(4, 12, coverColors, 26),
+      '<div style="font-size:1.5em;color:#888;padding:14px 18px">= 4 组，每组 12</div>'
+    );
+
+  // ── 试商概念：数轴 ─────────────────────────
+  document.getElementById('nl-46').innerHTML =
+    '<div style="font-size:.8em;color:#555;margin-bottom:2px">除数 46 → 四舍五入到 50</div>' +
+    MV.numberLine(38, 54, [
+      { val: 40, label: '40' },
+      { val: 46, label: '46', above: '↑', dot: true, color: MV.C.blue },
+      { val: 50, label: '50', above: '→50', dot: true, color: MV.C.red }
+    ], 320);
+
+  document.getElementById('nl-24').innerHTML =
+    '<div style="font-size:.8em;color:#555;margin-bottom:2px">除数 24 → 四舍五入到 20</div>' +
+    MV.numberLine(18, 32, [
+      { val: 20, label: '20', above: '20←', dot: true, color: MV.C.red },
+      { val: 24, label: '24', above: '↑', dot: true, color: MV.C.blue },
+      { val: 30, label: '30' }
+    ], 320);
+
+  // ── 商写哪位：数位表对比 ────────────────────
+  document.getElementById('pos-table').innerHTML =
+    MV.row(
+      MV.placeTable([
+        { label: '百位', val: '6' },
+        { label: '十位', val: '1' },
+        { label: '个位', val: '2' }
+      ]) + '<div style="font-size:.8em;color:#2980b9;text-align:center;margin-top:4px">61≥24 → 商在十位</div>',
+      '<div style="font-size:1.8em;color:#aaa;padding:0 14px;line-height:80px">vs</div>',
+      MV.placeTable([
+        { label: '百位', val: '3' },
+        { label: '十位', val: '6' },
+        { label: '个位', val: '8' }
+      ]) + '<div style="font-size:.8em;color:#e74c3c;text-align:center;margin-top:4px">36&lt;46 → 商在个位</div>'
+    );
+
+  // ── 例1：368÷46 ──────────────────────────
+  document.getElementById('ex1-div').innerHTML = MV.longDiv(46, 368, { fragBase: 0 });
+
+  // ── 例2：612÷24 ──────────────────────────
+  document.getElementById('ex2-div').innerHTML = MV.longDiv(24, 612, { fragBase: 0 });
+
+  // ── 例3：425÷58 ──────────────────────────
+  document.getElementById('ex3-div').innerHTML = MV.longDiv(58, 425, { fragBase: 0 });
+
+  // ── 调商：商偏大 34×9 vs 34×8 ──────────
+  document.getElementById('adj-big').innerHTML =
+    MV.row(
+      MV.vert([
+        { n: 34 },
+        { n: 9, op: '×' },
+        { line: true },
+        { n: 306, color: MV.C.red, bold: true }
+      ], { cw: 28, ch: 36, fs: 20 }),
+      '<div style="font-size:1.5em;color:#e74c3c;padding:0 6px;line-height:80px">→</div>',
+      MV.vert([
+        { n: 34 },
+        { n: 8, op: '×' },
+        { line: true },
+        { n: 272, color: MV.C.green, bold: true }
+      ], { cw: 28, ch: 36, fs: 20 })
+    );
+
+  // ── 调商：商偏小 36×7 vs 36×8 ──────────
+  document.getElementById('adj-small').innerHTML =
+    MV.row(
+      MV.vert([
+        { n: 36 },
+        { n: 7, op: '×' },
+        { line: true },
+        { n: 252, color: MV.C.red, bold: true }
+      ], { cw: 28, ch: 36, fs: 20 }),
+      '<div style="font-size:1.5em;color:#27ae60;padding:0 6px;line-height:80px">→</div>',
+      MV.vert([
+        { n: 36 },
+        { n: 8, op: '×' },
+        { line: true },
+        { n: 288, color: MV.C.green, bold: true }
+      ], { cw: 28, ch: 36, fs: 20 })
+    );
+
+  // ── 易错辨析：272÷34 ─────────────────────
+  // 静态显示错误试商（34×9=306）
+  document.getElementById('err-wrong').innerHTML =
+    MV.vert([
+      { n: 34 },
+      { n: 9, op: '×' },
+      { line: true },
+      { n: 306, color: MV.C.red, bold: true, note: '> 272 ✗' }
+    ], { cw: 30, ch: 38, fs: 21, noteW: 72 });
+
+  // 静态显示正确结果（272÷34=8）
+  document.getElementById('err-right').innerHTML = MV.longDiv(34, 272, { fragBase: -1 });
+
+});
+</script>
+</body>
+</html>
