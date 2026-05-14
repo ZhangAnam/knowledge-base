@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数 O22–O23 · 奇偶性</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.kw  { color:#2980b9; font-weight:bold; }
+.kw2 { color:#27ae60; font-weight:bold; }
+.kw3 { color:#e74c3c; font-weight:bold; }
+.kw4 { color:#e67e22; font-weight:bold; }
+.big-eq { font-size:1.25em; text-align:center; margin:10px 0; }
+.tag-e { display:inline-block; background:#d6eaf8; border:2px solid #2980b9;
+         border-radius:6px; padding:2px 10px; font-weight:bold; color:#2980b9;
+         font-size:.95em; margin:2px; }
+.tag-o { display:inline-block; background:#fdebd0; border:2px solid #e67e22;
+         border-radius:6px; padding:2px 10px; font-weight:bold; color:#e67e22;
+         font-size:.95em; margin:2px; }
+.parity-table { border-collapse:collapse; margin:0 auto; font-size:.95em; }
+.parity-table th { background:#f0f0f0; padding:8px 16px; border:2px solid #ccc; }
+.parity-table td { padding:8px 16px; border:2px solid #ccc; text-align:center; font-weight:bold; }
+.cell-e { background:#d5f5e3; color:#27ae60; }
+.cell-o { background:#fdebd0; color:#e67e22; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ── 1. 封面 ─────────────────────────────────────── -->
+<section>
+  <div style="color:#888;font-size:.85em">四年级 · 奥数数论 O22–O23</div>
+  <h1 style="font-size:1.85em;color:#2980b9;margin:.15em 0">奇偶性</h1>
+  <div style="color:#555;font-size:.92em;margin-bottom:14px">奇偶判断 · 运算规律 · 不可能问题</div>
+  <div id="s0-vis"></div>
+</section>
+
+<!-- ── 2. 定义 ───────────────────────────────────────── -->
+<section>
+  <h2>📖 偶数 与 奇数 的定义</h2>
+  <div id="s1-def"></div>
+</section>
+
+<!-- ── 3. 点点图 ────────────────────────────────────── -->
+<section>
+  <h2>🔵 直观理解：成对 vs 多一个</h2>
+  <div id="s2-dots"></div>
+</section>
+
+<!-- ── 4. 运算规律表 ─────────────────────────────────── -->
+<section>
+  <h2>📊 奇偶数的运算规律</h2>
+  <div id="s3-rules"></div>
+</section>
+
+<!-- ── 5. 证明：奇数 + 奇数 = 偶数 ─────────────────── -->
+<section>
+  <h2>✅ 证明：奇 + 奇 = 偶</h2>
+  <div id="s4-proof"></div>
+</section>
+
+<!-- ── 6. 配对求和策略 ──────────────────────────────── -->
+<section>
+  <h2>🎯 配对策略：1 + 2 + … + 100</h2>
+  <div id="s5-pair"></div>
+</section>
+
+<!-- ── 7. "不可能"问题 ─────────────────────────────── -->
+<section>
+  <h2>🚫 "不可能"问题：奇偶矛盾</h2>
+  <div id="s6-impossible"></div>
+</section>
+
+<!-- ── 8. 综合例题 ──────────────────────────────────── -->
+<section>
+  <h2>📝 综合例题：判断结果奇偶性</h2>
+  <div id="s7-examples"></div>
+</section>
+
+<!-- ── 9. 奇偶性应用：棋盘问题 ─────────────────────── -->
+<section>
+  <h2>♟️ 奇偶性应用：棋盘格染色</h2>
+  <div id="s8-chess"></div>
+</section>
+
+<!-- ── 10. 练习题 ───────────────────────────────────── -->
+<section>
+  <h2>✏️ 练习题</h2>
+  <div id="s9-practice"></div>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+
+  // ── S0: Cover — even/odd dot patterns ────────────────
+  document.getElementById('s0-vis').innerHTML =
+    '<div style="text-align:center;margin-bottom:8px;font-size:.9em;color:#555">' +
+      '区分"整除 2"与"除以 2 余 1"' +
+    '</div>' +
+    (function () {
+      var W = 480, H = 100;
+      var svg = '';
+      // Even: 6 dots (3 pairs)
+      svg += '<text x="75" y="16" text-anchor="middle" font-size="14" fill="' + MV.C.blue + '" font-weight="bold">偶数 6</text>';
+      var ey = 52;
+      [[14,ey],[36,ey],[62,ey],[84,ey],[110,ey],[132,ey]].forEach(function (pt, i) {
+        var col = (i < 2) ? MV.C.blue : (i < 4 ? MV.C.teal : MV.C.purple);
+        svg += '<circle cx="' + pt[0] + '" cy="' + pt[1] + '" r="13" fill="' + col + '" opacity="0.8"/>';
+      });
+      // pair brackets
+      [[14,36],[62,84],[110,132]].forEach(function (pair) {
+        var mx = (pair[0]+pair[1])/2;
+        svg += '<line x1="' + (pair[0]-4) + '" y1="' + (ey+16) + '" x2="' + (pair[1]+4) + '" y2="' + (ey+16) + '" stroke="#333" stroke-width="1.5"/>';
+        svg += '<text x="' + mx + '" y="' + (ey+30) + '" text-anchor="middle" font-size="10" fill="#555">一对</text>';
+      });
+      svg += '<text x="75" y="' + (ey+46) + '" text-anchor="middle" font-size="12" fill="' + MV.C.green + '" font-weight="bold">整除 2，余数 0</text>';
+
+      // divider
+      svg += '<line x1="165" y1="8" x2="165" y2="96" stroke="#ddd" stroke-width="2"/>';
+
+      // Odd: 7 dots (3 pairs + 1)
+      svg += '<text x="330" y="16" text-anchor="middle" font-size="14" fill="' + MV.C.orange + '" font-weight="bold">奇数 7</text>';
+      [[178,ey],[200,ey],[226,ey],[248,ey],[274,ey],[296,ey],[330,ey]].forEach(function (pt, i) {
+        var isLeftover = (i === 6);
+        var col = isLeftover ? MV.C.red : MV.C.orange;
+        svg += '<circle cx="' + pt[0] + '" cy="' + pt[1] + '" r="13" fill="' + col + '" opacity="' + (isLeftover ? 1 : 0.75) + '"/>';
+        if (isLeftover) {
+          svg += '<text x="' + pt[0] + '" y="' + (pt[1]+5) + '" text-anchor="middle" font-size="13" fill="white" font-weight="bold">+1</text>';
+        }
+      });
+      [[178,200],[226,248],[274,296]].forEach(function (pair) {
+        var mx = (pair[0]+pair[1])/2;
+        svg += '<line x1="' + (pair[0]-4) + '" y1="' + (ey+16) + '" x2="' + (pair[1]+4) + '" y2="' + (ey+16) + '" stroke="#e67e22" stroke-width="1.5"/>';
+      });
+      svg += '<text x="330" y="' + (ey+30) + '" text-anchor="middle" font-size="10" fill="#555">多余 1 个</text>';
+      svg += '<text x="265" y="' + (ey+46) + '" text-anchor="middle" font-size="12" fill="' + MV.C.red + '" font-weight="bold">÷2 余数 1</text>';
+
+      return '<div style="text-align:center">' + MV.svg(W, H, svg) + '</div>';
+    }()) +
+    MV.tip('奇偶性是数论和组合的<b>利器</b>：快速判断结果、发现"不可能"！');
+
+  // ── S1: Definition ────────────────────────────────────
+  document.getElementById('s1-def').innerHTML =
+    MV.row(
+      MV.col(
+        '<div style="background:#d6eaf8;border:2px solid #2980b9;border-radius:10px;padding:16px 20px;text-align:center">' +
+          '<div style="font-size:1.5em;font-weight:bold;color:#2980b9">偶数</div>' +
+          '<div style="font-size:1.1em;margin:8px 0">能被 2 整除的整数</div>' +
+          '<div style="font-size:1.1em;color:#2980b9;font-weight:bold">偶数 = <b>2n</b>&ensp;（n 为整数）</div>' +
+          '<div style="margin-top:8px;font-size:.9em;color:#555">例：0, 2, 4, 6, 8, 10, 12 …</div>' +
+          '<div style="font-size:.88em;color:#888;margin-top:4px">末位数字：0, 2, 4, 6, 8</div>' +
+        '</div>'
+      ),
+      MV.col(
+        '<div style="background:#fdebd0;border:2px solid #e67e22;border-radius:10px;padding:16px 20px;text-align:center">' +
+          '<div style="font-size:1.5em;font-weight:bold;color:#e67e22">奇数</div>' +
+          '<div style="font-size:1.1em;margin:8px 0">除以 2 余 1 的整数</div>' +
+          '<div style="font-size:1.1em;color:#e67e22;font-weight:bold">奇数 = <b>2n+1</b>&ensp;（n 为整数）</div>' +
+          '<div style="margin-top:8px;font-size:.9em;color:#555">例：1, 3, 5, 7, 9, 11, 13 …</div>' +
+          '<div style="font-size:.88em;color:#888;margin-top:4px">末位数字：1, 3, 5, 7, 9</div>' +
+        '</div>'
+      )
+    ) +
+    MV.fragDiv(
+      MV.tip('判断奇偶只需看<b>末位数字</b>：末位是 0/2/4/6/8 → 偶数；末位是 1/3/5/7/9 → 奇数'),
+      1
+    ) +
+    MV.fragDiv(
+      MV.warn('0 是<b>偶数</b>！负整数也有奇偶之分：−3 是奇数，−4 是偶数。'),
+      2
+    );
+
+  // ── S2: Dot visual ─────────────────────────────────────
+  document.getElementById('s2-dots').innerHTML =
+    '<div style="font-size:.93em;margin-bottom:8px;text-align:center">' +
+      '用"能否完美两两配对"来感受偶数与奇数：' +
+    '</div>' +
+    (function () {
+      var W = 580, H = 180;
+      var svg = '';
+      var blue = MV.C.blue, orange = MV.C.orange, red = MV.C.red;
+
+      function drawRow(nums, startX, y, color, showBrackets) {
+        nums.forEach(function (cx) {
+          svg += '<circle cx="' + cx + '" cy="' + y + '" r="14" fill="' + color + '" opacity="0.8"/>';
+        });
+        if (showBrackets) {
+          for (var i = 0; i < nums.length - 1; i += 2) {
+            var mx = (nums[i] + nums[i+1]) / 2;
+            svg += '<path d="M' + (nums[i]-4) + ',' + (y+17) + ' L' + (nums[i]-4) + ',' + (y+23) +
+                   ' L' + (nums[i+1]+4) + ',' + (y+23) + ' L' + (nums[i+1]+4) + ',' + (y+17) +
+                   '" fill="none" stroke="' + color + '" stroke-width="1.5"/>';
+          }
+        }
+      }
+
+      // Even 8: 4 pairs
+      svg += '<text x="55" y="18" text-anchor="middle" font-size="14" fill="' + blue + '" font-weight="bold">偶数 8 = 2×4</text>';
+      drawRow([12,38,68,94,124,150,180,206], 0, 45, blue, true);
+      svg += '<text x="109" y="84" text-anchor="middle" font-size="12" fill="' + blue + '">4 对，每对 2 个</text>';
+      svg += '<text x="109" y="99" text-anchor="middle" font-size="12" fill="' + MV.C.green + '" font-weight="bold">✓ 8 ÷ 2 = 4，余数 0</text>';
+
+      // divider
+      svg += '<line x1="230" y1="12" x2="230" y2="170" stroke="#ddd" stroke-width="2" stroke-dasharray="6,4"/>';
+
+      // Odd 9: 4 pairs + 1
+      svg += '<text x="400" y="18" text-anchor="middle" font-size="14" fill="' + orange + '" font-weight="bold">奇数 9 = 2×4+1</text>';
+      drawRow([248,274,304,330,360,386,416,442], 0, 45, orange, true);
+      svg += '<circle cx="478" cy="45" r="14" fill="' + red + '" opacity="1"/>';
+      svg += '<text x="478" y="50" text-anchor="middle" font-size="13" fill="white" font-weight="bold">!</text>';
+      svg += '<text x="370" y="84" text-anchor="middle" font-size="12" fill="' + orange + '">4 对 + 多余 1 个</text>';
+      svg += '<text x="370" y="99" text-anchor="middle" font-size="12" fill="' + red + '" font-weight="bold">9 ÷ 2 = 4，余数 1</text>';
+
+      // Legend
+      svg += '<circle cx="248" cy="140" r="10" fill="' + red + '" opacity="0.9"/>';
+      svg += '<text x="264" y="145" font-size="12" fill="' + red + '">= 多余的那个（配不上对）→ 奇数的特征</text>';
+
+      return '<div style="text-align:center">' + MV.svg(W, H, svg) + '</div>';
+    }()) +
+    MV.fragDiv(
+      MV.step(
+        '<b>规律：</b> 偶数完美地分成两半；奇数多出 1 个——<br>' +
+        '这个"1"就是 <b>2n+1</b> 中的那个 "+1"'
+      ),
+      1
+    );
+
+  // ── S3: Rules table ────────────────────────────────────
+  document.getElementById('s3-rules').innerHTML =
+    '<div style="text-align:center;margin-bottom:10px;font-size:.9em;color:#555">' +
+      '绿色 = 偶数结果，橙色 = 奇数结果（用几个小例子验证一遍！）' +
+    '</div>' +
+    '<div style="text-align:center">' +
+    '<table class="parity-table">' +
+      '<tr>' +
+        '<th>运算</th>' +
+        '<th><span class="tag-e">偶</span> ○ <span class="tag-e">偶</span></th>' +
+        '<th><span class="tag-o">奇</span> ○ <span class="tag-o">奇</span></th>' +
+        '<th><span class="tag-o">奇</span> ○ <span class="tag-e">偶</span></th>' +
+      '</tr>' +
+      '<tr>' +
+        '<td style="font-weight:bold">加法 +</td>' +
+        '<td class="cell-e">偶&ensp;✓</td>' +
+        '<td class="cell-e">偶&ensp;✓</td>' +
+        '<td class="cell-o">奇</td>' +
+      '</tr>' +
+      '<tr>' +
+        '<td style="font-weight:bold">减法 −</td>' +
+        '<td class="cell-e">偶&ensp;✓</td>' +
+        '<td class="cell-e">偶&ensp;✓</td>' +
+        '<td class="cell-o">奇</td>' +
+      '</tr>' +
+      '<tr>' +
+        '<td style="font-weight:bold">乘法 ×</td>' +
+        '<td class="cell-e">偶&ensp;✓</td>' +
+        '<td class="cell-o">奇</td>' +
+        '<td class="cell-e">偶&ensp;✓</td>' +
+      '</tr>' +
+    '</table>' +
+    '</div>' +
+    MV.fragDiv(
+      MV.step(
+        '<b>最关键的三条：</b><br>' +
+        '① 偶 ± 偶 = <span class="kw">偶</span>&emsp;奇 ± 奇 = <span class="kw">偶</span>&emsp;奇 ± 偶 = <span class="kw4">奇</span><br>' +
+        '② 奇 × 奇 = <span class="kw4">奇</span>&emsp;偶 × 任何数 = <span class="kw">偶</span><br>' +
+        '③ <b>同类型相加减 = 偶，不同类型相加减 = 奇</b>'
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.tip('乘法中，只要<b>有一个偶数因子</b>，乘积就是偶数。'),
+      2
+    );
+
+  // ── S4: Proof odd+odd=even ─────────────────────────────
+  document.getElementById('s4-proof').innerHTML =
+    '<div style="font-size:.95em;text-align:center;margin-bottom:10px">' +
+      '用代数符号严格证明"奇数 + 奇数 = 偶数"：' +
+    '</div>' +
+    MV.fragDiv(
+      MV.step(
+        '<b>设</b>：任意两个奇数，记作<br>' +
+        '&ensp;第一个奇数 = <b>2a + 1</b>（其中 a 是整数）<br>' +
+        '&ensp;第二个奇数 = <b>2b + 1</b>（其中 b 是整数）'
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.step(
+        '<b>计算两数之和：</b><br>' +
+        '(2a + 1) + (2b + 1)<br>' +
+        '= 2a + 2b + 1 + 1<br>' +
+        '= 2a + 2b + 2<br>' +
+        '= <b>2(a + b + 1)</b>'
+      ),
+      2
+    ) +
+    MV.fragDiv(
+      '<div style="background:#d5f5e3;border-left:4px solid #27ae60;border-radius:8px;padding:12px 18px;text-align:center;margin:10px 0">' +
+        '结果是 <b>2 × (a+b+1)</b>，是 2 的倍数<br>' +
+        '<b style="color:#27ae60;font-size:1.1em">∴ 奇数 + 奇数 = 偶数 &ensp;证毕 ✓</b>' +
+      '</div>',
+      3
+    ) +
+    MV.fragDiv(
+      MV.tip('用同样方法可以证明所有奇偶规律——代入 <b>2n</b> 或 <b>2n+1</b> 再化简即可。'),
+      4
+    );
+
+  // ── S5: Pairing strategy 1+2+...+100 ──────────────────
+  document.getElementById('s5-pair').innerHTML =
+    '<div style="text-align:center;font-size:.95em;margin-bottom:8px">' +
+      '计算 1 + 2 + 3 + 4 + … + 100，利用<b>配对</b>技巧：' +
+    '</div>' +
+    MV.fragDiv(
+      (function () {
+        var W = 520, H = 130;
+        var svg = '';
+        var nums = [1,2,3,4,5,6,7,8,9,10];
+        var pad = 26, dx = (W - 2 * pad) / (nums.length - 1);
+        var y0 = 90;
+        var colors = [MV.C.blue, MV.C.green, MV.C.orange, MV.C.purple, MV.C.teal];
+
+        // Draw number circles
+        nums.forEach(function (n, i) {
+          var x = pad + i * dx;
+          var half = nums.length / 2;
+          var color = (i < half) ? MV.C.blue : MV.C.orange;
+          svg += '<circle cx="' + x + '" cy="' + y0 + '" r="16" fill="' + color + '" opacity="0.85"/>';
+          svg += '<text x="' + x + '" y="' + (y0 + 5) + '" text-anchor="middle" font-size="13" fill="white" font-weight="bold">' + n + '</text>';
+        });
+
+        // Draw arcs connecting pairs (1+10, 2+9, 3+8, 4+7, 5+6)
+        var pairs = [[0,9],[1,8],[2,7],[3,6],[4,5]];
+        pairs.forEach(function (pair, idx) {
+          var x1 = pad + pair[0] * dx;
+          var x2 = pad + pair[1] * dx;
+          var mx = (x1 + x2) / 2;
+          var arcH = 18 + idx * 14;
+          var cy1 = y0 - 16;
+          svg += '<path d="M' + x1 + ',' + cy1 + ' Q' + mx + ',' + (cy1 - arcH) + ' ' + x2 + ',' + cy1 +
+                 '" fill="none" stroke="' + colors[idx] + '" stroke-width="2.5"/>';
+          svg += '<text x="' + mx + '" y="' + (cy1 - arcH - 5) + '" text-anchor="middle"' +
+                 ' font-size="12" fill="' + colors[idx] + '" font-weight="bold">11</text>';
+        });
+
+        svg += '<text x="' + (W/2) + '" y="' + (y0 + 24) + '" text-anchor="middle"' +
+               ' font-size="12" fill="#555">（1~10 的情形）每对之和 = 11</text>';
+
+        return '<div style="text-align:center">' + MV.svg(W, H, svg) + '</div>';
+      }()),
+      1
+    ) +
+    MV.fragDiv(
+      MV.step(
+        '推广到 1+2+…+100：<br>' +
+        '配对：(1+100), (2+99), (3+98), …, (50+51)<br>' +
+        '每对之和 = <b>101</b>，共 <b>50 对</b><br>' +
+        '总和 = 50 × 101 = <b style="color:' + MV.C.green + ';font-size:1.2em">5050</b>'
+      ),
+      2
+    ) +
+    MV.fragDiv(
+      '<div style="text-align:center;font-size:.95em">' +
+        '5050 = <b>偶数</b>？还是<b>奇数</b>？<br>' +
+        MV.frag('50 × 101：偶数 × 奇数 = <b class="kw">偶数</b> ✓', 3) +
+      '</div>',
+      3
+    ) +
+    MV.fragDiv(
+      MV.tip('配对法本质：把 <b>n 个连续整数之和</b>转化为乘法，再判断奇偶。'),
+      4
+    );
+
+  // ── S6: "Impossible" problems ─────────────────────────
+  document.getElementById('s6-impossible').innerHTML =
+    '<div style="text-align:center;margin-bottom:8px;font-size:.98em">' +
+      '❓ <b>5 个奇数</b>相加，结果能是<b>偶数</b>吗？' +
+    '</div>' +
+    MV.fragDiv(
+      (function () {
+        var W = 460, H = 80;
+        var svg = '';
+        var odd = MV.C.orange;
+        var labels = ['奇','奇','奇','奇','奇'];
+        var xs = [46, 116, 186, 256, 326];
+        labels.forEach(function (label, i) {
+          svg += '<rect x="' + (xs[i]-28) + '" y="20" width="56" height="40" rx="8"' +
+                 ' fill="' + odd + '" opacity="0.85"/>';
+          svg += '<text x="' + xs[i] + '" y="46" text-anchor="middle" font-size="15" fill="white" font-weight="bold">' + label + '</text>';
+          if (i < 4) {
+            svg += '<text x="' + (xs[i]+38) + '" y="46" text-anchor="middle" font-size="18" fill="#555">+</text>';
+          }
+        });
+        svg += '<text x="380" y="46" font-size="22" fill="#555">=</text>';
+        svg += '<text x="432" y="46" text-anchor="middle" font-size="18" fill="#e74c3c" font-weight="bold">?</text>';
+        return '<div style="text-align:center">' + MV.svg(W, H, svg) + '</div>';
+      }()),
+      1
+    ) +
+    MV.fragDiv(
+      MV.step(
+        '逐步分析：<br>' +
+        '奇 + 奇 = <b>偶</b>&ensp; ← 第1、2个<br>' +
+        '偶 + 奇 = <b>奇</b>&ensp; ← 加第3个<br>' +
+        '奇 + 奇 = <b>偶</b>&ensp; ← 加第4个<br>' +
+        '偶 + 奇 = <b style="color:' + MV.C.red + '">奇</b>&ensp; ← 加第5个'
+      ),
+      2
+    ) +
+    MV.fragDiv(
+      '<div style="background:#fadbd8;border-left:4px solid #e74c3c;border-radius:8px;padding:12px 18px;text-align:center;margin:8px 0">' +
+        '<b style="color:#e74c3c;font-size:1.1em">5 个奇数之和永远是奇数！</b><br>' +
+        '<span style="font-size:.9em;color:#555">不可能等于偶数——这就是"奇偶矛盾"</span>' +
+      '</div>',
+      3
+    ) +
+    MV.fragDiv(
+      MV.tip(
+        '<b>规律：</b> 奇数个奇数相加 = <b>奇数</b>；偶数个奇数相加 = <b>偶数</b><br>' +
+        '（偶数参与加减不改变奇偶性！）'
+      ),
+      4
+    );
+
+  // ── S7: Compound examples ─────────────────────────────
+  document.getElementById('s7-examples').innerHTML =
+    '<div style="font-size:.95em;margin-bottom:8px">判断下列表达式结果的奇偶性：</div>' +
+    MV.row(
+      MV.col(
+        MV.step(
+          '<b>① 23 × 45 + 18 × 7</b><br>' +
+          MV.frag(
+            '23 × 45：奇 × 奇 = <b class="kw4">奇</b><br>' +
+            '18 × 7：偶 × 奇 = <b class="kw">偶</b><br>' +
+            '奇 + 偶 = <b class="kw4">奇数</b> ✓',
+            1
+          )
+        )
+      ),
+      MV.col(
+        MV.step(
+          '<b>② 2 × 3 × 5 × 7 + 1</b><br>' +
+          MV.frag(
+            '2×3×5×7：含偶数 2 → <b class="kw">偶</b><br>' +
+            '偶 + 1（奇）= <b class="kw4">奇数</b> ✓',
+            2
+          )
+        )
+      )
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.col(
+          MV.step(
+            '<b>③ 1×1 + 2×2 + 3×3 + … + 9×9</b><br>' +
+            MV.frag(
+              '奇²=奇，偶²=偶<br>' +
+              '奇数：1²,3²,5²,7²,9² → <b>5个奇数</b><br>' +
+              '偶数：2²,4²,6²,8² → <b>4个偶数</b><br>' +
+              '5奇数之和=<b class="kw4">奇</b>，加偶数不变 → <b class="kw4">奇数</b>',
+              3
+            )
+          )
+        ),
+        MV.col(
+          MV.step(
+            '<b>④ 连续 3 个整数之和</b><br>' +
+            MV.frag(
+              '设为 n, n+1, n+2<br>' +
+              '和 = 3n+3 = 3(n+1)<br>' +
+              '奇偶由 <b>n+1</b> 决定，<br>' +
+              '不一定是奇或偶',
+              4
+            )
+          )
+        )
+      ),
+      3
+    );
+
+  // ── S8: Chess board coloring ──────────────────────────
+  document.getElementById('s8-chess').innerHTML =
+    '<div style="font-size:.95em;text-align:center;margin-bottom:8px">' +
+      '棋盘上每格用 (行, 列) 坐标标记，<b>行+列为偶数</b>涂白，<b>行+列为奇数</b>涂灰：' +
+    '</div>' +
+    (function () {
+      var W = 260, H = 260;
+      var n = 6, cs = 40, ox = 10, oy = 10;
+      var svg = '';
+      for (var r = 0; r < n; r++) {
+        for (var c = 0; c < n; c++) {
+          var isEven = ((r + c) % 2 === 0);
+          svg += '<rect x="' + (ox + c * cs) + '" y="' + (oy + r * cs) + '" width="' + cs + '" height="' + cs + '"' +
+                 ' fill="' + (isEven ? '#eaf4fb' : '#2980b9') + '" stroke="#333" stroke-width="1"/>';
+          if (r === 0 || c === 0) {
+            var label = (r + c).toString();
+            svg += '<text x="' + (ox + c * cs + cs/2) + '" y="' + (oy + r * cs + cs/2 + 5) + '"' +
+                   ' text-anchor="middle" font-size="12" fill="' + (isEven ? '#2980b9' : 'white') + '">' + label + '</text>';
+          }
+        }
+      }
+      svg += '<text x="' + (ox + 0*cs + cs/2) + '" y="' + (oy + n*cs + 18) + '" text-anchor="middle" font-size="11" fill="#555">行+列</text>';
+      return '<div style="text-align:center">' + MV.svg(W + 140, H, svg +
+        '<text x="280" y="30" font-size="13" fill="' + MV.C.blue + '" font-weight="bold">白格：行+列 = 偶数</text>' +
+        '<rect x="278" y="38" width="18" height="18" fill="#eaf4fb" stroke="#2980b9" stroke-width="2"/>' +
+        '<text x="280" y="76" font-size="13" fill="#555" font-weight="bold">灰格：行+列 = 奇数</text>' +
+        '<rect x="278" y="84" width="18" height="18" fill="#2980b9" stroke="#333" stroke-width="1"/>'
+      ) + '</div>';
+    }()) +
+    MV.fragDiv(
+      MV.step(
+        '<b>应用：</b>象棋/跳棋中，从 (1,1) 出发，每步走一格（水平或垂直），<br>' +
+        '经过 <b>奇数步</b>后，行+列奇偶<b>改变</b>；偶数步后<b>不变</b>。<br>' +
+        '→ 经过偶数步<b>不能</b>回到同色格子以外的位置！'
+      ),
+      1
+    );
+
+  // ── S9: Practice ─────────────────────────────────────
+  document.getElementById('s9-practice').innerHTML =
+    '<div style="font-size:.92em">' +
+    '<ol style="line-height:2.1">' +
+      '<li>3 + 5 + 7 + 9 + 11 = ？（先判断奇偶性）' +
+        MV.frag('&ensp;→ 5个奇数之和 = <b class="kw4">奇数</b>（35）', 1) + '</li>' +
+      '<li>1×2×3×4×5×6 是奇数还是偶数？' +
+        MV.frag('&ensp;→ 含偶数因子 → <b class="kw">偶数</b>（720）', 2) + '</li>' +
+      '<li>1+2+3+…+50 的结果是奇数还是偶数？' +
+        MV.frag('&ensp;→ 25对，每对和=51（奇数），25×51=奇×奇 = <b class="kw4">奇数</b>（1275）', 3) + '</li>' +
+      '<li>能否用 7 个奇数和若干偶数，使得所有数之和等于 100？' +
+        MV.frag('&ensp;→ 7奇数之和=奇数，加偶数仍是奇数 ≠ 100（偶）→ <b class="kw3">不可能</b>！', 4) + '</li>' +
+      '<li>23 个连续奇数之和是奇数还是偶数？' +
+        MV.frag('&ensp;→ 23（奇数）个奇数之和 = <b class="kw4">奇数</b>', 5) + '</li>' +
+    '</ol>' +
+    '</div>' +
+    MV.fragDiv(
+      MV.warn(
+        '遇到"能否等于某值"：<b>先判断奇偶性</b>——若奇偶矛盾，直接排除，<b>不需要计算</b>！'
+      ),
+      6
+    );
+
+});
+</script>
+</body>
+</html>

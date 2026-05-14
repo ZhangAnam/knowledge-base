@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数 O19–O21 · 最大公因数与最小公倍数</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.kw  { color:#2980b9; font-weight:bold; }
+.kw2 { color:#27ae60; font-weight:bold; }
+.kw3 { color:#e74c3c; font-weight:bold; }
+.kw4 { color:#e67e22; font-weight:bold; }
+.big-eq { font-size:1.25em; text-align:center; margin:10px 0; }
+.chip { display:inline-block; border-radius:6px; padding:3px 10px;
+        font-weight:bold; margin:2px; font-size:1em; }
+.chip-b { background:#eaf4fb; border:2px solid #2980b9; color:#2980b9; }
+.chip-o { background:#fef3e2; border:2px solid #e67e22; color:#e67e22; }
+.chip-g { background:#d5f5e3; border:2px solid #27ae60; color:#27ae60; }
+.ans-box { border-radius:10px; padding:12px 20px; margin:8px 0;
+           text-align:center; font-size:1.05em; }
+.ans-gcd { background:#d5f5e3; border-left:4px solid #27ae60; }
+.ans-lcm { background:#fef3e2; border-left:4px solid #e67e22; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ── 1. 封面 ─────────────────────────────────────── -->
+<section>
+  <div style="color:#888;font-size:.85em">四年级 · 奥数数论 O19–O21</div>
+  <h1 style="font-size:1.75em;color:#2980b9;margin:.15em 0">最大公因数与最小公倍数</h1>
+  <div style="color:#555;font-size:.95em;margin-bottom:14px">质因数分解 · 最优分组 · 周期相遇</div>
+  <div id="s0-vis"></div>
+</section>
+
+<!-- ── 2. 公因数 & 最大公因数 ─────────────────────── -->
+<section>
+  <h2>🔍 公因数 与 最大公因数（GCD）</h2>
+  <div id="s1-gcd"></div>
+</section>
+
+<!-- ── 3. 公倍数 & 最小公倍数 ─────────────────────── -->
+<section>
+  <h2>🔢 公倍数 与 最小公倍数（LCM）</h2>
+  <div id="s2-lcm"></div>
+</section>
+
+<!-- ── 4. 质因数分解求 GCD ─────────────────────────── -->
+<section>
+  <h2>🌳 质因数分解法：求最大公因数</h2>
+  <div id="s3-gcd-tree"></div>
+</section>
+
+<!-- ── 5. Venn 图理解 GCD ───────────────────────────── -->
+<section>
+  <h2>⭕ 韦恩图：看见"公共质因数"</h2>
+  <div id="s4-venn"></div>
+</section>
+
+<!-- ── 6. 质因数分解求 LCM ─────────────────────────── -->
+<section>
+  <h2>🌳 质因数分解法：求最小公倍数</h2>
+  <div id="s5-lcm-tree"></div>
+</section>
+
+<!-- ── 7. 例题：24 和 36 ──────────────────────────── -->
+<section>
+  <h2>📝 例题：GCD(24, 36) 与 LCM(24, 36)</h2>
+  <div id="s6-ex2436"></div>
+</section>
+
+<!-- ── 8. 三个数的 LCM ─────────────────────────────── -->
+<section>
+  <h2>🔢 三个数的最小公倍数：6、8、12</h2>
+  <div id="s7-three"></div>
+</section>
+
+<!-- ── 9. 应用一：等份问题 ─────────────────────────── -->
+<section>
+  <h2>🍎 应用一：等份问题（用 GCD）</h2>
+  <div id="s8-equal"></div>
+</section>
+
+<!-- ── 10. 应用二：周期相遇 ───────────────────────── -->
+<section>
+  <h2>📅 应用二：周期相遇（用 LCM）</h2>
+  <div id="s9-period"></div>
+</section>
+
+<!-- ── 11. 练习题 ────────────────────────────────────── -->
+<section>
+  <h2>✏️ 练习题</h2>
+  <div id="s10-practice"></div>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+
+  // ── S0: Cover — factor trees for 12 and 18 ──────────────
+  document.getElementById('s0-vis').innerHTML =
+    '<div style="text-align:center;margin-bottom:8px;font-size:.9em;color:#555">' +
+      '研究两个数的"共同因数"和"共同倍数"' +
+    '</div>' +
+    MV.row(
+      MV.col(
+        '<div style="font-size:.9em;color:' + MV.C.blue + ';text-align:center;font-weight:bold;margin-bottom:4px">12</div>',
+        '<div style="text-align:center">' + MV.factorTree(12, {w:190, h:140}) + '</div>',
+        '<div style="font-size:.85em;color:' + MV.C.blue + ';text-align:center">12 = 2² × 3</div>'
+      ),
+      '<div style="display:flex;align-items:center;font-size:2.2em;color:#bbb;padding:0 12px">&amp;</div>',
+      MV.col(
+        '<div style="font-size:.9em;color:' + MV.C.orange + ';text-align:center;font-weight:bold;margin-bottom:4px">18</div>',
+        '<div style="text-align:center">' + MV.factorTree(18, {w:190, h:140}) + '</div>',
+        '<div style="font-size:.85em;color:' + MV.C.orange + ';text-align:center">18 = 2 × 3²</div>'
+      )
+    ) +
+    MV.tip('质因数分解是求 <b>最大公因数</b> 和 <b>最小公倍数</b> 的核心工具！');
+
+  // ── S1: GCD — listing factors ─────────────────────────
+  document.getElementById('s1-gcd').innerHTML =
+    '<div style="font-size:.95em;margin-bottom:6px">12 的所有因数：</div>' +
+    '<div style="text-align:center;margin:6px 0">' +
+      ['1','2','3','4','6','12'].map(function(n) {
+        return '<span class="chip chip-b">' + n + '</span>';
+      }).join(' ') +
+    '</div>' +
+    MV.fragDiv(
+      '<div style="font-size:.95em;margin-bottom:6px">18 的所有因数：</div>' +
+      '<div style="text-align:center;margin:6px 0">' +
+        ['1','2','3','6','9','18'].map(function(n) {
+          return '<span class="chip chip-o">' + n + '</span>';
+        }).join(' ') +
+      '</div>',
+      1
+    ) +
+    MV.fragDiv(
+      '<div style="font-size:.95em;margin-bottom:4px"><b>公因数</b>（两者都整除的数）：</div>' +
+      '<div style="text-align:center;margin:6px 0">' +
+        ['1','2','3','6'].map(function(n) {
+          return '<span class="chip chip-g">' + n + '</span>';
+        }).join(' ') +
+      '</div>',
+      2
+    ) +
+    MV.fragDiv(
+      '<div class="ans-box ans-gcd">' +
+        '<div style="font-size:1.4em;font-weight:bold;color:#27ae60">' +
+          '最大公因数 GCD(12, 18) = <span style="font-size:1.25em">6</span>' +
+        '</div>' +
+        '<div style="font-size:.9em;color:#555;margin-top:4px">' +
+          '公因数中最大的那个；<br>当 <b>GCD = 1</b> 时，称两数<b>互质</b>' +
+        '</div>' +
+      '</div>',
+      3
+    );
+
+  // ── S2: LCM — listing multiples ───────────────────────
+  document.getElementById('s2-lcm').innerHTML =
+    '<div style="font-size:.95em;margin-bottom:6px">6 的倍数（前几个）：</div>' +
+    '<div style="text-align:center;margin:6px 0">' +
+      [6,12,18,24,30,36].map(function(n) {
+        return '<span class="chip chip-b">' + n + '</span>';
+      }).join(' ') + '&nbsp;...' +
+    '</div>' +
+    MV.fragDiv(
+      '<div style="font-size:.95em;margin-bottom:6px">8 的倍数（前几个）：</div>' +
+      '<div style="text-align:center;margin:6px 0">' +
+        [8,16,24,32,40,48].map(function(n) {
+          return '<span class="chip chip-o">' + n + '</span>';
+        }).join(' ') + '&nbsp;...' +
+      '</div>',
+      1
+    ) +
+    MV.fragDiv(
+      '<div style="font-size:.95em;margin-bottom:4px"><b>公倍数</b>（同时是两者倍数的数）：</div>' +
+      '<div style="text-align:center;margin:6px 0">' +
+        [24,48,72].map(function(n) {
+          return '<span class="chip chip-g">' + n + '</span>';
+        }).join(' ') + '&nbsp;...' +
+      '</div>',
+      2
+    ) +
+    MV.fragDiv(
+      '<div class="ans-box ans-lcm">' +
+        '<div style="font-size:1.4em;font-weight:bold;color:#e67e22">' +
+          '最小公倍数 LCM(6, 8) = <span style="font-size:1.25em">24</span>' +
+        '</div>' +
+        '<div style="font-size:.9em;color:#555;margin-top:4px">' +
+          '公倍数中最小的那个（公倍数有无穷多个，但最小公倍数唯一）' +
+        '</div>' +
+      '</div>',
+      3
+    );
+
+  // ── S3: GCD by prime factorization ────────────────────
+  document.getElementById('s3-gcd-tree').innerHTML =
+    MV.row(
+      MV.col(
+        '<div style="text-align:center;font-weight:bold;color:' + MV.C.blue + ';margin-bottom:4px">12 = 2² × 3</div>',
+        '<div style="text-align:center">' + MV.factorTree(12, {w:200, h:145}) + '</div>'
+      ),
+      MV.col(
+        '<div style="text-align:center;font-weight:bold;color:' + MV.C.orange + ';margin-bottom:4px">18 = 2 × 3²</div>',
+        '<div style="text-align:center">' + MV.factorTree(18, {w:200, h:145}) + '</div>'
+      )
+    ) +
+    MV.fragDiv(
+      MV.step(
+        '公共质因数取<b style="color:' + MV.C.red + '">最小幂次</b>：<br>' +
+        '质因数 2：12 中是 2<sup>2</sup>，18 中是 2<sup>1</sup> → 取 <b>2<sup>1</sup></b><br>' +
+        '质因数 3：12 中是 3<sup>1</sup>，18 中是 3<sup>2</sup> → 取 <b>3<sup>1</sup></b><br>' +
+        'GCD = 2<sup>1</sup> × 3<sup>1</sup> = <b style="color:' + MV.C.green + ';font-size:1.15em">6</b>'
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.tip('口诀：<b>求最大公因数 → 各质因数取较小的幂</b>'),
+      2
+    );
+
+  // ── S4: Venn diagram for prime factors ────────────────
+  document.getElementById('s4-venn').innerHTML =
+    '<div style="text-align:center;margin-bottom:8px;font-size:.92em">' +
+      '把 12 和 18 的质因数放进韦恩图中：' +
+    '</div>' +
+    '<div style="text-align:center">' +
+      MV.venn2(
+        '12 = 2²×3',
+        '18 = 2×3²',
+        ['2¹', '(12独有)'],
+        ['3¹', '(18独有)'],
+        ['2¹×3¹', '= 6'],
+        {cA: MV.C.blue, cB: MV.C.orange}
+      ) +
+    '</div>' +
+    MV.fragDiv(
+      MV.row(
+        '<div style="flex:1;text-align:center;font-size:.88em;color:' + MV.C.blue + '">12 独有的质因数<br>（多出一个 2）</div>',
+        '<div style="flex:1;text-align:center;font-size:.88em;color:#27ae60">' +
+          '两圆<b>交集</b><br>乘积 = <b>GCD = 6</b>' +
+        '</div>',
+        '<div style="flex:1;text-align:center;font-size:.88em;color:' + MV.C.orange + '">18 独有的质因数<br>（多出一个 3）</div>'
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.col(
+          '<div style="background:#eaf4fb;border-radius:8px;padding:10px;text-align:center;font-size:.92em">' +
+            '<b>GCD</b> = 交集乘积 = <b style="color:' + MV.C.blue + '">6</b>' +
+          '</div>'
+        ),
+        MV.col(
+          '<div style="background:#fef3e2;border-radius:8px;padding:10px;text-align:center;font-size:.92em">' +
+            '<b>LCM</b> = 并集乘积 = 2²×3² = <b style="color:' + MV.C.orange + '">36</b>' +
+          '</div>'
+        )
+      ),
+      2
+    );
+
+  // ── S5: LCM by prime factorization ───────────────────
+  document.getElementById('s5-lcm-tree').innerHTML =
+    MV.row(
+      MV.col(
+        '<div style="text-align:center;font-weight:bold;color:' + MV.C.blue + ';margin-bottom:4px">12 = 2² × 3</div>',
+        '<div style="text-align:center">' + MV.factorTree(12, {w:200, h:145}) + '</div>'
+      ),
+      MV.col(
+        '<div style="text-align:center;font-weight:bold;color:' + MV.C.orange + ';margin-bottom:4px">18 = 2 × 3²</div>',
+        '<div style="text-align:center">' + MV.factorTree(18, {w:200, h:145}) + '</div>'
+      )
+    ) +
+    MV.fragDiv(
+      MV.step(
+        '各质因数取<b style="color:' + MV.C.red + '">最大幂次</b>：<br>' +
+        '质因数 2：12 中是 2<sup>2</sup>，18 中是 2<sup>1</sup> → 取 <b style="color:' + MV.C.blue + '">2<sup>2</sup></b><br>' +
+        '质因数 3：12 中是 3<sup>1</sup>，18 中是 3<sup>2</sup> → 取 <b style="color:' + MV.C.orange + '">3<sup>2</sup></b><br>' +
+        'LCM = 2<sup>2</sup> × 3<sup>2</sup> = 4 × 9 = <b style="color:' + MV.C.orange + ';font-size:1.15em">36</b>'
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.col(
+          '<div style="background:#eaf4fb;border-radius:8px;padding:10px 14px;text-align:center">' +
+            '<div style="font-size:.8em;color:#888">GCD 口诀</div>' +
+            '<div style="font-weight:bold;color:' + MV.C.blue + '">各质因数取<b>小幂</b></div>' +
+          '</div>'
+        ),
+        MV.col(
+          '<div style="background:#fef3e2;border-radius:8px;padding:10px 14px;text-align:center">' +
+            '<div style="font-size:.8em;color:#888">LCM 口诀</div>' +
+            '<div style="font-weight:bold;color:' + MV.C.orange + '">各质因数取<b>大幂</b></div>' +
+          '</div>'
+        )
+      ),
+      2
+    ) +
+    MV.fragDiv(
+      MV.tip('两个数的 <b>GCD × LCM = 两数之积</b>：6 × 36 = 12 × 18 = 216 ✓'),
+      3
+    );
+
+  // ── S6: Example 24 & 36 ───────────────────────────────
+  document.getElementById('s6-ex2436').innerHTML =
+    MV.row(
+      MV.col(
+        '<div style="text-align:center;font-weight:bold;color:' + MV.C.blue + ';margin-bottom:4px">24</div>',
+        '<div style="text-align:center">' + MV.factorTree(24, {w:195, h:155}) + '</div>',
+        '<div style="text-align:center;font-size:.83em;color:' + MV.C.blue + '">24 = 2³ × 3</div>'
+      ),
+      MV.col(
+        '<div style="text-align:center;font-weight:bold;color:' + MV.C.orange + ';margin-bottom:4px">36</div>',
+        '<div style="text-align:center">' + MV.factorTree(36, {w:195, h:155}) + '</div>',
+        '<div style="text-align:center;font-size:.83em;color:' + MV.C.orange + '">36 = 2² × 3²</div>'
+      )
+    ) +
+    MV.fragDiv(
+      '<div class="ans-box ans-gcd">' +
+        'GCD(24, 36)：各取<b>小幂</b> → 2<sup>min(3,2)</sup> × 3<sup>min(1,2)</sup> = <b>2² × 3</b> = ' +
+        '<b style="color:#27ae60;font-size:1.25em">12</b>' +
+      '</div>',
+      1
+    ) +
+    MV.fragDiv(
+      '<div class="ans-box ans-lcm">' +
+        'LCM(24, 36)：各取<b>大幂</b> → 2<sup>max(3,2)</sup> × 3<sup>max(1,2)</sup> = <b>2³ × 3²</b> = 8 × 9 = ' +
+        '<b style="color:#e67e22;font-size:1.25em">72</b>' +
+      '</div>',
+      2
+    ) +
+    MV.fragDiv(
+      MV.tip('验证：GCD × LCM = 12 × 72 = 864 = 24 × 36 ✓'),
+      3
+    );
+
+  // ── S7: Three-number LCM: 6, 8, 12 ───────────────────
+  document.getElementById('s7-three').innerHTML =
+    MV.row(
+      MV.col(
+        '<div style="text-align:center;font-size:.85em;font-weight:bold;color:' + MV.C.blue + '">6 = 2 × 3</div>',
+        '<div style="text-align:center">' + MV.factorTree(6, {w:160, h:110}) + '</div>'
+      ),
+      MV.col(
+        '<div style="text-align:center;font-size:.85em;font-weight:bold;color:' + MV.C.orange + '">8 = 2³</div>',
+        '<div style="text-align:center">' + MV.factorTree(8, {w:160, h:110}) + '</div>'
+      ),
+      MV.col(
+        '<div style="text-align:center;font-size:.85em;font-weight:bold;color:' + MV.C.purple + '">12 = 2² × 3</div>',
+        '<div style="text-align:center">' + MV.factorTree(12, {w:160, h:110}) + '</div>'
+      )
+    ) +
+    MV.fragDiv(
+      MV.step(
+        '汇总各数的质因数幂次（三者取最大）：<br>' +
+        '<b>质因数 2</b>：6→2<sup>1</sup>，8→<b style="color:' + MV.C.orange + '">2<sup>3</sup></b>，12→2<sup>2</sup> → 取 <b>2<sup>3</sup> = 8</b><br>' +
+        '<b>质因数 3</b>：6→3<sup>1</sup>，8→无，12→<b style="color:' + MV.C.purple + '">3<sup>1</sup></b> → 取 <b>3<sup>1</sup> = 3</b><br>' +
+        'LCM(6, 8, 12) = 2<sup>3</sup> × 3<sup>1</sup> = 8 × 3 = <b style="color:' + MV.C.green + ';font-size:1.2em">24</b>'
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.tip('三个或更多数的 LCM：对<b>每个质因数</b>，取所有数中出现的<b>最高幂次</b>'),
+      2
+    );
+
+  // ── S8: Application 1 — equal division ───────────────
+  document.getElementById('s8-equal').innerHTML =
+    '<div style="text-align:center;margin-bottom:10px;font-size:.98em">' +
+      '🍎 有 <b>24 个苹果</b> 和 <b>36 个梨</b>，平均分成若干组，<br>' +
+      '每组苹果数相同、梨数也相同。<b>最多能分成多少组？</b>' +
+    '</div>' +
+    MV.fragDiv(
+      MV.step(
+        '<b>分析：</b><br>' +
+        '"组数"必须能整除 24（苹果总数）<br>' +
+        '"组数"必须能整除 36（梨总数）<br>' +
+        '∴ 组数 = GCD(24, 36) 的某个因数<br>' +
+        '→ <b>最多组数 = GCD(24, 36)</b>'
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.col(
+          '<div style="text-align:center;font-size:.83em;font-weight:bold;color:' + MV.C.blue + '">24 = 2³ × 3</div>',
+          '<div style="text-align:center">' + MV.factorTree(24, {w:175, h:130}) + '</div>'
+        ),
+        MV.col(
+          '<div style="text-align:center;font-size:.83em;font-weight:bold;color:' + MV.C.orange + '">36 = 2² × 3²</div>',
+          '<div style="text-align:center">' + MV.factorTree(36, {w:175, h:130}) + '</div>'
+        )
+      ),
+      2
+    ) +
+    MV.fragDiv(
+      '<div class="ans-box ans-gcd">' +
+        'GCD(24, 36) = 2<sup>2</sup> × 3 = <b style="color:#27ae60;font-size:1.3em">12</b><br>' +
+        '<span style="font-size:.9em;color:#555">最多分 12 组，每组 2 个苹果 + 3 个梨</span>' +
+      '</div>',
+      3
+    ) +
+    MV.fragDiv(
+      MV.tip('<b>等份问题 → 用 GCD</b>（最大公因数 = 最多分组数）'),
+      4
+    );
+
+  // ── S9: Application 2 — periodic meeting ─────────────
+  document.getElementById('s9-period').innerHTML =
+    '<div style="text-align:center;margin-bottom:8px;font-size:.98em">' +
+      '📅 甲每 <b>6 天</b> 巡逻一次，乙每 <b>8 天</b> 巡逻一次。<br>' +
+      '今天两人都来了，下次<b>同时出现</b>是第几天？' +
+    '</div>' +
+    MV.fragDiv(
+      MV.step(
+        '甲来的天数：6, 12, 18, <b style="color:' + MV.C.red + '">24</b>, 30, …<br>' +
+        '乙来的天数：8, 16, <b style="color:' + MV.C.red + '">24</b>, 32, …<br>' +
+        '两人同时出现 = 公倍数 → 最近一次 = <b>LCM(6, 8)</b>'
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      (function () {
+        var W = 520, H = 130, pad = 45;
+        var maxDay = 34;
+        var scale = (W - 2 * pad) / maxDay;
+        function toX(v) { return pad + v * scale; }
+        var svg = '';
+        svg += '<text x="8" y="37" font-size="12" fill="' + MV.C.blue + '" font-weight="bold">甲(6):</text>';
+        svg += '<line x1="' + pad + '" y1="40" x2="' + (W - 10) + '" y2="40" stroke="#ddd" stroke-width="1.5"/>';
+        [6,12,18,24,30].forEach(function (v) {
+          var x = toX(v);
+          var hi = (v === 24);
+          svg += '<circle cx="' + x + '" cy="40" r="' + (hi ? 13 : 10) + '" fill="' + (hi ? MV.C.red : MV.C.blue) + '" opacity="0.85"/>';
+          svg += '<text x="' + x + '" y="44" text-anchor="middle" font-size="11" fill="white" font-weight="bold">' + v + '</text>';
+        });
+        svg += '<text x="8" y="92" font-size="12" fill="' + MV.C.orange + '" font-weight="bold">乙(8):</text>';
+        svg += '<line x1="' + pad + '" y1="95" x2="' + (W - 10) + '" y2="95" stroke="#ddd" stroke-width="1.5"/>';
+        [8,16,24,32].forEach(function (v) {
+          var x = toX(v);
+          var hi = (v === 24);
+          svg += '<circle cx="' + x + '" cy="95" r="' + (hi ? 13 : 10) + '" fill="' + (hi ? MV.C.red : MV.C.orange) + '" opacity="0.85"/>';
+          svg += '<text x="' + x + '" y="99" text-anchor="middle" font-size="11" fill="white" font-weight="bold">' + v + '</text>';
+        });
+        var x24 = toX(24);
+        svg += '<line x1="' + x24 + '" y1="53" x2="' + x24 + '" y2="82" stroke="' + MV.C.red + '" stroke-width="2.5" stroke-dasharray="4,2"/>';
+        svg += '<text x="' + (x24 + 15) + '" y="72" font-size="12" fill="' + MV.C.red + '" font-weight="bold">同时！</text>';
+        return '<div style="text-align:center">' + MV.svg(W, H, svg) + '</div>';
+      }()),
+      2
+    ) +
+    MV.fragDiv(
+      '<div class="ans-box ans-lcm">' +
+        'LCM(6, 8) = 2³ × 3 = <b style="color:#e67e22;font-size:1.3em">24 天</b>后再次同时出现' +
+      '</div>',
+      3
+    ) +
+    MV.fragDiv(
+      MV.tip('<b>周期相遇问题 → 用 LCM</b>（最小公倍数 = 下次相遇所需天数）'),
+      4
+    );
+
+  // ── S10: Practice ─────────────────────────────────────
+  document.getElementById('s10-practice').innerHTML =
+    '<div style="font-size:.93em">' +
+    '<ol style="line-height:2.1">' +
+      '<li>GCD(16, 24) = ?&ensp;LCM(16, 24) = ?' +
+        MV.frag('&ensp;→ <b class="kw2">GCD = 8，LCM = 48</b>', 1) + '</li>' +
+      '<li>GCD(30, 42) = ?&ensp;LCM(30, 42) = ?' +
+        MV.frag('&ensp;→ <b class="kw2">GCD = 6，LCM = 210</b>', 2) + '</li>' +
+      '<li>LCM(4, 6, 10) = ?' +
+        MV.frag('&ensp;→ <b class="kw2">60</b>（4=2²，6=2×3，10=2×5 → 2²×3×5）', 3) + '</li>' +
+      '<li>甲 5 天来一次，乙 7 天来一次。同时来最少间隔几天？' +
+        MV.frag('&ensp;→ <b class="kw2">LCM(5,7) = 35 天</b>（互质，取乘积）', 4) + '</li>' +
+      '<li>48 颗糖、60 颗巧克力，每份数量相同，最多分多少份？' +
+        MV.frag('&ensp;→ <b class="kw2">GCD(48,60) = 12 份</b>', 5) + '</li>' +
+    '</ol>' +
+    '</div>' +
+    MV.fragDiv(
+      MV.warn('做题前，<b>先写质因数分解式</b>——不要强行心算最大公因数或最小公倍数！'),
+      6
+    );
+
+});
+</script>
+</body>
+</html>
