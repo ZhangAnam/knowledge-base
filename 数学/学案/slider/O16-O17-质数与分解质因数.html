@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数 O16-O17 · 质数与分解质因数</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.kw  { color:#2980b9; font-weight:bold; }
+.kw2 { color:#27ae60; font-weight:bold; }
+.kw3 { color:#e74c3c; font-weight:bold; }
+.big-eq { font-size:1.4em; text-align:center; margin:10px 0; }
+.prime-chip { display:inline-block; background:#d5f5e3; border:2px solid #27ae60;
+              border-radius:50%; width:36px; height:36px; line-height:36px;
+              text-align:center; font-weight:bold; color:#27ae60;
+              margin:3px; font-size:1em; }
+.comp-chip  { display:inline-block; background:#fdebd0; border:2px solid #e67e22;
+              border-radius:6px; width:36px; height:36px; line-height:36px;
+              text-align:center; font-weight:bold; color:#e67e22;
+              margin:3px; font-size:1em; }
+.num-box  { display:inline-block; background:#eaf4fb; border:2px solid #2980b9;
+            border-radius:8px; padding:10px 18px; text-align:center;
+            min-width:100px; }
+.yes-box  { background:#d5f5e3; border:2px solid #27ae60; border-radius:8px;
+            padding:10px 16px; text-align:center; }
+.no-box   { background:#fadbd8; border:2px solid #e74c3c; border-radius:8px;
+            padding:10px 16px; text-align:center; }
+.sieve-div-label { font-size:.85em; color:#888; margin:4px 0 8px 0; text-align:center; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ── 1. 封面 ─────────────────────────────────────────── -->
+<section>
+  <div style="color:#888;font-size:.85em">四年级 · 奥数数论 N4</div>
+  <h1 style="font-size:1.9em;color:#2980b9;margin:.15em 0">质数与分解质因数</h1>
+  <div style="color:#555;font-size:1em;margin-bottom:16px">
+    质数 · 合数 · 埃氏筛法 · 因数树 · 短除法
+  </div>
+  <div id="s0-vis"></div>
+</section>
+
+<!-- ── 2. 1 的特殊地位 ──────────────────────────────────── -->
+<section>
+  <h2>🔢 1、质数、合数——三种数的区别</h2>
+  <div id="s1-three"></div>
+</section>
+
+<!-- ── 3. 质数的定义 ────────────────────────────────────── -->
+<section>
+  <h2>✨ 质数的定义——因数个数决定一切</h2>
+  <div id="s2-def"></div>
+</section>
+
+<!-- ── 4. 埃拉托色尼筛法 ─────────────────────────────────── -->
+<section>
+  <h2>🪣 埃拉托色尼筛法——筛出 30 以内的质数</h2>
+  <div id="s3-sieve"></div>
+</section>
+
+<!-- ── 5. 30 以内质数一览 ─────────────────────────────────── -->
+<section>
+  <h2>📋 30 以内的全部质数</h2>
+  <div id="s4-list"></div>
+</section>
+
+<!-- ── 6. 因数树·30 ──────────────────────────────────────── -->
+<section>
+  <h2>🌳 分解质因数——因数树（30）</h2>
+  <div id="s5-tree30"></div>
+</section>
+
+<!-- ── 7. 因数树·84 和 72 ─────────────────────────────────── -->
+<section>
+  <h2>🌳 因数树——84 与 72</h2>
+  <div id="s6-tree84"></div>
+</section>
+
+<!-- ── 8. 短除法 ────────────────────────────────────────── -->
+<section>
+  <h2>📐 短除法——阶梯式分解</h2>
+  <div id="s7-shortdiv"></div>
+</section>
+
+<!-- ── 9. 应用·整除判断 ──────────────────────────────────── -->
+<section>
+  <h2>🔍 应用：用质因数分解判断整除</h2>
+  <div id="s8-app"></div>
+</section>
+
+<!-- ── 10. 巩固练习 ─────────────────────────────────────── -->
+<section>
+  <h2>✏️ 巩固练习</h2>
+  <div id="s9-prac"></div>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+
+  // ── S0: Cover — prime chips visual ───────────────────────────────
+  (function () {
+    var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
+    var all = [];
+    for (var i = 2; i <= 30; i++) all.push(i);
+    var isPrime = {};
+    primes.forEach(function (p) { isPrime[p] = true; });
+
+    var html = '<div style="text-align:center;margin:6px 0">';
+    all.forEach(function (n) {
+      if (isPrime[n]) {
+        html += '<span class="prime-chip">' + n + '</span>';
+      } else {
+        html += '<span class="comp-chip">' + n + '</span>';
+      }
+    });
+    html += '</div>';
+    html += '<div style="text-align:center;margin-top:10px;font-size:.9em">' +
+            '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;' +
+            'background:#d5f5e3;border:2px solid #27ae60;vertical-align:middle;margin-right:4px"></span>' +
+            '<span style="color:#27ae60;font-weight:bold">质数（圆形）</span>' +
+            '&emsp;&emsp;' +
+            '<span style="display:inline-block;width:14px;height:14px;border-radius:3px;' +
+            'background:#fdebd0;border:2px solid #e67e22;vertical-align:middle;margin-right:4px"></span>' +
+            '<span style="color:#e67e22;font-weight:bold">合数（方形）</span>' +
+            '</div>';
+
+    document.getElementById('s0-vis').innerHTML = html;
+  })();
+
+  // ── S1: 1, prime, composite — three boxes ────────────────────────
+  document.getElementById('s1-three').innerHTML =
+    MV.row(
+      '<div style="flex:1;margin:0 6px;border:3px solid #95a5a6;border-radius:10px;' +
+        'background:#f8f9fa;padding:14px;text-align:center">' +
+        '<div style="font-size:2.8em;font-weight:bold;color:#95a5a6">1</div>' +
+        '<div style="font-size:1.05em;font-weight:bold;color:#95a5a6;margin:6px 0">既不是质数<br>也不是合数</div>' +
+        '<div style="font-size:.85em;color:#888;margin-top:8px">因数只有：<br>' +
+        '<span style="background:#eee;border-radius:4px;padding:1px 8px">1</span>' +
+        '</div>' +
+        '<div style="font-size:.8em;color:#888;margin-top:6px">共 <b>1</b> 个因数</div>' +
+      '</div>',
+      '<div style="flex:1;margin:0 6px;border:3px solid #27ae60;border-radius:10px;' +
+        'background:#d5f5e3;padding:14px;text-align:center">' +
+        '<div style="font-size:2.8em;font-weight:bold;color:#27ae60">7</div>' +
+        '<div style="font-size:1.05em;font-weight:bold;color:#27ae60;margin:6px 0">质数</div>' +
+        '<div style="font-size:.85em;color:#27ae60;margin-top:8px">因数只有：<br>' +
+        '<span style="background:white;border-radius:4px;padding:1px 8px;border:1px solid #27ae60">1</span>' +
+        '&nbsp;&nbsp;' +
+        '<span style="background:white;border-radius:4px;padding:1px 8px;border:1px solid #27ae60">7</span>' +
+        '</div>' +
+        '<div style="font-size:.8em;color:#27ae60;margin-top:6px">恰好 <b>2</b> 个因数</div>' +
+      '</div>',
+      '<div style="flex:1;margin:0 6px;border:3px solid #e67e22;border-radius:10px;' +
+        'background:#fdebd0;padding:14px;text-align:center">' +
+        '<div style="font-size:2.8em;font-weight:bold;color:#e67e22">12</div>' +
+        '<div style="font-size:1.05em;font-weight:bold;color:#e67e22;margin:6px 0">合数</div>' +
+        '<div style="font-size:.85em;color:#e67e22;margin-top:8px">因数有：<br>' +
+        '<span style="background:white;border-radius:4px;padding:1px 6px;border:1px solid #e67e22;margin:1px">1</span>' +
+        '<span style="background:white;border-radius:4px;padding:1px 6px;border:1px solid #e67e22;margin:1px">2</span>' +
+        '<span style="background:white;border-radius:4px;padding:1px 6px;border:1px solid #e67e22;margin:1px">3</span>' +
+        '<span style="background:white;border-radius:4px;padding:1px 6px;border:1px solid #e67e22;margin:1px">4</span>' +
+        '<span style="background:white;border-radius:4px;padding:1px 6px;border:1px solid #e67e22;margin:1px">6</span>' +
+        '<span style="background:white;border-radius:4px;padding:1px 6px;border:1px solid #e67e22;margin:1px">12</span>' +
+        '</div>' +
+        '<div style="font-size:.8em;color:#e67e22;margin-top:6px">多于 <b>2</b> 个因数</div>' +
+      '</div>'
+    ) +
+    MV.fragDiv(
+      MV.warn(
+        '<b>1 既不是质数也不是合数！</b><br>' +
+        '质数必须恰好有 2 个因数（1 和自身），而 1 只有 1 个因数。'
+      ),
+      1
+    );
+
+  // ── S2: Prime definition ──────────────────────────────────────────
+  document.getElementById('s2-def').innerHTML =
+    MV.step(
+      '<b>质数（素数）：</b>只有 <span class="kw2">1</span> 和 <span class="kw2">自身</span> 两个因数的自然数（≥ 2）<br>' +
+      '<b>合数：</b>除了 1 和自身外，还有其他因数的自然数（≥ 4）',
+      MV.C.blue
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.col(
+          MV.step(
+            '<b>判断 13 是质数？</b><br>' +
+            '13÷2=6余1&emsp;13÷3=4余1<br>' +
+            '13÷4=3余1&emsp;…<br>' +
+            '√13 ≈ 3.6，只需试到 3<br>' +
+            '没有整除的 → <span class="kw2">质数</span> ✅',
+            MV.C.green
+          )
+        ),
+        MV.col(
+          MV.step(
+            '<b>判断 15 是质数？</b><br>' +
+            '15÷3 = 5（余数 0）<br>' +
+            '找到了除 1 和 15 以外的因数 3<br>' +
+            '→ <b style="color:#e67e22">合数</b> ✅<br>' +
+            '15 = 3 × 5',
+            MV.C.orange
+          )
+        )
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.tip(
+        '判断质数小技巧：只需试除到 <b>√n</b>（n 的平方根）<br>' +
+        '若没有整除的，则 n 是质数。'
+      ),
+      2
+    );
+
+  // ── S3: Sieve of Eratosthenes ─────────────────────────────────────
+  (function () {
+    var nums = [];
+    for (var i = 2; i <= 30; i++) nums.push(i);
+
+    var primeSet = { 2:1, 3:1, 5:1, 7:1, 11:1, 13:1, 17:1, 19:1, 23:1, 29:1 };
+
+    // Assign fragment index for cross-outs
+    var crossFrag = {};
+    for (var n = 4; n <= 30; n += 2) crossFrag[n] = 0;       // multiples of 2
+    for (var n = 9; n <= 30; n += 3) if (!crossFrag[n]) crossFrag[n] = 1;  // multiples of 3
+    for (var n = 25; n <= 30; n += 5) if (!crossFrag[n]) crossFrag[n] = 2; // multiples of 5
+
+    var cols = 5, cw = 52, rh = 40;
+    var W = cols * cw + 10;
+    var nrows = Math.ceil(nums.length / cols);
+    var H = nrows * rh + 10;
+
+    var svgContent = '';
+    nums.forEach(function (n, idx) {
+      var c = idx % cols;
+      var r = Math.floor(idx / cols);
+      var rx = c * cw + 5;
+      var ry = r * rh + 5;
+      var bw = cw - 4, bh = rh - 4;
+      var bcx = rx + bw / 2;
+      var bcy = ry + bh * 0.67;
+
+      // Base cell (always visible)
+      svgContent += '<rect x="' + rx + '" y="' + ry + '" width="' + bw + '" height="' + bh +
+                    '" rx="5" fill="#f5f5f5" stroke="#ddd" stroke-width="1.2"/>';
+      svgContent += '<text x="' + bcx + '" y="' + bcy +
+                    '" text-anchor="middle" font-size="15" fill="#444">' + n + '</text>';
+
+      // Cross-out overlay
+      var cf = crossFrag[n];
+      if (cf !== undefined) {
+        svgContent += '<g class="fragment" data-fragment-index="' + cf + '">';
+        svgContent += '<line x1="' + rx + '" y1="' + ry + '" x2="' + (rx + bw) + '" y2="' +
+                      (ry + bh) + '" stroke="' + MV.C.red + '" stroke-width="2.5" opacity=".75"/>';
+        svgContent += '<line x1="' + (rx + bw) + '" y1="' + ry + '" x2="' + rx + '" y2="' +
+                      (ry + bh) + '" stroke="' + MV.C.red + '" stroke-width="2.5" opacity=".75"/>';
+        svgContent += '</g>';
+      }
+
+      // Prime highlight (fragment 3)
+      if (primeSet[n]) {
+        svgContent += '<g class="fragment" data-fragment-index="3">';
+        svgContent += '<rect x="' + rx + '" y="' + ry + '" width="' + bw + '" height="' + bh +
+                      '" rx="5" fill="#d5f5e3" stroke="#27ae60" stroke-width="2.5"/>';
+        svgContent += '<text x="' + bcx + '" y="' + bcy +
+                      '" text-anchor="middle" font-size="15" fill="#27ae60" font-weight="bold">' +
+                      n + '</text>';
+        svgContent += '</g>';
+      }
+    });
+
+    var captionHtml =
+      MV.row(
+        MV.fragDiv(
+          '<div style="font-size:.85em;color:' + MV.C.blue + ';font-weight:bold">① 圈出 2，划去 2 的所有倍数</div>',
+          0
+        ),
+        MV.fragDiv(
+          '<div style="font-size:.85em;color:' + MV.C.orange + ';font-weight:bold">② 圈出 3，划去 3 的剩余倍数</div>',
+          1
+        ),
+        MV.fragDiv(
+          '<div style="font-size:.85em;color:' + MV.C.purple + ';font-weight:bold">③ 圈出 5，划去 5 的剩余倍数</div>',
+          2
+        ),
+        MV.fragDiv(
+          '<div style="font-size:.85em;color:' + MV.C.green + ';font-weight:bold">④ 剩余未划去的就是质数！</div>',
+          3
+        )
+      );
+
+    document.getElementById('s3-sieve').innerHTML =
+      '<div style="text-align:center;margin:6px 0">' +
+      '<svg width="' + W + '" height="' + H + '" style="display:inline-block">' +
+      svgContent + '</svg>' +
+      '</div>' +
+      captionHtml;
+  })();
+
+  // ── S4: Primes up to 30 ──────────────────────────────────────────
+  document.getElementById('s4-list').innerHTML =
+    MV.step(
+      '2 到 30 之间共有 <b style="color:#e74c3c">10</b> 个质数：',
+      MV.C.blue
+    ) +
+    '<div style="text-align:center;margin:14px 0">' +
+    [2,3,5,7,11,13,17,19,23,29].map(function (p) {
+      return '<span class="prime-chip" style="width:44px;height:44px;line-height:44px;font-size:1.1em">' + p + '</span>';
+    }).join('') +
+    '</div>' +
+    MV.fragDiv(
+      MV.row(
+        MV.info(
+          '最小的质数是 <b style="color:#27ae60">2</b>，也是唯一的偶质数。'
+        ),
+        MV.info(
+          '质数有无穷多个（欧几里得于约公元前300年证明）。'
+        )
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.tip(
+        '记忆口诀：<b>2、3、5、7</b>（十以内四个）<br>' +
+        '<b>11、13</b>，<b>17、19</b>，<b>23</b>，<b>29</b>'
+      ),
+      2
+    );
+
+  // ── S5: Factor tree for 30 ────────────────────────────────────────
+  document.getElementById('s5-tree30').innerHTML =
+    '<div style="font-size:.95em;margin-bottom:10px">' +
+      '每次把一个合数拆成两个因数，直到所有节点都是<b style="color:#e74c3c">质数</b>（红色节点）：' +
+    '</div>' +
+    MV.row(
+      MV.col(
+        MV.factorTree(30, {w: 240, h: 160}),
+        '<div style="text-align:center;font-size:1em;color:#555;margin-top:6px">' +
+          '<b>30 = 2 × 3 × 5</b>' +
+        '</div>'
+      ),
+      MV.col(
+        '<div style="padding:10px">' +
+        MV.step(
+          '<b>步骤：</b><br>' +
+          '30 = 2 × 15<br>' +
+          '15 = 3 × 5<br>' +
+          '2、3、5 都是质数，停止<br>' +
+          '结果：<b>30 = 2 × 3 × 5</b>',
+          MV.C.blue
+        ) +
+        MV.fragDiv(
+          MV.tip(
+            '<span style="color:#e74c3c;font-weight:bold">● 红色圆</span> = 质数（无法再拆）<br>' +
+            '<span style="color:#2980b9;font-weight:bold">● 蓝色圆</span> = 合数（还需继续拆）'
+          ),
+          1
+        ) +
+        '</div>'
+      )
+    ) +
+    MV.fragDiv(
+      MV.info(
+        '质因数分解结果是<b>唯一</b>的（算术基本定理），与分拆顺序无关。'
+      ),
+      2
+    );
+
+  // ── S6: Factor trees for 84 and 72 ───────────────────────────────
+  document.getElementById('s6-tree84').innerHTML =
+    '<div style="font-size:.95em;margin-bottom:10px">' +
+      '练习用因数树分解 84 和 72：' +
+    '</div>' +
+    MV.row(
+      MV.col(
+        MV.factorTree(84, {w: 280, h: 180}),
+        '<div style="text-align:center;font-size:1em;color:#555;margin-top:6px">' +
+          MV.frag('<b>84 = 2² × 3 × 7</b>', 1) +
+        '</div>'
+      ),
+      MV.col(
+        MV.factorTree(72, {w: 280, h: 180}),
+        '<div style="text-align:center;font-size:1em;color:#555;margin-top:6px">' +
+          MV.frag('<b>72 = 2³ × 3²</b>', 2) +
+        '</div>'
+      )
+    ) +
+    MV.fragDiv(
+      MV.tip(
+        '写成指数形式（如 2³×3²）更简洁，表示"有几个相同的质因数相乘"。'
+      ),
+      3
+    );
+
+  // ── S7: Short division for 84 ────────────────────────────────────
+  (function () {
+    var steps = [
+      { d: 2, n: 84 },
+      { d: 2, n: 42 },
+      { d: 3, n: 21 },
+      { d: 7, n:  7 }
+    ];
+    var lastQuot = 1;
+    var rh = 40, fs = 20, lm = 50, rm = 80;
+    var W = lm + rm + 10;
+    var H = (steps.length + 1.2) * rh;
+    var svg = '';
+
+    steps.forEach(function (st, i) {
+      var y = (i + 0.85) * rh;
+      // Divisor
+      svg += '<text x="' + (lm - 8) + '" y="' + y +
+             '" text-anchor="end" font-size="' + fs + '" fill="' +
+             MV.C.orange + '" font-weight="bold">' + st.d + '</text>';
+      // Bracket: vertical bar + horizontal top bar
+      svg += '<line x1="' + lm + '" y1="' + (y - rh * 0.82) +
+             '" x2="' + lm + '" y2="' + (y + 5) +
+             '" stroke="#333" stroke-width="2"/>';
+      svg += '<line x1="' + lm + '" y1="' + (y - rh * 0.82) +
+             '" x2="' + (lm + rm) + '" y2="' + (y - rh * 0.82) +
+             '" stroke="#333" stroke-width="2"/>';
+      // Number (right-aligned)
+      svg += '<text x="' + (lm + rm - 4) + '" y="' + y +
+             '" text-anchor="end" font-size="' + fs + '" fill="#333">' + st.n + '</text>';
+    });
+
+    // Final quotient: 1
+    var lastY = (steps.length + 0.85) * rh;
+    svg += '<line x1="' + lm + '" y1="' + (lastY - rh * 0.82) +
+           '" x2="' + (lm + rm) + '" y2="' + (lastY - rh * 0.82) +
+           '" stroke="#333" stroke-width="2"/>';
+    svg += '<text x="' + (lm + rm - 4) + '" y="' + lastY +
+           '" text-anchor="end" font-size="' + fs + '" fill="' + MV.C.green +
+           '" font-weight="bold">' + lastQuot + '</text>';
+
+    document.getElementById('s7-shortdiv').innerHTML =
+      MV.row(
+        '<div style="flex:0 0 auto;padding:10px 20px 10px 10px;text-align:center">' +
+        '<div style="font-size:.8em;color:#888;margin-bottom:6px">短除法竖式</div>' +
+        '<svg width="' + W + '" height="' + (H + 5) + '" style="display:inline-block">' +
+        svg + '</svg>' +
+        '</div>',
+        MV.col(
+          MV.step(
+            '每次用<span style="color:#e67e22;font-weight:bold">最小质因数</span>去除：<br>' +
+            '84 ÷ 2 = 42<br>' +
+            '42 ÷ 2 = 21<br>' +
+            '21 ÷ 3 = 7<br>' +
+            '7 ÷ 7 = 1（停止）',
+            MV.C.blue
+          ),
+          MV.fragDiv(
+            MV.step(
+              '从左侧除数（橙色）自上而下读出：<br>' +
+              '<b>84 = 2 × 2 × 3 × 7 = 2² × 3 × 7</b>',
+              MV.C.green
+            ),
+            1
+          )
+        )
+      ) +
+      MV.fragDiv(
+        MV.tip('短除法与因数树本质相同，但竖式排列更整齐，适合多步分解。'),
+        2
+      );
+  })();
+
+  // ── S8: Application — divisibility check ─────────────────────────
+  document.getElementById('s8-app').innerHTML =
+    MV.step(
+      '题目：60 能被 12 整除吗？能被 8 整除吗？<br>' +
+      '方法：比较两数的质因数分解。',
+      MV.C.blue
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.col(
+          MV.factorTree(60, {w: 220, h: 160}),
+          '<div style="text-align:center;font-size:.9em;color:#555;margin-top:4px">' +
+            '<b>60 = 2² × 3 × 5</b>' +
+          '</div>'
+        ),
+        MV.col(
+          MV.factorTree(12, {w: 180, h: 130}),
+          '<div style="text-align:center;font-size:.9em;color:#555;margin-top:4px">' +
+            '<b>12 = 2² × 3</b>' +
+          '</div>'
+        ),
+        MV.col(
+          MV.factorTree(8, {w: 160, h: 130}),
+          '<div style="text-align:center;font-size:.9em;color:#555;margin-top:4px">' +
+            '<b>8 = 2³</b>' +
+          '</div>'
+        )
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.row(
+        '<div class="yes-box" style="flex:1;margin:0 6px">' +
+          '<div style="font-size:1em;font-weight:bold">60 ÷ 12 = ？</div>' +
+          '<div style="margin:5px 0">12 = 2² × 3<br>60 = <b>2² × 3</b> × 5</div>' +
+          '<div>12 的每个质因数幂次 ≤ 60 的对应幂次</div>' +
+          '<div style="font-size:1.3em;margin-top:4px">✅ 能整除（商 = 5）</div>' +
+        '</div>',
+        '<div class="no-box" style="flex:1;margin:0 6px">' +
+          '<div style="font-size:1em;font-weight:bold">60 ÷ 8 = ？</div>' +
+          '<div style="margin:5px 0">8 = <b>2³</b><br>60 = 2² × 3 × 5</div>' +
+          '<div>8 需要 2³，但 60 只有 2²（不够）</div>' +
+          '<div style="font-size:1.3em;margin-top:4px">❌ 不能整除</div>' +
+        '</div>'
+      ),
+      2
+    ) +
+    MV.fragDiv(
+      MV.tip(
+        'a 能被 b 整除 ⟺ b 的每个质因数的幂次 ≤ a 中对应质因数的幂次。'
+      ),
+      3
+    );
+
+  // ── S9: Practice ──────────────────────────────────────────────────
+  document.getElementById('s9-prac').innerHTML =
+    '<div style="font-size:.85em;color:#888;margin-bottom:10px">先独立思考，再点击显示答案 →</div>' +
+    MV.step(
+      '1. 下列哪些是质数？<b>15, 17, 21, 23, 1</b><br>' +
+      '答：' + MV.frag(
+        '<b class="kw2">17 和 23</b>（15=3×5合数；21=3×7合数；1既非质也非合）',
+        1
+      ),
+      MV.C.blue
+    ) +
+    MV.step(
+      '2. 分解质因数：<b>36</b><br>' +
+      '答：' + MV.frag('<b class="kw2">36 = 2² × 3²</b>（36=4×9=2²×3²）', 2),
+      MV.C.blue
+    ) +
+    MV.step(
+      '3. 用短除法分解 <b>90</b><br>' +
+      '答：' + MV.frag('<b class="kw2">90 = 2 × 3² × 5</b>（90÷2=45，45÷3=15，15÷3=5，5÷5=1）', 3),
+      MV.C.orange
+    ) +
+    MV.step(
+      '4. <b>72</b> 能被 <b>18</b> 整除吗？<br>' +
+      '答：' + MV.frag(
+        '<b class="kw2">能</b>（72=2³×3²，18=2×3²，每个质因数幂次都不超过72的对应幂次）',
+        4
+      ),
+      MV.C.orange
+    );
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数 O13-O15 · 整除与余数</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.kw  { color:#2980b9; font-weight:bold; }
+.kw2 { color:#27ae60; font-weight:bold; }
+.kw3 { color:#e74c3c; font-weight:bold; }
+.big-eq { font-size:1.4em; text-align:center; margin:10px 0; }
+.yes-box { background:#d5f5e3; border:2px solid #27ae60; border-radius:8px;
+           padding:12px 16px; text-align:center; }
+.no-box  { background:#fadbd8; border:2px solid #e74c3c; border-radius:8px;
+           padding:12px 16px; text-align:center; }
+.chip  { display:inline-block; background:#eaf4fb; border:2px solid #2980b9;
+         border-radius:6px; padding:3px 10px; font-weight:bold; color:#2980b9;
+         margin:2px; font-size:1em; }
+.rchip { display:inline-block; background:#fadbd8; border:2px solid #e74c3c;
+         border-radius:6px; padding:3px 10px; font-weight:bold; color:#e74c3c;
+         margin:2px; font-size:1em; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ── 1. 封面 ─────────────────────────────────────────── -->
+<section>
+  <div style="color:#888;font-size:.85em">四年级 · 奥数数论 N3</div>
+  <h1 style="font-size:1.9em;color:#2980b9;margin:.15em 0">整除与余数</h1>
+  <div style="color:#555;font-size:1em;margin-bottom:16px">
+    余数的性质 · 只看余数法则 · 整除性判断
+  </div>
+  <div id="s0-vis"></div>
+</section>
+
+<!-- ── 2. 余数定义 ──────────────────────────────────────── -->
+<section>
+  <h2>📦 余数的定义</h2>
+  <div id="s1-def"></div>
+</section>
+
+<!-- ── 3. 余数直观 ──────────────────────────────────────── -->
+<section>
+  <h2>🔲 余数直观——分组"剩下的"</h2>
+  <div id="s2-grp"></div>
+</section>
+
+<!-- ── 4. 只看余数·加法 ─────────────────────────────────── -->
+<section>
+  <h2>⚙️ 只看余数——加法规则</h2>
+  <div id="s3-add"></div>
+</section>
+
+<!-- ── 5. 只看余数·乘法 ─────────────────────────────────── -->
+<section>
+  <h2>⚙️ 只看余数——乘法规则</h2>
+  <div id="s4-mul"></div>
+</section>
+
+<!-- ── 6. 整除性判断 ────────────────────────────────────── -->
+<section>
+  <h2>🔍 整除性判断——位数特征法</h2>
+  <div id="s5-div"></div>
+</section>
+
+<!-- ── 7. 例题1 ─────────────────────────────────────────── -->
+<section>
+  <h2>📝 例题1：1234 ÷ 9 余几？</h2>
+  <div id="s6-ex1"></div>
+</section>
+
+<!-- ── 8. 例题2 ─────────────────────────────────────────── -->
+<section>
+  <h2>📝 例题2：27 × 34 除以 5 余几？</h2>
+  <div id="s7-ex2"></div>
+</section>
+
+<!-- ── 9. 例题3 ─────────────────────────────────────────── -->
+<section>
+  <h2>📝 例题3：4□8 能被 9 整除，□ 填几？</h2>
+  <div id="s8-ex3"></div>
+</section>
+
+<!-- ── 10. 例题4 ────────────────────────────────────────── -->
+<section>
+  <h2>📝 例题4：1²+2²+…+10² 除以 3 余几？</h2>
+  <div id="s9-ex4"></div>
+</section>
+
+<!-- ── 11. 巩固练习 ─────────────────────────────────────── -->
+<section>
+  <h2>✏️ 巩固练习</h2>
+  <div id="s10-prac"></div>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+
+  // ── S0: Cover — 12 squares grouped by 5, showing 2 leftover ──────
+  (function () {
+    var sq = 32, gap = 5, groupSize = 5;
+    var svg = '';
+    var groupColors = [MV.C.blue, MV.C.green];
+
+    // Two full groups of 5
+    groupColors.forEach(function (col, g) {
+      for (var i = 0; i < groupSize; i++) {
+        var x = g * (groupSize * (sq + gap) + 24) + i * (sq + gap);
+        svg += '<rect x="' + x + '" y="8" width="' + sq + '" height="' + sq +
+               '" rx="6" fill="' + col + '" opacity=".8"/>';
+      }
+      var lx = g * (groupSize * (sq + gap) + 24) + 2 * (sq + gap) + sq / 2;
+      svg += '<text x="' + lx + '" y="56" text-anchor="middle" font-size="13" fill="' +
+             col + '">第 ' + (g + 1) + ' 组</text>';
+    });
+
+    // Leftover: 2 red squares
+    var ox = 2 * (groupSize * (sq + gap) + 24);
+    for (var i = 0; i < 2; i++) {
+      svg += '<rect x="' + (ox + i * (sq + gap)) + '" y="8" width="' + sq +
+             '" height="' + sq + '" rx="6" fill="' + MV.C.red +
+             '" opacity=".9" stroke="' + MV.C.red + '" stroke-width="2.5"/>';
+    }
+    svg += '<text x="' + (ox + sq) + '" y="56" text-anchor="middle" font-size="13" fill="' +
+           MV.C.red + '" font-weight="bold">余 2</text>';
+    svg += '<text x="235" y="84" text-anchor="middle" font-size="19" fill="#333">' +
+           '12 ÷ 5 = <tspan fill="' + MV.C.blue + '" font-weight="bold">2</tspan>' +
+           ' … <tspan fill="' + MV.C.red + '" font-weight="bold">2</tspan></text>';
+
+    document.getElementById('s0-vis').innerHTML =
+      '<div style="text-align:center;margin:8px 0">' +
+      '<svg width="470" height="96">' + svg + '</svg>' +
+      '</div>';
+  })();
+
+  // ── S1: Definition ────────────────────────────────────────────────
+  document.getElementById('s1-def').innerHTML =
+    '<div class="big-eq"><b>a ÷ b = q … r</b></div>' +
+    MV.step(
+      '等价写法：<b>a = b × q + r</b>&emsp;且&emsp;<span class="kw2">0 ≤ r &lt; b</span><br>' +
+      '&emsp;• <span class="kw">a</span> = 被除数，<span class="kw">b</span> = 除数（b ≠ 0）<br>' +
+      '&emsp;• <span class="kw2">q</span> = 商（整数），<span class="kw3">r</span> = 余数',
+      MV.C.blue
+    ) +
+    MV.fragDiv(
+      MV.row(
+        '<div class="yes-box" style="flex:1;margin:0 6px">' +
+          '<div style="font-size:1.2em;font-weight:bold">17 ÷ 5 = 3 … 2</div>' +
+          '<div style="margin:6px 0">即 <b>17 = 5 × 3 + 2</b></div>' +
+          '<div>余数 <span class="kw3">r=2</span>，满足 0 ≤ 2 &lt; 5 ✅</div>' +
+        '</div>',
+        '<div class="yes-box" style="flex:1;margin:0 6px">' +
+          '<div style="font-size:1.2em;font-weight:bold">20 ÷ 4 = 5 … 0</div>' +
+          '<div style="margin:6px 0">即 <b>20 = 4 × 5 + 0</b></div>' +
+          '<div>余数 <span class="kw3">r=0</span> → <b>整除</b> ✅</div>' +
+        '</div>'
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.warn(
+        '余数 <b>r 必须满足 0 ≤ r &lt; b</b>（余数一定比除数小！）<br>' +
+        '若余数 = 0，称 b 整除 a，写作 b | a。'
+      ),
+      2
+    );
+
+  // ── S2: Grouping visual ───────────────────────────────────────────
+  (function () {
+    var sq = 26, gap = 3, groupSize = 5;
+    var gCols = [MV.C.blue, MV.C.green, MV.C.orange];
+    var svg = '';
+    gCols.forEach(function (col, g) {
+      for (var i = 0; i < groupSize; i++) {
+        var x = g * (groupSize * (sq + gap) + 14) + i * (sq + gap);
+        svg += '<rect x="' + x + '" y="6" width="' + sq + '" height="' + sq +
+               '" rx="4" fill="' + col + '" opacity=".75"/>';
+      }
+      var lx = g * (groupSize * (sq + gap) + 14) + 2 * (sq + gap) + sq / 2;
+      svg += '<text x="' + lx + '" y="48" text-anchor="middle" font-size="11" fill="' +
+             col + '">组 ' + (g + 1) + '</text>';
+    });
+    // 2 red leftover
+    var ox = 3 * (groupSize * (sq + gap) + 14);
+    for (var i = 0; i < 2; i++) {
+      svg += '<rect x="' + (ox + i * (sq + gap)) + '" y="6" width="' + sq +
+             '" height="' + sq + '" rx="4" fill="' + MV.C.red + '" opacity=".9"/>';
+    }
+    svg += '<text x="' + (ox + sq) + '" y="48" text-anchor="middle" font-size="11" fill="' +
+           MV.C.red + '" font-weight="bold">余</text>';
+    svg += '<text x="260" y="74" text-anchor="middle" font-size="17" fill="#333">' +
+           '17 ÷ 5 = <tspan fill="' + MV.C.blue + '" font-weight="bold">3</tspan>' +
+           ' … <tspan fill="' + MV.C.red + '" font-weight="bold">2</tspan></text>';
+
+    document.getElementById('s2-grp').innerHTML =
+      MV.tip('把 <b>17</b> 个方块，每 <b>5</b> 个一组，分完后还剩 <b style="color:#e74c3c">2</b> 个，这就是余数！') +
+      '<div style="text-align:center;margin:10px 0">' +
+      '<svg width="520" height="86">' + svg + '</svg>' +
+      '</div>' +
+      MV.fragDiv(
+        MV.step(
+          '验算：<b>5 × 3 + 2 = 15 + 2 = 17</b> ✅&emsp;余数公式 a = b×q + r 成立<br>' +
+          '余数 r=2，满足 0 ≤ 2 &lt; 5（余数比除数小）✅',
+          MV.C.green
+        ),
+        1
+      );
+  })();
+
+  // ── S3: Mod addition rule ─────────────────────────────────────────
+  (function () {
+    var svg = '';
+    svg += '<defs><marker id="arr3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">' +
+           '<path d="M0,1 L7,4 L0,7 Z" fill="#aaa"/></marker></defs>';
+
+    function modBox (x, y, w, h) {
+      svg += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h +
+             '" rx="7" fill="#fdebd0" stroke="' + MV.C.orange + '" stroke-width="2"/>';
+      svg += '<text x="' + (x + w / 2) + '" y="' + (y + h * 0.66) +
+             '" text-anchor="middle" font-size="12" fill="' + MV.C.orange + '" font-weight="bold">÷m 取余</text>';
+    }
+    function numBubble (x, y, label, col) {
+      svg += '<circle cx="' + x + '" cy="' + y + '" r="17" fill="' + col + '" opacity=".85"/>';
+      svg += '<text x="' + x + '" y="' + (y + 5) + '" text-anchor="middle" font-size="14" fill="white" font-weight="bold">' + label + '</text>';
+    }
+    function arw (x1, y1, x2, y2) {
+      svg += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 +
+             '" stroke="#aaa" stroke-width="2" marker-end="url(#arr3)"/>';
+    }
+
+    // Row 1: a → [mod] → a'
+    numBubble(28, 30, 'a', MV.C.blue);
+    arw(46, 30, 70, 30);
+    modBox(74, 16, 76, 28);
+    arw(151, 30, 174, 30);
+    numBubble(190, 30, "a'", MV.C.red);
+
+    // Row 2: b → [mod] → b'
+    numBubble(28, 82, 'b', MV.C.green);
+    arw(46, 82, 70, 82);
+    modBox(74, 68, 76, 28);
+    arw(151, 82, 174, 82);
+    numBubble(190, 82, "b'", MV.C.red);
+
+    // + sign
+    svg += '<text x="224" y="61" text-anchor="middle" font-size="28" fill="#555">+</text>';
+
+    // → [mod] → result
+    arw(246, 56, 270, 56);
+    modBox(274, 42, 76, 28);
+    arw(351, 56, 374, 56);
+    svg += '<rect x="378" y="39" width="60" height="34" rx="7" fill="#d5f5e3" stroke="' +
+           MV.C.green + '" stroke-width="2"/>';
+    svg += '<text x="408" y="61" text-anchor="middle" font-size="13" fill="' +
+           MV.C.green + '" font-weight="bold">余数</text>';
+
+    document.getElementById('s3-add').innerHTML =
+      MV.step(
+        '规则：<b>(a+b) mod m = ((a mod m) + (b mod m)) mod m</b><br>' +
+        '先分别对 a、b 取余，余数相加后再取余。',
+        MV.C.blue
+      ) +
+      '<div style="text-align:center;margin:8px 0">' +
+      '<svg width="460" height="115">' + svg + '</svg>' +
+      '</div>' +
+      MV.fragDiv(
+        MV.step(
+          '<b>例：(23 + 41) mod 7</b><br>' +
+          '23 mod 7 = <span class="kw3">2</span>（23=7×3+2）<br>' +
+          '41 mod 7 = <span class="kw3">6</span>（41=7×5+6）<br>' +
+          '(2+6) mod 7 = 8 mod 7 = <b class="kw2">1</b><br>' +
+          '验算：64 ÷ 7 = 9 … <b>1</b> ✅',
+          MV.C.green
+        ),
+        1
+      );
+  })();
+
+  // ── S4: Mod multiplication rule ───────────────────────────────────
+  document.getElementById('s4-mul').innerHTML =
+    MV.step(
+      '规则：<b>(a×b) mod m = ((a mod m) × (b mod m)) mod m</b><br>' +
+      '先分别对 a、b 取余，余数相乘后再取余。',
+      MV.C.blue
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.col(
+          MV.step(
+            '<b>原理（可跳过）：</b><br>' +
+            '设 a = mq₁ + r₁，b = mq₂ + r₂<br>' +
+            'a×b = (mq₁+r₁)(mq₂+r₂)<br>' +
+            '&emsp;= m(…) + <span class="kw3">r₁×r₂</span><br>' +
+            '含 m 的项取余后都归 0，<br>只剩 r₁×r₂ 再取余',
+            MV.C.purple
+          )
+        ),
+        MV.col(
+          MV.step(
+            '<b>例：27 × 34 mod 5</b><br>' +
+            '27 mod 5 = <span class="kw3">2</span>（27=5×5+2）<br>' +
+            '34 mod 5 = <span class="kw3">4</span>（34=5×6+4）<br>' +
+            '<span class="kw3">2</span> × <span class="kw3">4</span> = 8<br>' +
+            '8 mod 5 = <b class="kw2">3</b><br>' +
+            '验算：918 ÷ 5 = 183 … <b>3</b> ✅',
+            MV.C.green
+          )
+        )
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.tip(
+        '"只看余数"的精髓：<b>用小数字替代大数字来计算余数</b>，<br>' +
+        '避免大数乘除，大幅简化运算！'
+      ),
+      2
+    );
+
+  // ── S5: Divisibility rules ────────────────────────────────────────
+  document.getElementById('s5-div').innerHTML =
+    MV.row(
+      MV.col(
+        MV.step(
+          '<b>被 2 整除</b><br>' +
+          '末位数字是 <span class="kw2">0, 2, 4, 6, 8</span><br>' +
+          '例：1234 ✅，1235 ❌',
+          MV.C.blue
+        ),
+        MV.step(
+          '<b>被 5 整除</b><br>' +
+          '末位数字是 <span class="kw2">0 或 5</span><br>' +
+          '例：1235 ✅，1234 ❌',
+          MV.C.orange
+        )
+      ),
+      MV.col(
+        MV.step(
+          '<b>被 3 整除</b><br>' +
+          '各位数字之和能被 3 整除<br>' +
+          '例：123 → 1+2+3=6 ✅<br>124 → 7 ❌',
+          MV.C.green
+        ),
+        MV.step(
+          '<b>被 9 整除</b><br>' +
+          '各位数字之和能被 9 整除<br>' +
+          '例：1251 → 9 ✅<br>1234 → 10 ❌',
+          MV.C.purple
+        )
+      )
+    ) +
+    MV.fragDiv(
+      MV.tip(
+        '<b>为什么数字和能判断 9 的整除性？</b><br>' +
+        '10 mod 9=1，100 mod 9=1，1000 mod 9=1 …（每个位权对 9 取余都是 1）<br>' +
+        '所以 <span style="font-style:italic">abcd</span> mod 9 = (a+b+c+d) mod 9！'
+      ),
+      1
+    );
+
+  // ── S6: Example 1 — 1234 ÷ 9 ─────────────────────────────────────
+  (function () {
+    var digits = ['1', '2', '3', '4'];
+    var dCols = [MV.C.blue, MV.C.green, MV.C.orange, MV.C.purple];
+    var svg = '';
+    digits.forEach(function (d, i) {
+      var x = 50 + i * 72;
+      svg += '<rect x="' + x + '" y="4" width="56" height="56" rx="9" fill="' + dCols[i] +
+             '" opacity=".15" stroke="' + dCols[i] + '" stroke-width="2.5"/>';
+      svg += '<text x="' + (x + 28) + '" y="41" text-anchor="middle" font-size="34" fill="' +
+             dCols[i] + '" font-weight="bold">' + d + '</text>';
+      if (i < 3) {
+        svg += '<text x="' + (x + 64) + '" y="36" text-anchor="middle" font-size="20" fill="#aaa">+</text>';
+      }
+    });
+    svg += '<text x="345" y="36" font-size="19" fill="#333"> = <tspan fill="' +
+           MV.C.red + '" font-weight="bold">10</tspan></text>';
+
+    document.getElementById('s6-ex1').innerHTML =
+      MV.step(
+        '方法：<b>各位数字之和 mod 9 = 原数 mod 9</b>',
+        MV.C.blue
+      ) +
+      '<div style="text-align:center;margin:10px 0">' +
+      '<svg width="430" height="65">' + svg + '</svg>' +
+      '</div>' +
+      MV.fragDiv(
+        MV.step(
+          '数字和 = 1+2+3+4 = <b>10</b><br>' +
+          '10 ÷ 9 = 1 … <b class="kw3">1</b><br>' +
+          '所以 <b>1234 ÷ 9</b> 余 <b style="color:#e74c3c;font-size:1.2em">1</b>',
+          MV.C.green
+        ),
+        1
+      ) +
+      MV.fragDiv(
+        MV.tip('验算：1234 = 9 × 137 + <b>1</b>&emsp;（9×137=1233，1234−1233=1）✅'),
+        2
+      );
+  })();
+
+  // ── S7: Example 2 — 27×34 mod 5 ──────────────────────────────────
+  document.getElementById('s7-ex2').innerHTML =
+    MV.step(
+      '题目：<b>27 × 34</b> 除以 <b>5</b> 余几？',
+      MV.C.blue
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.step(
+          '步骤1：27 mod 5<br>' +
+          '27 = 5×5 + <b class="kw3">2</b><br>' +
+          '→ 余 <span class="kw3">2</span>',
+          MV.C.blue
+        ),
+        MV.step(
+          '步骤2：34 mod 5<br>' +
+          '34 = 5×6 + <b class="kw3">4</b><br>' +
+          '→ 余 <span class="kw3">4</span>',
+          MV.C.orange
+        )
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.step(
+        '步骤3：余数相乘再取余<br>' +
+        '<span class="kw3">2</span> × <span class="kw3">4</span> = 8<br>' +
+        '8 ÷ 5 = 1 … <b class="kw2">3</b>&emsp;→ 最终余 <b>3</b>',
+        MV.C.green
+      ),
+      2
+    ) +
+    MV.fragDiv(
+      MV.tip('验算：27×34 = 918，918 ÷ 5 = 183 … <b>3</b> ✅'),
+      3
+    );
+
+  // ── S8: Example 3 — 4□8 divisible by 9 ───────────────────────────
+  (function () {
+    var digits = ['4', '□', '8'];
+    var dCols = [MV.C.blue, MV.C.red, MV.C.blue];
+    var svg = '';
+    digits.forEach(function (d, i) {
+      var x = 110 + i * 82;
+      var isBlank = (i === 1);
+      svg += '<rect x="' + x + '" y="5" width="64" height="64" rx="10" fill="' +
+             (isBlank ? '#fadbd8' : '#eaf4fb') + '" stroke="' + dCols[i] +
+             '" stroke-width="' + (isBlank ? 3 : 2) + '"/>';
+      svg += '<text x="' + (x + 32) + '" y="49" text-anchor="middle" font-size="38" fill="' +
+             dCols[i] + '" font-weight="bold">' + d + '</text>';
+    });
+    svg += '<text x="320" y="42" font-size="16" fill="#555">能被 9 整除</text>';
+
+    document.getElementById('s8-ex3').innerHTML =
+      '<div style="text-align:center;margin:8px 0">' +
+      '<svg width="480" height="78">' + svg + '</svg>' +
+      '</div>' +
+      MV.fragDiv(
+        MV.step(
+          '条件：各位数字之和能被 9 整除<br>' +
+          '4 + □ + 8 = <b>12 + □</b><br>' +
+          '需要 12+□ 是 9 的倍数（□ 为 0～9 的整数）',
+          MV.C.blue
+        ),
+        1
+      ) +
+      MV.fragDiv(
+        MV.step(
+          '9 的倍数列表：9, 18, 27 …<br>' +
+          '12 + □ = 9 → □ = −3（❌ 不合法）<br>' +
+          '12 + □ = 18 → □ = <b style="color:#e74c3c">6</b> ✅<br>' +
+          '12 + □ = 27 → □ = 15（❌ 超出一位数）',
+          MV.C.green
+        ),
+        2
+      ) +
+      MV.fragDiv(
+        MV.tip('答：□ = <b>6</b>&emsp;验算：468 ÷ 9 = 52，余数 = 0 ✅'),
+        3
+      );
+  })();
+
+  // ── S9: Example 4 — Σn² mod 3 ────────────────────────────────────
+  document.getElementById('s9-ex4').innerHTML =
+    MV.step(
+      '题目：<b>1²+2²+3²+…+10²</b> 除以 3 余几？<br>' +
+      '思路：找余数的周期规律，再逐步累加。',
+      MV.C.blue
+    ) +
+    MV.fragDiv(
+      MV.step(
+        '<b>① n mod 3 的规律（周期 3）：</b><br>' +
+        'n：&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;2&nbsp;&nbsp;3&nbsp;&nbsp;4&nbsp;&nbsp;5&nbsp;&nbsp;6&nbsp;&nbsp;7&nbsp;&nbsp;8&nbsp;&nbsp;9&nbsp;&nbsp;10<br>' +
+        'n mod 3：<span class="kw3">1</span>&nbsp;&nbsp;<span class="kw3">2</span>&nbsp;&nbsp;<span class="kw2">0</span>&nbsp;|&nbsp;<span class="kw3">1</span>&nbsp;&nbsp;<span class="kw3">2</span>&nbsp;&nbsp;<span class="kw2">0</span>&nbsp;|&nbsp;<span class="kw3">1</span>&nbsp;&nbsp;<span class="kw3">2</span>&nbsp;&nbsp;<span class="kw2">0</span>&nbsp;|&nbsp;<span class="kw3">1</span>',
+        MV.C.blue
+      ),
+      1
+    ) +
+    MV.fragDiv(
+      MV.step(
+        '<b>② n² mod 3 的规律：</b><br>' +
+        'n mod 3 = 1 → n² mod 3 = 1²=1，mod 3 = <span class="kw3">1</span><br>' +
+        'n mod 3 = 2 → n² mod 3 = 2²=4，mod 3 = <span class="kw3">1</span><br>' +
+        'n mod 3 = 0 → n² mod 3 = 0²=0，mod 3 = <span class="kw2">0</span><br>' +
+        '每 3 个连续整数的平方 mod 3 之和 = 1+1+0 = <b>2</b>',
+        MV.C.orange
+      ),
+      2
+    ) +
+    MV.fragDiv(
+      MV.step(
+        '<b>③ 计算总和：</b><br>' +
+        '1²~9²（共 3 组）：3 × 2 = 6，6 mod 3 = <span class="kw2">0</span><br>' +
+        '加上 10²：10 mod 3=1，1²=1，mod 3 = <span class="kw3">1</span><br>' +
+        '<b>最终：(0 + 1) mod 3 = <span style="color:#e74c3c;font-size:1.1em">1</span></b>',
+        MV.C.green
+      ),
+      3
+    ) +
+    MV.fragDiv(
+      MV.tip('验算：1+4+9+16+25+36+49+64+81+100 = 385，385÷3=128 … <b>1</b> ✅'),
+      4
+    );
+
+  // ── S10: Practice ──────────────────────────────────────────────────
+  document.getElementById('s10-prac').innerHTML =
+    '<div style="font-size:.85em;color:#888;margin-bottom:10px">先独立思考，再点击显示答案 →</div>' +
+    MV.step(
+      '1. <b>2347 ÷ 9</b> 余几？<br>' +
+      '答：' + MV.frag('<b class="kw3">7</b>（2+3+4+7=16，16÷9=1余7）', 1),
+      MV.C.blue
+    ) +
+    MV.step(
+      '2. <b>13 × 29</b> 除以 <b>4</b> 余几？<br>' +
+      '答：' + MV.frag('<b class="kw3">1</b>（13 mod 4=1，29 mod 4=1，1×1=1&lt;4）', 2),
+      MV.C.blue
+    ) +
+    MV.step(
+      '3. <b>3□6</b> 能被 9 整除，□ = ？<br>' +
+      '答：' + MV.frag('<b class="kw3">□ = 0</b>（3+□+6=9+□，需为9，故□=0）', 3),
+      MV.C.orange
+    ) +
+    MV.step(
+      '4. <b>49 × 51</b> 除以 <b>6</b> 余几？<br>' +
+      '答：' + MV.frag('<b class="kw3">3</b>（49 mod 6=1，51 mod 6=3，1×3=3&lt;6）', 4),
+      MV.C.orange
+    );
+
+});
+</script>
+</body>
+</html>
