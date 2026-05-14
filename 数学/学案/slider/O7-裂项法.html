@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数O7 · 裂项法</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.hl-o{color:#e67e22;font-weight:bold}
+.hl-b{color:#2980b9;font-weight:bold}
+.hl-g{color:#27ae60;font-weight:bold}
+.hl-r{color:#e74c3c;font-weight:bold}
+.hl-p{color:#8e44ad;font-weight:bold}
+.hl-t{color:#1abc9c;font-weight:bold}
+.eq-row{display:flex;align-items:center;justify-content:center;gap:8px;
+        flex-wrap:wrap;margin:8px 0;font-size:1em}
+.term-box{display:inline-block;border:2.5px solid;border-radius:8px;
+          padding:4px 10px;text-align:center;min-width:46px;vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+  <section id="s01"></section>
+  <section id="s02"></section>
+  <section id="s03"></section>
+  <section id="s04"></section>
+  <section id="s05"></section>
+  <section id="s06"></section>
+  <section id="s07"></section>
+  <section id="s08"></section>
+  <section id="s09"></section>
+  <section id="s10"></section>
+  <section id="s11"></section>
+  <section id="s12"></section>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+  var C = MV.C;
+  function F(n, d) { return MV.frac(n, d); }
+
+  /* ──────────────────────────────────────────
+     SVG: telescoping chain (1-½)+(½-⅓)+(⅓-¼)
+     Each "value" is a colored rectangle box.
+     Colors: 1=green, ½=orange, ⅓=purple, ¼=red
+     Fragment 1 → highlights matching pairs (cancellation)
+     Fragment 2 → dims middle terms, reveals result
+  ────────────────────────────────────────── */
+  function telescopeSVG3() {
+    var BW=72, BH=58, gap=4, topY=50;
+    var cols  = [C.green, C.orange, C.orange, C.purple, C.purple, C.red];
+    var signs = ['',      '−',      '+',       '−',      '+',     '−'];
+    var labels= ['1',    '½',       '½',       '⅓',      '⅓',    '¼'];
+    var bgcols= [C.lgreen,'#fdebd0','#fdebd0','#e8daef','#e8daef','#fde8e8'];
+    var n = 6;
+    // x start positions: signs consume ~20px each except first
+    var xs = [];
+    var cx = 20;
+    for (var i=0; i<n; i++) {
+      if (signs[i]) cx += 28;
+      xs.push(cx);
+      cx += BW + gap;
+    }
+    var W = cx + 40;
+    var H = topY + BH + 90;
+    var s = '';
+
+    // ── Group bracket lines (parentheses groups) ──
+    var groups = [[0,1],[2,3],[4,5]];
+    groups.forEach(function(g) {
+      var x0 = xs[g[0]]-8, x1 = xs[g[1]]+BW+8;
+      var by = topY + BH + 10;
+      s += '<line x1="'+x0+'" y1="'+(topY-8)+'" x2="'+x0+'" y2="'+(topY+BH+6)+'" stroke="#ccc" stroke-width="1.5"/>';
+      s += '<line x1="'+x0+'" y1="'+(topY+BH+6)+'" x2="'+x1+'" y2="'+(topY+BH+6)+'" stroke="#ccc" stroke-width="1.5"/>';
+      s += '<line x1="'+x1+'" y1="'+(topY-8)+'" x2="'+x1+'" y2="'+(topY+BH+6)+'" stroke="#ccc" stroke-width="1.5"/>';
+    });
+    // + between groups
+    var gpX = [xs[1]+BW+gap+10, xs[3]+BW+gap+10];
+    gpX.forEach(function(gx) {
+      s += '<text x="'+gx+'" y="'+(topY+BH/2+8)+'" text-anchor="middle" font-size="22" fill="#888">+</text>';
+    });
+
+    // ── Draw each term box ──
+    for (var i=0; i<n; i++) {
+      var x=xs[i], cl=cols[i], bg=bgcols[i];
+      if (signs[i]) {
+        s += '<text x="'+(x-14)+'" y="'+(topY+BH/2+8)+'" text-anchor="middle" font-size="22" fill="'+cl+'">'+signs[i]+'</text>';
+      }
+      s += '<rect x="'+x+'" y="'+topY+'" width="'+BW+'" height="'+BH+'" rx="7" fill="'+bg+'" stroke="'+cl+'" stroke-width="2.5"/>';
+      s += '<text x="'+(x+BW/2)+'" y="'+(topY+BH/2+9)+'" text-anchor="middle" font-size="24" fill="'+cl+'" font-weight="bold">'+labels[i]+'</text>';
+    }
+
+    // ── Fragment 1: highlight matching (½,½) and (⅓,⅓) pairs ──
+    var f1 = '';
+    // Connect the two orange ½ boxes
+    var ox1=xs[1], ox2=xs[2];
+    f1 += '<rect x="'+(ox1-4)+'" y="'+(topY-4)+'" width="'+(BW+8)+'" height="'+(BH+8)+'" rx="9" fill="none" stroke="'+C.orange+'" stroke-width="3.5" stroke-dasharray="6,3"/>';
+    f1 += '<rect x="'+(ox2-4)+'" y="'+(topY-4)+'" width="'+(BW+8)+'" height="'+(BH+8)+'" rx="9" fill="none" stroke="'+C.orange+'" stroke-width="3.5" stroke-dasharray="6,3"/>';
+    // curved connector above
+    var omx = (ox1+ox2+BW)/2;
+    f1 += '<path d="M'+(ox1+BW/2)+','+(topY-4)+' Q'+omx+','+(topY-30)+' '+(ox2+BW/2)+','+(topY-4)+'" fill="none" stroke="'+C.orange+'" stroke-width="2" stroke-dasharray="5,3"/>';
+    f1 += '<text x="'+omx+'" y="'+(topY-32)+'" text-anchor="middle" font-size="13" fill="'+C.orange+'" font-weight="bold">相消！</text>';
+
+    // Connect the two purple ⅓ boxes
+    var px1=xs[3], px2=xs[4];
+    f1 += '<rect x="'+(px1-4)+'" y="'+(topY-4)+'" width="'+(BW+8)+'" height="'+(BH+8)+'" rx="9" fill="none" stroke="'+C.purple+'" stroke-width="3.5" stroke-dasharray="6,3"/>';
+    f1 += '<rect x="'+(px2-4)+'" y="'+(topY-4)+'" width="'+(BW+8)+'" height="'+(BH+8)+'" rx="9" fill="none" stroke="'+C.purple+'" stroke-width="3.5" stroke-dasharray="6,3"/>';
+    var pmx = (px1+px2+BW)/2;
+    f1 += '<path d="M'+(px1+BW/2)+','+(topY+BH+4)+' Q'+pmx+','+(topY+BH+30)+' '+(px2+BW/2)+','+(topY+BH+4)+'" fill="none" stroke="'+C.purple+'" stroke-width="2" stroke-dasharray="5,3"/>';
+    f1 += '<text x="'+pmx+'" y="'+(topY+BH+44)+'" text-anchor="middle" font-size="13" fill="'+C.purple+'" font-weight="bold">相消！</text>';
+    s += '<g class="fragment" data-fragment-index="1">'+f1+'</g>';
+
+    // ── Fragment 2: dim boxes 1-4, show = 1 − ¼ = ¾ ──
+    var f2 = '';
+    var dimX1 = xs[1]-6, dimX2 = xs[4]+BW+6;
+    f2 += '<rect x="'+dimX1+'" y="'+(topY-8)+'" width="'+(dimX2-dimX1)+'" height="'+(BH+16)+'" fill="white" opacity="0.82"/>';
+    f2 += '<text x="'+((dimX1+dimX2)/2)+'" y="'+(topY+BH/2+8)+'" text-anchor="middle" font-size="16" fill="#bbb">（已相消）</text>';
+
+    // result: = 1 − ¼ = ¾  placed to the right
+    var rx = xs[5]+BW+20;
+    f2 += '<text x="'+rx+'" y="'+(topY+BH/2+8)+'" font-size="22" fill="#333">= 1 −</text>';
+    // inline ¼
+    f2 += '<text x="'+(rx+72)+'" y="'+(topY+BH/2-4)+'" text-anchor="middle" font-size="16" fill="'+C.red+'" font-weight="bold">1</text>';
+    f2 += '<line x1="'+(rx+60)+'" y1="'+(topY+BH/2+6)+'" x2="'+(rx+84)+'" y2="'+(topY+BH/2+6)+'" stroke="'+C.red+'" stroke-width="1.5"/>';
+    f2 += '<text x="'+(rx+72)+'" y="'+(topY+BH/2+22)+'" text-anchor="middle" font-size="16" fill="'+C.red+'" font-weight="bold">4</text>';
+    f2 += '<text x="'+(rx+100)+'" y="'+(topY+BH/2+8)+'" font-size="22" fill="#333">= </text>';
+    // inline ¾ result
+    f2 += '<text x="'+(rx+132)+'" y="'+(topY+BH/2-4)+'" text-anchor="middle" font-size="18" fill="'+C.blue+'" font-weight="bold">3</text>';
+    f2 += '<line x1="'+(rx+120)+'" y1="'+(topY+BH/2+6)+'" x2="'+(rx+144)+'" y2="'+(topY+BH/2+6)+'" stroke="'+C.blue+'" stroke-width="2"/>';
+    f2 += '<text x="'+(rx+132)+'" y="'+(topY+BH/2+24)+'" text-anchor="middle" font-size="18" fill="'+C.blue+'" font-weight="bold">4</text>';
+    s += '<g class="fragment" data-fragment-index="2">'+f2+'</g>';
+
+    return MV.svg(W, H, s, 'style="overflow:visible"');
+  }
+
+  /* ──────────────────────────────────────────
+     SVG: generic n-term telescoping chain
+     terms: [{val, color}] alternating signs − + − + …
+     Used for the "large sum" visualization
+  ────────────────────────────────────────── */
+  function bigSumSVG() {
+    var W=680, H=110, BW=54, BH=48, topY=28;
+    var items = [
+      {v:'1', c:C.green},  {v:'½', c:C.orange},
+      {v:'½', c:C.orange}, {v:'⅓', c:C.purple},
+      {v:'…', c:'#aaa'},   {v:'…', c:'#aaa'},
+      {v:'1/9',c:C.teal},  {v:'1/10',c:C.red}
+    ];
+    var signs=['','−','+','−','…','…','+','−'];
+    var s='';
+    var cx=10;
+    for (var i=0; i<items.length; i++) {
+      var it=items[i];
+      if (signs[i]) { s+='<text x="'+(cx)+'" y="'+(topY+BH/2+8)+'" font-size="17" fill="'+it.c+'">'+signs[i]+'</text>'; cx+=18; }
+      s+='<rect x="'+cx+'" y="'+topY+'" width="'+BW+'" height="'+BH+'" rx="6" fill="white" stroke="'+it.c+'" stroke-width="2"/>';
+      s+='<text x="'+(cx+BW/2)+'" y="'+(topY+BH/2+7)+'" text-anchor="middle" font-size="15" fill="'+it.c+'" font-weight="bold">'+it.v+'</text>';
+      cx+=BW+4;
+    }
+    // = 1 − 1/10
+    s+='<text x="'+(cx+4)+'" y="'+(topY+BH/2+8)+'" font-size="20" fill="#333">= 1 −</text>';
+    s+='<text x="'+(cx+70)+'" y="'+(topY+BH/2-2)+'" text-anchor="middle" font-size="14" fill="'+C.red+'" font-weight="bold">1</text>';
+    s+='<line x1="'+(cx+60)+'" y1="'+(topY+BH/2+6)+'" x2="'+(cx+80)+'" y2="'+(topY+BH/2+6)+'" stroke="'+C.red+'" stroke-width="1.5"/>';
+    s+='<text x="'+(cx+70)+'" y="'+(topY+BH/2+20)+'" text-anchor="middle" font-size="14" fill="'+C.red+'" font-weight="bold">10</text>';
+    s+='<text x="'+(cx+92)+'" y="'+(topY+BH/2+8)+'" font-size="20" fill="#333">=</text>';
+    s+='<text x="'+(cx+110)+'" y="'+(topY+BH/2+8)+'" font-size="22" fill="'+C.blue+'" font-weight="bold">9/10</text>';
+    return MV.svg(W, H, s, 'style="overflow:visible"');
+  }
+
+  /* ──────────────────────────────────────────
+     SVG: advanced model  2/[n(n+2)] boxes
+     Shows (1-1/3)+(1/3-1/5)+(1/5-1/7)
+  ────────────────────────────────────────── */
+  function advancedSVG() {
+    var BW=66, BH=54, topY=44, gap=4;
+    var cols  = [C.green, C.orange, C.orange, C.purple, C.purple, C.red];
+    var signs = ['',      '−',      '+',      '−',      '+',      '−'];
+    var labels= ['1',    '⅓',      '⅓',      '⅕',      '⅕',     '⅐'];
+    var bgcols= [C.lgreen,'#fdebd0','#fdebd0','#e8daef','#e8daef','#fde8e8'];
+    var n=6;
+    var xs=[];
+    var cx=14;
+    for (var i=0; i<n; i++) {
+      if (signs[i]) cx+=26;
+      xs.push(cx);
+      cx+=BW+gap;
+    }
+    var W=cx+120, H=topY+BH+70;
+    var s='';
+    // group brackets
+    var groups=[[0,1],[2,3],[4,5]];
+    groups.forEach(function(g) {
+      var x0=xs[g[0]]-6, x1=xs[g[1]]+BW+6;
+      s+='<line x1="'+x0+'" y1="'+(topY-6)+'" x2="'+x0+'" y2="'+(topY+BH+4)+'" stroke="#ccc" stroke-width="1.5"/>';
+      s+='<line x1="'+x0+'" y1="'+(topY+BH+4)+'" x2="'+x1+'" y2="'+(topY+BH+4)+'" stroke="#ccc" stroke-width="1.5"/>';
+      s+='<line x1="'+x1+'" y1="'+(topY-6)+'" x2="'+x1+'" y2="'+(topY+BH+4)+'" stroke="#ccc" stroke-width="1.5"/>';
+    });
+    [xs[1]+BW+gap+8, xs[3]+BW+gap+8].forEach(function(gx) {
+      s+='<text x="'+gx+'" y="'+(topY+BH/2+8)+'" text-anchor="middle" font-size="20" fill="#888">+</text>';
+    });
+    for (var i=0; i<n; i++) {
+      if (signs[i]) s+='<text x="'+(xs[i]-13)+'" y="'+(topY+BH/2+8)+'" text-anchor="middle" font-size="20" fill="'+cols[i]+'">'+signs[i]+'</text>';
+      s+='<rect x="'+xs[i]+'" y="'+topY+'" width="'+BW+'" height="'+BH+'" rx="7" fill="'+bgcols[i]+'" stroke="'+cols[i]+'" stroke-width="2.5"/>';
+      s+='<text x="'+(xs[i]+BW/2)+'" y="'+(topY+BH/2+9)+'" text-anchor="middle" font-size="22" fill="'+cols[i]+'" font-weight="bold">'+labels[i]+'</text>';
+    }
+    // Fragment 1: cancellations
+    var f1='';
+    [[1,2,C.orange,'相消！',true],[3,4,C.purple,'相消！',false]].forEach(function(pair) {
+      var i1=pair[0],i2=pair[1],cl=pair[2],lbl=pair[3],above=pair[4];
+      f1+='<rect x="'+(xs[i1]-4)+'" y="'+(topY-4)+'" width="'+(BW+8)+'" height="'+(BH+8)+'" rx="9" fill="none" stroke="'+cl+'" stroke-width="3.5" stroke-dasharray="6,3"/>';
+      f1+='<rect x="'+(xs[i2]-4)+'" y="'+(topY-4)+'" width="'+(BW+8)+'" height="'+(BH+8)+'" rx="9" fill="none" stroke="'+cl+'" stroke-width="3.5" stroke-dasharray="6,3"/>';
+      var mx=(xs[i1]+xs[i2]+BW)/2;
+      if (above) {
+        f1+='<path d="M'+(xs[i1]+BW/2)+','+(topY-4)+' Q'+mx+','+(topY-28)+' '+(xs[i2]+BW/2)+','+(topY-4)+'" fill="none" stroke="'+cl+'" stroke-width="2" stroke-dasharray="5,3"/>';
+        f1+='<text x="'+mx+'" y="'+(topY-30)+'" text-anchor="middle" font-size="12" fill="'+cl+'" font-weight="bold">'+lbl+'</text>';
+      } else {
+        f1+='<path d="M'+(xs[i1]+BW/2)+','+(topY+BH+4)+' Q'+mx+','+(topY+BH+26)+' '+(xs[i2]+BW/2)+','+(topY+BH+4)+'" fill="none" stroke="'+cl+'" stroke-width="2" stroke-dasharray="5,3"/>';
+        f1+='<text x="'+mx+'" y="'+(topY+BH+40)+'" text-anchor="middle" font-size="12" fill="'+cl+'" font-weight="bold">'+lbl+'</text>';
+      }
+    });
+    s+='<g class="fragment" data-fragment-index="1">'+f1+'</g>';
+    // Fragment 2: result
+    var f2='';
+    var dx1=xs[1]-6, dx2=xs[4]+BW+6;
+    f2+='<rect x="'+dx1+'" y="'+(topY-8)+'" width="'+(dx2-dx1)+'" height="'+(BH+16)+'" fill="white" opacity="0.85"/>';
+    f2+='<text x="'+((dx1+dx2)/2)+'" y="'+(topY+BH/2+8)+'" text-anchor="middle" font-size="14" fill="#bbb">（已消）</text>';
+    var rx=xs[5]+BW+16;
+    f2+='<text x="'+rx+'" y="'+(topY+BH/2+8)+'" font-size="20" fill="#333">= 1 −</text>';
+    f2+='<text x="'+(rx+68)+'" y="'+(topY+BH/2-2)+'" text-anchor="middle" font-size="15" fill="'+C.red+'" font-weight="bold">1</text>';
+    f2+='<line x1="'+(rx+57)+'" y1="'+(topY+BH/2+6)+'" x2="'+(rx+79)+'" y2="'+(topY+BH/2+6)+'" stroke="'+C.red+'" stroke-width="1.5"/>';
+    f2+='<text x="'+(rx+68)+'" y="'+(topY+BH/2+22)+'" text-anchor="middle" font-size="15" fill="'+C.red+'" font-weight="bold">7</text>';
+    f2+='<text x="'+(rx+96)+'" y="'+(topY+BH/2+8)+'" font-size="20" fill="#333">= </text>';
+    f2+='<text x="'+(rx+118)+'" y="'+(topY+BH/2+8)+'" font-size="22" fill="'+C.blue+'" font-weight="bold">6/7</text>';
+    s+='<g class="fragment" data-fragment-index="2">'+f2+'</g>';
+    return MV.svg(W, H, s, 'style="overflow:visible"');
+  }
+
+  /* ══════════════════════════════════════════
+     SLIDE 1 — Cover
+  ══════════════════════════════════════════ */
+  document.getElementById('s01').innerHTML = ''
+    + '<div style="color:#888;font-size:.8em;margin-bottom:8px">六年级 · 奥数计算模块 A2</div>'
+    + '<h1 style="font-size:1.9em;color:'+C.blue+';margin:.1em 0">裂项法</h1>'
+    + '<h2 style="font-size:1.05em;color:#555;font-weight:normal;margin:.25em 0">奥数学案 O7</h2>'
+    + '<p style="color:#666;font-size:.9em;margin:.5em 0">把每一项拆成两项之差，让中间部分自动消去</p>'
+    + '<div style="margin:18px auto;text-align:center;font-size:1.1em">'
+    +   '<div style="margin-bottom:8px">'
+    +     F(1,'1×2')+' + '+F(1,'2×3')+' + '+F(1,'3×4')+' + ··· '
+    +   '</div>'
+    +   MV.frag(
+          '<div style="margin-top:8px">'
+          + '= (1 − '+F(1,2)+') + ('+F(1,2)+' − '+F(1,3)+') + ('+F(1,3)+' − '+F(1,4)+') + ···'
+          + '</div>', 1)
+    +   MV.frag(
+          '<div style="margin-top:8px;font-size:1.2em;color:'+C.red+'"><b>只剩首尾！</b></div>', 2)
+    + '</div>'
+    + MV.tip('关键：找到结构 → 裂项 → 观察中间哪些项相消 → 只留首尾');
+
+  /* ══════════════════════════════════════════
+     SLIDE 2 — 核心公式
+  ══════════════════════════════════════════ */
+  document.getElementById('s02').innerHTML = ''
+    + '<h2 style="color:'+C.blue+'">📐 核心公式</h2>'
+    + '<div style="text-align:center;margin:16px 0">'
+    +   MV.step(
+          '<span style="font-size:1.2em">'
+          + F(1,'n(n+1)')+' &nbsp;=&nbsp; '+F(1,'n')+' &nbsp;−&nbsp; '+F(1,'n+1')
+          + '</span>', C.blue)
+    + '</div>'
+    + MV.tip('把一项拆成"大 − 小"的形式，让相邻项之间的正负部分配对消去')
+    + '<div style="margin:14px 0;font-size:.95em">'
+    +   '<div style="margin-bottom:8px"><b>常见的裂项对象：</b></div>'
+    +   '<div class="eq-row" style="gap:16px">'
+    +     '<div class="term-box" style="border-color:'+C.blue+';color:'+C.blue+'">'
+    +       F(1,'1×2')
+    +     '</div>'
+    +     '<span style="font-size:1.5em;color:#aaa">→</span>'
+    +     '<div class="term-box" style="border-color:'+C.green+';color:'+C.green+'">'
+    +       '1 − '+F(1,2)
+    +     '</div>'
+    +   '</div>'
+    +   '<div class="eq-row" style="gap:16px;margin-top:8px">'
+    +     '<div class="term-box" style="border-color:'+C.blue+';color:'+C.blue+'">'
+    +       F(1,'2×3')
+    +     '</div>'
+    +     '<span style="font-size:1.5em;color:#aaa">→</span>'
+    +     '<div class="term-box" style="border-color:'+C.green+';color:'+C.green+'">'
+    +       F(1,2)+' − '+F(1,3)
+    +     '</div>'
+    +   '</div>'
+    +   '<div class="eq-row" style="gap:16px;margin-top:8px">'
+    +     '<div class="term-box" style="border-color:'+C.blue+';color:'+C.blue+'">'
+    +       F(1,'n(n+1)')
+    +     '</div>'
+    +     '<span style="font-size:1.5em;color:#aaa">→</span>'
+    +     '<div class="term-box" style="border-color:'+C.green+';color:'+C.green+'">'
+    +       F(1,'n')+' − '+F(1,'n+1')
+    +     '</div>'
+    +   '</div>'
+    + '</div>';
+
+  /* ══════════════════════════════════════════
+     SLIDE 3 — 公式验证
+  ══════════════════════════════════════════ */
+  document.getElementById('s03').innerHTML = ''
+    + '<h2 style="color:'+C.orange+'">🔍 验证公式正确性</h2>'
+    + '<div style="text-align:center;margin:10px 0;font-size:1em">'
+    +   '需验证：&nbsp;'+F(1,'n')+'&nbsp;−&nbsp;'+F(1,'n+1')+'&nbsp;=&nbsp;'+F(1,'n(n+1)')
+    + '</div>'
+    + MV.fragDiv(
+        MV.step(
+          '<b>通分：</b><br>'
+          + F(1,'n')+' − '+F(1,'n+1')
+          +' = '+F('n+1','n(n+1)')+' − '+F('n','n(n+1)')
+        , C.blue), 1)
+    + MV.fragDiv(
+        MV.step(
+          '<b>合并：</b><br>'
+          + '= '+F('(n+1)−n','n(n+1)')
+          +' = '+F(1,'n(n+1)')+' ✓'
+        , C.green), 2)
+    + MV.fragDiv(
+        MV.tip('<b>结论：</b>公式成立，分子的 n+1−n=1 正好是分子 1 ✓'), 3)
+    + MV.warn('注意裂项顺序：必须是大的减小的，即 &nbsp;'+F(1,'n')+'&nbsp;−&nbsp;'+F(1,'n+1')+'，不能写反！');
+
+  /* ══════════════════════════════════════════
+     SLIDE 4 — 望远镜原理可视化
+  ══════════════════════════════════════════ */
+  document.getElementById('s04').innerHTML = ''
+    + '<h2 style="color:'+C.blue+'">🔭 望远镜原理</h2>'
+    + MV.tip('中间项一对一抵消，最终只剩<strong>第一项的正部分</strong>和<strong>最后一项的负部分</strong>')
+    + '<div id="tele-svg" style="text-align:center;margin:10px 0;overflow-x:auto"></div>'
+    + '<div style="font-size:.9em;margin-top:6px">'
+    +   MV.fragDiv(
+          '<div class="eq-row">'
+          + '<span>① <span class="hl-o">−½</span> 与 <span class="hl-o">+½</span> 是一对，互相消去</span>'
+          + '</div>'
+          + '<div class="eq-row">'
+          + '<span>② <span class="hl-p">−⅓</span> 与 <span class="hl-p">+⅓</span> 是一对，互相消去</span>'
+          + '</div>', 1)
+    +   MV.fragDiv(
+          MV.step('结果只剩：1 − ¼ = <span class="hl-r" style="font-size:1.2em">¾</span>', C.red), 2)
+    + '</div>';
+
+  document.getElementById('tele-svg').innerHTML = telescopeSVG3();
+
+  /* ══════════════════════════════════════════
+     SLIDE 5 — 例1 基本裂项求和
+  ══════════════════════════════════════════ */
+  document.getElementById('s05').innerHTML = ''
+    + '<h2 style="color:'+C.green+'">例1：基本裂项求和</h2>'
+    + '<div style="text-align:center;font-size:1em;margin:8px 0">'
+    +   '计算&nbsp;'+F(1,'1×2')+' + '+F(1,'2×3')+' + '+F(1,'3×4')
+    + '</div>'
+    + MV.fragDiv(
+        MV.step(
+          '<b>裂项：</b><br>'
+          + F(1,'1×2')+' = 1 − '+F(1,2)+'<br>'
+          + F(1,'2×3')+' = '+F(1,2)+' − '+F(1,3)+'<br>'
+          + F(1,'3×4')+' = '+F(1,3)+' − '+F(1,4)
+        , C.blue), 1)
+    + MV.fragDiv(
+        MV.step(
+          '<b>相加：</b><br>'
+          + '= (1 − '+F(1,2)+') + ('+F(1,2)+' − '+F(1,3)+') + ('+F(1,3)+' − '+F(1,4)+')'
+        , C.blue), 2)
+    + MV.fragDiv(
+        MV.step(
+          '<b>消去中间项：</b>&nbsp;'
+          + '<span class="hl-o">'+F(1,2)+'</span> 和 '
+          + '<span class="hl-o">'+F(1,2)+'</span> 消去，'
+          + '<span class="hl-p">'+F(1,3)+'</span> 和 '
+          + '<span class="hl-p">'+F(1,3)+'</span> 消去<br>'
+          + '= 1 − '+F(1,4)+' = <span class="hl-r" style="font-size:1.3em">'+F(3,4)+'</span>'
+        , C.red), 3)
+    + MV.fragDiv(
+        MV.tip('只看首尾：第一项裂出的"1"，最后一项裂出的"−'+F(1,4)+'"'), 4);
+
+  /* ══════════════════════════════════════════
+     SLIDE 6 — 例2 起点不是1
+  ══════════════════════════════════════════ */
+  document.getElementById('s06').innerHTML = ''
+    + '<h2 style="color:'+C.orange+'">例2：起点不是 1</h2>'
+    + '<div style="text-align:center;font-size:1em;margin:8px 0">'
+    +   '计算&nbsp;'+F(1,'3×4')+' + '+F(1,'4×5')+' + '+F(1,'5×6')
+    + '</div>'
+    + MV.fragDiv(
+        MV.step(
+          '<b>裂项：</b><br>'
+          + F(1,'3×4')+' = '+F(1,3)+' − '+F(1,4)+'<br>'
+          + F(1,'4×5')+' = '+F(1,4)+' − '+F(1,5)+'<br>'
+          + F(1,'5×6')+' = '+F(1,5)+' − '+F(1,6)
+        , C.blue), 1)
+    + MV.fragDiv(
+        MV.step(
+          '<b>相加消去中间项：</b><br>'
+          + '= ('+F(1,3)+' − '+F(1,4)+') + ('+F(1,4)+' − '+F(1,5)+') + ('+F(1,5)+' − '+F(1,6)+')<br>'
+          + '= '+F(1,3)+' − '+F(1,6)
+        , C.blue), 2)
+    + MV.fragDiv(
+        MV.step(
+          '= '+F(2,6)+' − '+F(1,6)+' = <span class="hl-r" style="font-size:1.3em">'+F(1,6)+'</span>'
+        , C.red), 3)
+    + MV.fragDiv(
+        MV.tip('规律：起点不是1也没关系，只看第一项的分子部分（'+F(1,3)+'）和最后一项的分母部分（'+F(1,6)+'）'), 4);
+
+  /* ══════════════════════════════════════════
+     SLIDE 7 — 例3 项数很多
+  ══════════════════════════════════════════ */
+  document.getElementById('s07').innerHTML = ''
+    + '<h2 style="color:'+C.blue+'">例3：项数很多时更显优势</h2>'
+    + '<div style="text-align:center;font-size:1em;margin:8px 0">'
+    +   '计算&nbsp;'+F(1,'1×2')+' + '+F(1,'2×3')+' + ··· + '+F(1,'9×10')
+    + '</div>'
+    + '<div id="bigsum-svg" style="text-align:center;margin:8px 0;overflow-x:auto"></div>'
+    + MV.fragDiv(
+        MV.step(
+          '<b>裂项（每项）：</b><br>'
+          + F(1,'k(k+1)')+' = '+F(1,'k')+' − '+F(1,'k+1')
+          +' （对 k = 1, 2, ..., 9 都成立）'
+        , C.blue), 1)
+    + MV.fragDiv(
+        MV.step(
+          '<b>相加：所有中间项两两消去</b><br>'
+          + '= (1 − '+F(1,2)+') + ('+F(1,2)+' − '+F(1,3)+') + ··· + ('+F(1,9)+' − '+F(1,10)+')<br>'
+          + '= 1 − '+F(1,10)+' = <span class="hl-r" style="font-size:1.3em">'+F(9,10)+'</span>'
+        , C.red), 2)
+    + MV.fragDiv(
+        MV.tip('若有 n 项（从 1×2 到 n×(n+1)），答案总是 1 − '+F(1,'n+1')+''), 3);
+
+  document.getElementById('bigsum-svg').innerHTML = bigSumSVG();
+
+  /* ══════════════════════════════════════════
+     SLIDE 8 — 进阶模型
+  ══════════════════════════════════════════ */
+  document.getElementById('s08').innerHTML = ''
+    + '<h2 style="color:'+C.purple+'">🚀 进阶模型</h2>'
+    + '<div style="text-align:center;margin:14px 0">'
+    +   MV.step(
+          '<span style="font-size:1.15em">'
+          + F(2,'n(n+2)')+' &nbsp;=&nbsp; '+F(1,'n')+' &nbsp;−&nbsp; '+F(1,'n+2')
+          + '</span>', C.purple)
+    + '</div>'
+    + MV.fragDiv(
+        MV.step(
+          '<b>验证：</b><br>'
+          + F(1,'n')+' − '+F(1,'n+2')
+          +' = '+F('n+2','n(n+2)')+' − '+F('n','n(n+2)')
+          +' = '+F('2','n(n+2)')+' ✓'
+        , C.blue), 1)
+    + MV.fragDiv(
+        '<div style="margin-top:10px;font-size:.92em">'
+        + '<b>与标准模型的对比：</b>'
+        + '<div class="eq-row" style="margin-top:8px;gap:24px">'
+        +   '<div><b>标准型</b>（相差1）：<br>'+F(1,'n(n+1)')+' = '+F(1,'n')+' − '+F(1,'n+1')+'</div>'
+        +   '<div><b>进阶型</b>（相差2）：<br>'+F(2,'n(n+2)')+' = '+F(1,'n')+' − '+F(1,'n+2')+'</div>'
+        + '</div>'
+        + '</div>', 2)
+    + MV.fragDiv(
+        MV.tip('看分母两因数相差几：相差1用标准型，相差2用进阶型，<br>分子也跟着变（1 或 2）'), 3);
+
+  /* ══════════════════════════════════════════
+     SLIDE 9 — 例4 进阶模型例题
+  ══════════════════════════════════════════ */
+  document.getElementById('s09').innerHTML = ''
+    + '<h2 style="color:'+C.purple+'">例4：进阶模型</h2>'
+    + '<div style="text-align:center;font-size:1em;margin:8px 0">'
+    +   '计算&nbsp;'+F(2,'1×3')+' + '+F(2,'3×5')+' + '+F(2,'5×7')
+    + '</div>'
+    + '<div id="adv-svg" style="text-align:center;margin:8px 0"></div>'
+    + MV.fragDiv(
+        MV.step(
+          '<b>识别模型：</b>分母两因数相差 2，用进阶型 '+F(2,'n(n+2)')+' = '+F(1,'n')+' − '+F(1,'n+2')+'<br>'
+          + F(2,'1×3')+' = 1 − '+F(1,3)+'<br>'
+          + F(2,'3×5')+' = '+F(1,3)+' − '+F(1,5)+'<br>'
+          + F(2,'5×7')+' = '+F(1,5)+' − '+F(1,7)
+        , C.purple), 1)
+    + MV.fragDiv(
+        MV.step(
+          '<b>消去中间项（⅓ 和 ⅕）：</b><br>'
+          + '= 1 − '+F(1,7)+' = <span class="hl-r" style="font-size:1.3em">'+F(6,7)+'</span>'
+        , C.red), 3);
+
+  document.getElementById('adv-svg').innerHTML = advancedSVG();
+
+  /* ══════════════════════════════════════════
+     SLIDE 10 — 例5 认识结构
+  ══════════════════════════════════════════ */
+  document.getElementById('s10').innerHTML = ''
+    + '<h2 style="color:'+C.teal+'">例5：认出隐藏的裂项结构</h2>'
+    + '<div style="text-align:center;font-size:1em;margin:8px 0">'
+    +   '计算&nbsp;'+F(1,2)+' + '+F(1,6)+' + '+F(1,12)+' + '+F(1,20)
+    + '</div>'
+    + MV.fragDiv(
+        MV.step(
+          '<b>观察分母：</b>'
+          + '2 = 1×2，&nbsp;6 = 2×3，&nbsp;12 = 3×4，&nbsp;20 = 4×5'
+        , C.teal), 1)
+    + MV.fragDiv(
+        MV.step(
+          '<b>改写为标准形式：</b><br>'
+          + F(1,2)+' = '+F(1,'1×2')+'，&nbsp;'
+          + F(1,6)+' = '+F(1,'2×3')+'，&nbsp;'
+          + F(1,12)+' = '+F(1,'3×4')+'，&nbsp;'
+          + F(1,20)+' = '+F(1,'4×5')
+        , C.blue), 2)
+    + MV.fragDiv(
+        MV.step(
+          '<b>裂项并消去：</b><br>'
+          + '= (1 − '+F(1,2)+') + ('+F(1,2)+' − '+F(1,3)+') + ('+F(1,3)+' − '+F(1,4)+') + ('+F(1,4)+' − '+F(1,5)+')<br>'
+          + '= 1 − '+F(1,5)+' = <span class="hl-r" style="font-size:1.3em">'+F(4,5)+'</span>'
+        , C.red), 3)
+    + MV.fragDiv(
+        MV.tip('<b>关键能力：</b>不只是会拆，还要能从普通分数中识别出 n(n+1) 的结构'), 4);
+
+  /* ══════════════════════════════════════════
+     SLIDE 11 — 解题方法 & 易错点
+  ══════════════════════════════════════════ */
+  document.getElementById('s11').innerHTML = ''
+    + '<h2 style="color:'+C.blue+'">🗒️ 解题方法 & 易错点</h2>'
+    + '<div style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:10px 0">'
+    + '<div style="flex:1;min-width:220px">'
+    +   '<b style="color:'+C.blue+'">四步解题法：</b>'
+    +   MV.step('① 看分母结构：相差1？相差2？', C.blue)
+    +   MV.step('② 套公式裂项（每项都写括号）', C.orange)
+    +   MV.step('③ 找相消对：同值一正一负消掉', C.green)
+    +   MV.step('④ 只留首尾，计算最终差值', C.red)
+    + '</div>'
+    + '<div style="flex:1;min-width:220px">'
+    +   '<b style="color:'+C.red+'">四大易错点：</b>'
+    +   MV.warn('裂项写反：必须大减小，'+F(1,'n')+' − '+F(1,'n+1')+'，不能反')
+    +   MV.warn('漏写括号：每个裂项后的结果都要加括号，防止符号出错')
+    +   MV.warn('消项后还剩"中间项"：仔细检查，相邻的同值应全部消去')
+    +   MV.warn('模型用错：看清分母两因子相差几，再选标准型或进阶型')
+    + '</div>'
+    + '</div>';
+
+  /* ══════════════════════════════════════════
+     SLIDE 12 — 练习题
+  ══════════════════════════════════════════ */
+  document.getElementById('s12').innerHTML = ''
+    + '<h2 style="color:'+C.blue+'">✏️ 分层练习</h2>'
+    + '<table style="width:100%;border-collapse:collapse;font-size:.88em;margin-top:6px">'
+    + '<thead><tr style="background:'+C.lblue+'">'
+    +   '<th style="padding:6px 10px;text-align:center;width:8%">组</th>'
+    +   '<th style="padding:6px 10px;text-align:center;width:8%">题</th>'
+    +   '<th style="padding:6px 10px;text-align:left">算式</th>'
+    +   '<th style="padding:6px 10px;text-align:center;width:18%">答案</th>'
+    + '</tr></thead>'
+    + '<tbody>'
+
+    // A1
+    + '<tr style="border-bottom:1px solid #eee">'
+    +   '<td style="padding:7px;text-align:center;color:'+C.green+'"><b>A</b></td>'
+    +   '<td style="padding:7px;text-align:center">1</td>'
+    +   '<td style="padding:7px">'+F(1,'1×2')+' + '+F(1,'2×3')+'</td>'
+    +   '<td style="padding:7px;text-align:center">'+MV.frag('<b class="hl-r">'+F(2,3)+'</b>', 1)+'</td>'
+    + '</tr>'
+
+    // A2
+    + '<tr style="border-bottom:1px solid #eee;background:#fafafa">'
+    +   '<td style="padding:7px;text-align:center;color:'+C.green+'"><b>A</b></td>'
+    +   '<td style="padding:7px;text-align:center">2</td>'
+    +   '<td style="padding:7px">'+F(1,'2×3')+' + '+F(1,'3×4')+' + '+F(1,'4×5')+'</td>'
+    +   '<td style="padding:7px;text-align:center">'+MV.frag('<b class="hl-r">'+F(3,10)+'</b>', 2)+'</td>'
+    + '</tr>'
+
+    // A3
+    + '<tr style="border-bottom:1px solid #eee">'
+    +   '<td style="padding:7px;text-align:center;color:'+C.green+'"><b>A</b></td>'
+    +   '<td style="padding:7px;text-align:center">3</td>'
+    +   '<td style="padding:7px">'+F(1,'1×2')+' + ··· + '+F(1,'19×20')+'</td>'
+    +   '<td style="padding:7px;text-align:center">'+MV.frag('<b class="hl-r">'+F(19,20)+'</b>', 3)+'</td>'
+    + '</tr>'
+
+    // B4
+    + '<tr style="border-bottom:1px solid #eee;background:#fafafa">'
+    +   '<td style="padding:7px;text-align:center;color:'+C.orange+'"><b>B</b></td>'
+    +   '<td style="padding:7px;text-align:center">4</td>'
+    +   '<td style="padding:7px">'+F(1,'5×6')+' + '+F(1,'6×7')+'</td>'
+    +   '<td style="padding:7px;text-align:center">'+MV.frag('<b class="hl-r">'+F(2,35)+'</b>', 4)+'</td>'
+    + '</tr>'
+
+    // B5
+    + '<tr style="border-bottom:1px solid #eee">'
+    +   '<td style="padding:7px;text-align:center;color:'+C.orange+'"><b>B</b></td>'
+    +   '<td style="padding:7px;text-align:center">5</td>'
+    +   '<td style="padding:7px">'+F(1,2)+' + '+F(1,6)+' + '+F(1,12)+'</td>'
+    +   '<td style="padding:7px;text-align:center">'+MV.frag('<b class="hl-r">'+F(3,4)+'</b>', 5)+'</td>'
+    + '</tr>'
+
+    // C6
+    + '<tr style="border-bottom:1px solid #eee;background:#fafafa">'
+    +   '<td style="padding:7px;text-align:center;color:'+C.purple+'"><b>C</b></td>'
+    +   '<td style="padding:7px;text-align:center">6</td>'
+    +   '<td style="padding:7px">'+F(2,'1×3')+' + '+F(2,'3×5')+'</td>'
+    +   '<td style="padding:7px;text-align:center">'+MV.frag('<b class="hl-r">'+F(4,5)+'</b>', 6)+'</td>'
+    + '</tr>'
+
+    // C7
+    + '<tr style="border-bottom:1px solid #eee">'
+    +   '<td style="padding:7px;text-align:center;color:'+C.purple+'"><b>C</b></td>'
+    +   '<td style="padding:7px;text-align:center">7</td>'
+    +   '<td style="padding:7px">'+F(2,'2×4')+' + '+F(2,'4×6')+' + '+F(2,'6×8')+'</td>'
+    +   '<td style="padding:7px;text-align:center">'+MV.frag('<b class="hl-r">'+F(3,8)+'</b>', 7)+'</td>'
+    + '</tr>'
+
+    // C8
+    + '<tr>'
+    +   '<td style="padding:7px;text-align:center;color:'+C.purple+'"><b>C</b></td>'
+    +   '<td style="padding:7px;text-align:center">8</td>'
+    +   '<td style="padding:7px">'+F(1,'3×4')+' + '+F(1,'4×5')+' + '+F(1,'5×6')+' + '+F(1,'6×7')+'</td>'
+    +   '<td style="padding:7px;text-align:center">'+MV.frag('<b class="hl-r">'+F(4,21)+'</b>', 8)+'</td>'
+    + '</tr>'
+
+    + '</tbody></table>'
+    + '<div style="font-size:.78em;color:#888;margin-top:8px;text-align:center">按空格键或→键逐一揭示答案</div>';
+
+});
+</script>
+</body>
+</html>

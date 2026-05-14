@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数O6 · 分数乘法巧算</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.hl-o{color:#e67e22;font-weight:bold}
+.hl-b{color:#2980b9;font-weight:bold}
+.hl-g{color:#27ae60;font-weight:bold}
+.hl-r{color:#e74c3c;font-weight:bold}
+.hl-p{color:#8e44ad;font-weight:bold}
+.strat-card{border:2.5px solid;border-radius:12px;padding:14px 18px;min-width:150px;
+            text-align:center;flex:1;max-width:190px}
+.flip-box{display:inline-flex;align-items:center;gap:14px;background:#f8f8f8;
+          border:2px solid #ccc;border-radius:10px;padding:10px 18px;margin:6px}
+.frac-pill{display:inline-block;border:2px solid;border-radius:8px;padding:3px 10px;
+           text-align:center;vertical-align:middle;min-width:50px}
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+  <section id="s01"></section>
+  <section id="s02"></section>
+  <section id="s03"></section>
+  <section id="s04"></section>
+  <section id="s05"></section>
+  <section id="s06"></section>
+  <section id="s07"></section>
+  <section id="s08"></section>
+  <section id="s09"></section>
+  <section id="s10"></section>
+  <section id="s11"></section>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+  var C = MV.C;
+  function F(n, d) { return MV.frac(n, d); }
+
+  /* ──────────────────────────────────────────
+     SVG helper: draw one fraction at (cx, numY/barY/denY)
+  ────────────────────────────────────────── */
+  function svgFrac(cx, numY, barY, denY, num, den, numCol, denCol) {
+    numCol = numCol || '#222'; denCol = denCol || '#222';
+    var barHalf = 28;
+    return ''
+      + '<text x="'+cx+'" y="'+numY+'" text-anchor="middle" font-size="27" fill="'+numCol+'" font-weight="bold">'+num+'</text>'
+      + '<line x1="'+(cx-barHalf)+'" y1="'+barY+'" x2="'+(cx+barHalf)+'" y2="'+barY+'" stroke="#444" stroke-width="2.5"/>'
+      + '<text x="'+cx+'" y="'+denY+'" text-anchor="middle" font-size="27" fill="'+denCol+'" font-weight="bold">'+den+'</text>';
+  }
+
+  /* ──────────────────────────────────────────
+     SVG: 25/32 × 16/15 × 12/5  cross-cancel round 1
+     Frac positions: cx1=85, cx2=255, cx3=425
+  ────────────────────────────────────────── */
+  function cancelSVG1() {
+    var W=530, H=190, nY=65, bY=83, dY=107;
+    var s = '<defs>'
+      + '<marker id="ao" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="'+C.orange+'"/></marker>'
+      + '<marker id="ab" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="'+C.blue+'"/></marker>'
+      + '</defs>';
+
+    // three fractions
+    s += svgFrac(85,  nY, bY, dY, '25', '32');
+    s += svgFrac(255, nY, bY, dY, '16', '15');
+    s += svgFrac(425, nY, bY, dY, '12',  '5');
+    // × signs
+    s += '<text x="170" y="'+(bY+8)+'" text-anchor="middle" font-size="28" fill="#aaa">×</text>';
+    s += '<text x="340" y="'+(bY+8)+'" text-anchor="middle" font-size="28" fill="#aaa">×</text>';
+
+    // ── Fragment 1: orange 25↔15, blue 16↔32 ──
+    var f1 = '';
+    // orange arrow 25→15
+    f1 += '<line x1="85" y1="'+(nY-10)+'" x2="246" y2="'+(dY+5)+'" stroke="'+C.orange+'" stroke-width="2.5" stroke-dasharray="7,3" marker-end="url(#ao)"/>';
+    f1 += '<text x="158" y="'+(dY+30)+'" text-anchor="middle" font-size="13" fill="'+C.orange+'" font-weight="bold">÷5</text>';
+    // blue arrow 16→32
+    f1 += '<line x1="255" y1="'+(nY-10)+'" x2="93" y2="'+(dY+5)+'" stroke="'+C.blue+'" stroke-width="2.5" stroke-dasharray="7,3" marker-end="url(#ab)"/>';
+    f1 += '<text x="175" y="'+(nY-16)+'" text-anchor="middle" font-size="13" fill="'+C.blue+'" font-weight="bold">÷16</text>';
+    // X marks
+    f1 += crossX(85,  nY, C.orange) + crossX(255, dY, C.orange);
+    f1 += crossX(255, nY, C.blue)   + crossX(85,  dY, C.blue);
+    // replacement values (offset beside the X)
+    f1 += '<text x="117" y="'+(nY-4)+'" font-size="16" fill="'+C.orange+'" font-weight="bold">→5</text>';
+    f1 += '<text x="287" y="'+(dY+20)+'" font-size="16" fill="'+C.orange+'" font-weight="bold">→3</text>';
+    f1 += '<text x="287" y="'+(nY-4)+'" font-size="16" fill="'+C.blue+'" font-weight="bold">→1</text>';
+    f1 += '<text x="117" y="'+(dY+20)+'" font-size="16" fill="'+C.blue+'" font-weight="bold">→2</text>';
+
+    s += '<g class="fragment" data-fragment-index="1">'+f1+'</g>';
+    return MV.svg(W, H, s, 'style="overflow:visible"');
+  }
+
+  /* X mark helper */
+  function crossX(cx, ty, col) {
+    var r=14;
+    return '<line x1="'+(cx-r)+'" y1="'+(ty-r)+'" x2="'+(cx+r)+'" y2="'+(ty+r)+'" stroke="'+col+'" stroke-width="3"/>'
+         + '<line x1="'+(cx+r)+'" y1="'+(ty-r)+'" x2="'+(cx-r)+'" y2="'+(ty+r)+'" stroke="'+col+'" stroke-width="3"/>';
+  }
+
+  /* ──────────────────────────────────────────
+     SVG: 5/2 × 1/3 × 12/5  cross-cancel round 2
+  ────────────────────────────────────────── */
+  function cancelSVG2() {
+    var W=480, H=185, nY=65, bY=83, dY=107;
+    var s = '<defs>'
+      + '<marker id="ag" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="'+C.green+'"/></marker>'
+      + '<marker id="ap" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="'+C.purple+'"/></marker>'
+      + '</defs>';
+
+    s += svgFrac(75,  nY, bY, dY,  '5', '2');
+    s += svgFrac(235, nY, bY, dY,  '1', '3');
+    s += svgFrac(395, nY, bY, dY, '12', '5');
+    s += '<text x="155" y="'+(bY+8)+'" text-anchor="middle" font-size="28" fill="#aaa">×</text>';
+    s += '<text x="315" y="'+(bY+8)+'" text-anchor="middle" font-size="28" fill="#aaa">×</text>';
+
+    // ── Fragment 1: green 5(num1) ↔ 5(den3) ──
+    var f1 = '';
+    f1 += '<line x1="75" y1="'+(nY-10)+'" x2="387" y2="'+(dY+5)+'" stroke="'+C.green+'" stroke-width="2.5" stroke-dasharray="7,3" marker-end="url(#ag)"/>';
+    f1 += '<text x="230" y="'+(dY+30)+'" text-anchor="middle" font-size="13" fill="'+C.green+'" font-weight="bold">÷5</text>';
+    f1 += crossX(75,  nY, C.green) + crossX(395, dY, C.green);
+    f1 += '<text x="108" y="'+(nY-4)+'" font-size="16" fill="'+C.green+'" font-weight="bold">→1</text>';
+    f1 += '<text x="428" y="'+(dY+20)+'" font-size="16" fill="'+C.green+'" font-weight="bold">→1</text>';
+    s += '<g class="fragment" data-fragment-index="1">'+f1+'</g>';
+
+    // ── Fragment 2: purple 12(num3) ↔ 3(den2) ──
+    var f2 = '';
+    f2 += '<line x1="395" y1="'+(nY-10)+'" x2="243" y2="'+(dY+5)+'" stroke="'+C.purple+'" stroke-width="2.5" stroke-dasharray="7,3" marker-end="url(#ap)"/>';
+    f2 += '<text x="320" y="'+(nY-18)+'" text-anchor="middle" font-size="13" fill="'+C.purple+'" font-weight="bold">÷3</text>';
+    f2 += crossX(395, nY, C.purple) + crossX(235, dY, C.purple);
+    f2 += '<text x="428" y="'+(nY-4)+'" font-size="16" fill="'+C.purple+'" font-weight="bold">→4</text>';
+    f2 += '<text x="267" y="'+(dY+20)+'" font-size="16" fill="'+C.purple+'" font-weight="bold">→1</text>';
+    s += '<g class="fragment" data-fragment-index="2">'+f2+'</g>';
+
+    // ── Fragment 3: final result ──
+    var f3 = '<text x="240" y="160" text-anchor="middle" font-size="22" fill="'+C.red+'" font-weight="bold">'
+      + '= ½ × 1 × 4 = ½ × 4 = <tspan font-size="26">2</tspan></text>';
+    s += '<g class="fragment" data-fragment-index="3">'+f3+'</g>';
+
+    return MV.svg(W, H, s, 'style="overflow:visible"');
+  }
+
+  /* ──────────────────────────────────────────
+     SVG: division-to-multiplication "flip"
+     Shows 3/4 → flip → 4/3
+  ────────────────────────────────────────── */
+  function flipSVG() {
+    var W=380, H=130, cy=65;
+    var s = '';
+    // Before: 3/4
+    s += '<rect x="20" y="20" width="90" height="90" rx="10" fill="'+C.lblue+'" stroke="'+C.blue+'" stroke-width="2"/>';
+    s += '<text x="65" y="55" text-anchor="middle" font-size="26" fill="'+C.blue+'" font-weight="bold">3</text>';
+    s += '<line x1="34" y1="65" x2="96" y2="65" stroke="'+C.blue+'" stroke-width="2.5"/>';
+    s += '<text x="65" y="98" text-anchor="middle" font-size="26" fill="'+C.blue+'" font-weight="bold">4</text>';
+    s += '<text x="65" y="120" text-anchor="middle" font-size="12" fill="#888">除数</text>';
+
+    // Arrow + flip label
+    s += '<text x="153" y="'+cy+'" text-anchor="middle" font-size="32" fill="'+C.orange+'">→</text>';
+    s += '<text x="153" y="'+(cy+22)+'" text-anchor="middle" font-size="12" fill="'+C.orange+'" font-weight="bold">取倒数</text>';
+
+    // After: 4/3
+    s += '<g class="fragment" data-fragment-index="1">';
+    s += '<rect x="220" y="20" width="90" height="90" rx="10" fill="'+C.lgreen+'" stroke="'+C.green+'" stroke-width="2"/>';
+    s += '<text x="265" y="55" text-anchor="middle" font-size="26" fill="'+C.green+'" font-weight="bold">4</text>';
+    s += '<line x1="234" y1="65" x2="296" y2="65" stroke="'+C.green+'" stroke-width="2.5"/>';
+    s += '<text x="265" y="98" text-anchor="middle" font-size="26" fill="'+C.green+'" font-weight="bold">3</text>';
+    s += '<text x="265" y="120" text-anchor="middle" font-size="12" fill="#888">乘以倒数</text>';
+    // curved arrow hint
+    s += '<path d="M110,30 Q165,-10 220,30" fill="none" stroke="'+C.orange+'" stroke-width="2" stroke-dasharray="5,3"/>';
+    s += '<polygon points="220,30 210,20 224,22" fill="'+C.orange+'"/>';
+    s += '</g>';
+
+    return MV.svg(W, H, s, 'style="overflow:visible"');
+  }
+
+  /* ══════════════════════════════════════════
+     SLIDE 1 — Cover
+  ══════════════════════════════════════════ */
+  document.getElementById('s01').innerHTML = ''
+    + '<div style="color:#888;font-size:.8em;margin-bottom:8px">六年级 · 奥数计算模块 A2</div>'
+    + '<h1 style="font-size:1.9em;color:'+C.blue+';margin:.1em 0">分数乘法巧算</h1>'
+    + '<h2 style="font-size:1.05em;color:#555;font-weight:normal;margin:.25em 0">奥数学案 O6</h2>'
+    + '<p style="color:#666;font-size:.9em;margin:.5em 0">交叉约分 &nbsp;·&nbsp; 重组因数 &nbsp;·&nbsp; 除法先转乘法</p>'
+    + '<div style="display:flex;gap:18px;justify-content:center;margin:18px 0;flex-wrap:wrap">'
+    +   MV.fracRect(5, 3, 170, 40, C.blue,   '3/5')
+    +   MV.fracRect(4, 3, 170, 40, C.orange, '3/4')
+    +   MV.fracRect(8, 5, 170, 40, C.green,  '5/8')
+    + '</div>'
+    + MV.tip('目标：把"大数"约小，让乘法一眼算出来');
+
+  /* ══════════════════════════════════════════
+     SLIDE 2 — 三大策略
+  ══════════════════════════════════════════ */
+  document.getElementById('s02').innerHTML = ''
+    + '<h2 style="color:'+C.blue+'">📋 本课三大策略</h2>'
+    + '<div style="display:flex;gap:16px;justify-content:center;margin-top:18px;flex-wrap:wrap">'
+
+    + '<div class="strat-card" style="border-color:'+C.orange+';background:#fef9e7">'
+    +   '<div style="font-size:1.8em">✂️</div>'
+    +   '<div style="font-weight:bold;color:'+C.orange+';margin:6px 0">策略一</div>'
+    +   '<div style="font-weight:bold;font-size:1.05em">交叉约分</div>'
+    +   '<div style="font-size:.82em;color:#666;margin-top:6px">不同分数间<br>分子↔分母约分</div>'
+    + '</div>'
+
+    + '<div class="strat-card" style="border-color:'+C.blue+';background:#eaf4fb">'
+    +   '<div style="font-size:1.8em">🔀</div>'
+    +   '<div style="font-weight:bold;color:'+C.blue+';margin:6px 0">策略二</div>'
+    +   '<div style="font-weight:bold;font-size:1.05em">重组因数</div>'
+    +   '<div style="font-size:.82em;color:#666;margin-top:6px">先凑整，再乘<br>步骤更简</div>'
+    + '</div>'
+
+    + '<div class="strat-card" style="border-color:'+C.green+';background:#d5f5e3">'
+    +   '<div style="font-size:1.8em">🔄</div>'
+    +   '<div style="font-weight:bold;color:'+C.green+';margin:6px 0">策略三</div>'
+    +   '<div style="font-weight:bold;font-size:1.05em">除法转乘法</div>'
+    +   '<div style="font-size:.82em;color:#666;margin-top:6px">÷分数 = ×倒数<br>先转再算</div>'
+    + '</div>'
+
+    + '</div>'
+    + MV.info('<b>使用顺序：</b>先看有无除法 → 转乘法 → 交叉约分 → 重组凑整');
+
+  /* ══════════════════════════════════════════
+     SLIDE 3 — 交叉约分概念
+  ══════════════════════════════════════════ */
+  document.getElementById('s03').innerHTML = ''
+    + '<h2 style="color:'+C.orange+'">✂️ 策略一：交叉约分</h2>'
+    + MV.tip('分数连乘时，<strong>任意</strong>一个分子和<strong>另一个</strong>分母有公因数，可以先约掉再乘')
+    + '<div style="margin:14px 0">'
+    +   MV.row(
+          MV.col(
+            '<div style="font-size:.92em;margin-bottom:8px">普通约分（同一分数内）：</div>'
+            + '<div style="text-align:center;font-size:1.1em">'+F(6,9)+' = '+F(2,3)+'</div>',
+            '<div style="font-size:.92em;margin:10px 0 6px">交叉约分（跨分数）：</div>'
+            + '<div style="text-align:center;font-size:1.1em">'
+            +   F(4,9)+' × '+F(3,8)
+            + '</div>'
+            + MV.frag(
+                '<div style="text-align:center;margin-top:6px">'
+                + '<span class="hl-o">4</span>和<span class="hl-o">8</span>有公因数4，'
+                + '<span class="hl-b">3</span>和<span class="hl-b">9</span>有公因数3'
+                + '</div>'
+                + MV.step('= '+F(1,3)+' × '+F(1,2)+' = '+F(1,6), C.orange), 1)
+          ),
+          MV.fracRect(9, 4, 180, 40, C.orange, '4/9')
+        )
+    + '</div>'
+    + MV.warn('加法中<strong>不能</strong>交叉约分！约分只适用于乘法结构。');
+
+  /* ══════════════════════════════════════════
+     SLIDE 4 — 交叉约分例题（第一轮消除）
+  ══════════════════════════════════════════ */
+  document.getElementById('s04').innerHTML = ''
+    + '<h2 style="color:'+C.orange+'">例题：交叉约分第一轮</h2>'
+    + '<div style="text-align:center;font-size:1em;margin:4px 0">计算&nbsp;'
+    +   F(25,32)+' × '+F(16,15)+' × '+F(12,5)
+    + '</div>'
+    + '<div id="csv1" style="text-align:center;margin:8px 0"></div>'
+    + MV.fragDiv(
+        MV.step(
+          '<b>第一轮约分：</b><br>'
+          + '&nbsp;• <span class="hl-o">25</span>（分子①）× <span class="hl-o">15</span>（分母②）有公因数 5 → 25÷5=<b>5</b>，15÷5=<b>3</b><br>'
+          + '&nbsp;• <span class="hl-b">16</span>（分子②）× <span class="hl-b">32</span>（分母①）有公因数 16 → 16÷16=<b>1</b>，32÷16=<b>2</b><br>'
+          + '得到：'+F(5,2)+' × '+F(1,3)+' × '+F(12,5)
+        , C.orange), 2);
+
+  document.getElementById('csv1').innerHTML = cancelSVG1();
+
+  /* ══════════════════════════════════════════
+     SLIDE 5 — 交叉约分第二轮 → 答案
+  ══════════════════════════════════════════ */
+  document.getElementById('s05').innerHTML = ''
+    + '<h2 style="color:'+C.orange+'">例题：交叉约分第二轮</h2>'
+    + '<div style="text-align:center;font-size:1em;margin:4px 0">'
+    +   '已化简为&nbsp;'+F(5,2)+' × '+F(1,3)+' × '+F(12,5)
+    + '</div>'
+    + '<div id="csv2" style="text-align:center;margin:8px 0"></div>'
+    + MV.fragDiv(
+        MV.step(
+          '<b>第二轮约分：</b><br>'
+          + '&nbsp;• <span class="hl-g">5</span>（分子①）与 <span class="hl-g">5</span>（分母③）÷5 → 1, 1<br>'
+          + '&nbsp;• <span class="hl-p">12</span>（分子③）与 <span class="hl-p">3</span>（分母②）÷3 → 4, 1'
+        , C.green), 4)
+    + MV.fragDiv(
+        MV.step(
+          '结果：&nbsp;'
+          + F(1,2)+' × '+F(1,1)+' × '+F(4,1)
+          +' = &nbsp;'+F(1,2)+' × 4 = <span class="hl-r" style="font-size:1.4em">2</span>'
+        , C.red), 5);
+
+  document.getElementById('csv2').innerHTML = cancelSVG2();
+
+  /* ══════════════════════════════════════════
+     SLIDE 6 — 策略二：重组因数
+  ══════════════════════════════════════════ */
+  document.getElementById('s06').innerHTML = ''
+    + '<h2 style="color:'+C.blue+'">🔀 策略二：重组因数</h2>'
+    + MV.tip('连乘时，把"容易凑整"的因数先配对，再乘剩余部分')
+    + '<div style="margin:12px 0">'
+    +   MV.step('例：&nbsp;'+F(2,3)+' × '+F(9,14)+' × '+F(7,6))
+    + '</div>'
+    + MV.fragDiv(
+        '<div style="font-size:.95em;text-align:center">'
+        + '找可约对：&nbsp;'
+        + '<span class="hl-o">2</span>（分子①）与 <span class="hl-o">14</span>（分母②）÷2；&nbsp;'
+        + '<span class="hl-b">9</span>（分子②）与 <span class="hl-b">6</span>（分母③）÷3；&nbsp;'
+        + '<span class="hl-g">7</span>（分子③）与 <span class="hl-g">7</span>（剩余分母②）÷7'
+        + '</div>', 1)
+    + MV.fragDiv(
+        MV.step('= '+F(1,3)+' × '+F(3,7)+' × '+F(7,3)
+          + '&nbsp; → 重组：'+F(1,3)+'×3 = 1，'+F(7,7)+'= 1'), 2)
+    + MV.fragDiv(
+        MV.step('= '+F(1,3)+' × 3 × '+F(1,1)
+          +' = <span class="hl-r" style="font-size:1.3em">'+F(1,2)+'</span>'), 3)
+    + MV.warn('重组前请先完成交叉约分，再凑整，顺序不要颠倒');
+
+  /* ══════════════════════════════════════════
+     SLIDE 7 — 策略三：除法转乘法
+  ══════════════════════════════════════════ */
+  document.getElementById('s07').innerHTML = ''
+    + '<h2 style="color:'+C.green+'">🔄 策略三：除法先转乘法</h2>'
+    + '<div style="text-align:center;margin:10px 0;font-size:1.1em">'
+    +   MV.step(
+          'a &nbsp;÷&nbsp; '
+          + '<span class="frac-pill" style="border-color:'+C.blue+';color:'+C.blue+'">b/c</span>'
+          + '&nbsp; = &nbsp;'
+          + 'a &nbsp;×&nbsp; '
+          + '<span class="frac-pill" style="border-color:'+C.green+';color:'+C.green+'">c/b</span>'
+          + '&nbsp;&nbsp;（取倒数）'
+        , C.green)
+    + '</div>'
+    + '<div id="flip-svg" style="text-align:center;margin:14px 0"></div>'
+    + MV.fragDiv(
+        MV.tip('记忆口诀：<strong>除以一个分数，等于乘以它的倒数</strong><br>先翻转，再乘！'), 1)
+    + MV.warn('有除法就<strong>必须先转成乘法</strong>，再去约分，不能跳步');
+
+  document.getElementById('flip-svg').innerHTML = flipSVG();
+
+  /* ══════════════════════════════════════════
+     SLIDE 8 — 除法例题
+  ══════════════════════════════════════════ */
+  document.getElementById('s08').innerHTML = ''
+    + '<h2 style="color:'+C.green+'">例题：连续除法</h2>'
+    + '<div style="text-align:center;font-size:1em;margin:6px 0">'
+    +   '计算&nbsp;'+F(1,2)+' ÷ '+F(3,4)+' ÷ '+F(5,6)
+    + '</div>'
+    + MV.fragDiv(
+        MV.step(
+          '<b>步骤①</b> 先全部转成乘法（取倒数）：<br>'
+          + F(1,2)+' × '+F(4,3)+' × '+F(6,5)
+        , C.green), 1)
+    + MV.fragDiv(
+        MV.step(
+          '<b>步骤②</b> 交叉约分：<br>'
+          + '<span class="hl-b">2</span>（分子①）与 <span class="hl-b">4</span>（已在分子②？）—— 看分子②与分母①：'
+          + '<span class="hl-o">4</span> 与 <span class="hl-o">2</span> ÷2 → 2；&nbsp;'
+          + '<span class="hl-g">6</span> 与 <span class="hl-g">3</span> ÷3 → 2'
+        , C.blue), 2)
+    + MV.fragDiv(
+        MV.step(
+          '= '+F(1,1)+' × '+F(2,1)+' × '+F(2,5)
+          +' = 1 × 2 × '+F(2,5)
+          +' = <span class="hl-r" style="font-size:1.3em">'+F(4,5)+'</span>'
+        , C.red), 3)
+    + MV.fragDiv(
+        MV.tip('验证：'+F(1,2)+' ÷ '+F(3,4)
+          +' = '+F(2,3)+' ，再 ÷ '+F(5,6)+' = '+F(2,3)+' × '+F(6,5)+' = '+F(12,15)+' = '+F(4,5)+' ✓'), 4);
+
+  /* ══════════════════════════════════════════
+     SLIDE 9 — 解题步骤 & 易错点
+  ══════════════════════════════════════════ */
+  document.getElementById('s09').innerHTML = ''
+    + '<h2 style="color:'+C.blue+'">🗒️ 解题步骤 & 易错点</h2>'
+    + '<div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin:10px 0">'
+    + '<div style="flex:1;min-width:220px">'
+    +   '<b style="color:'+C.blue+'">四步解题法：</b>'
+    +   MV.step('① 有除法？先转乘法（取倒数）', C.green)
+    +   MV.step('② 找可约对：分子↔分母有公因数？', C.orange)
+    +   MV.step('③ 交叉约分，化小所有分子分母', C.orange)
+    +   MV.step('④ 重组凑整，最后相乘', C.blue)
+    + '</div>'
+    + '<div style="flex:1;min-width:220px">'
+    +   '<b style="color:'+C.red+'">三大易错点：</b>'
+    +   MV.warn('加法里<b>不能</b>约分！只有乘法才行')
+    +   MV.warn('除法<b>不能</b>直接分子除分子、分母除分母')
+    +   MV.warn('交叉约分后要更新数值，别用旧数再约一次')
+    + '</div>'
+    + '</div>';
+
+  /* ══════════════════════════════════════════
+     SLIDE 10 — 练习题
+  ══════════════════════════════════════════ */
+  document.getElementById('s10').innerHTML = ''
+    + '<h2 style="color:'+C.blue+'">✏️ A 组练习</h2>'
+    + '<table style="width:100%;border-collapse:collapse;font-size:.95em;margin-top:10px">'
+    + '<thead><tr style="background:'+C.lblue+'">'
+    +   '<th style="padding:8px 12px;text-align:center;width:18%">题号</th>'
+    +   '<th style="padding:8px 12px;text-align:left">算式</th>'
+    +   '<th style="padding:8px 12px;text-align:center;width:22%">答案</th>'
+    + '</tr></thead>'
+    + '<tbody>'
+
+    + '<tr style="border-bottom:1px solid #ddd">'
+    +   '<td style="padding:10px;text-align:center"><b>1</b></td>'
+    +   '<td style="padding:10px">'+F(15,28)+' × '+F(14,25)+' × '+F(10,3)+'</td>'
+    +   '<td style="padding:10px;text-align:center">'
+    +     MV.frag('<span class="hl-r" style="font-size:1.2em">1</span>', 1)
+    +   '</td>'
+    + '</tr>'
+
+    + '<tr style="border-bottom:1px solid #ddd;background:#fafafa">'
+    +   '<td style="padding:10px;text-align:center"><b>2</b></td>'
+    +   '<td style="padding:10px">'+F(2,3)+' × '+F(9,14)+' × '+F(7,6)+'</td>'
+    +   '<td style="padding:10px;text-align:center">'
+    +     MV.frag('<span class="hl-r" style="font-size:1.2em">'+F(1,2)+'</span>', 2)
+    +   '</td>'
+    + '</tr>'
+
+    + '<tr>'
+    +   '<td style="padding:10px;text-align:center"><b>3</b></td>'
+    +   '<td style="padding:10px">'+F(5,6)+' ÷ '+F(15,8)+'</td>'
+    +   '<td style="padding:10px;text-align:center">'
+    +     MV.frag('<span class="hl-r" style="font-size:1.2em">'+F(4,9)+'</span>', 3)
+    +   '</td>'
+    + '</tr>'
+
+    + '</tbody></table>'
+    + '<div style="font-size:.8em;color:#888;margin-top:10px;text-align:center">点击空格键或→键逐一揭示答案</div>';
+
+  /* ══════════════════════════════════════════
+     SLIDE 11 — 课堂小结
+  ══════════════════════════════════════════ */
+  document.getElementById('s11').innerHTML = ''
+    + '<h2 style="color:'+C.blue+'">🎯 课堂小结</h2>'
+    + '<div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:12px 0">'
+
+    + '<div class="strat-card" style="border-color:'+C.orange+';background:#fef9e7;max-width:200px">'
+    +   '<div style="font-size:1.5em">✂️</div>'
+    +   '<div style="font-weight:bold;color:'+C.orange+';margin:4px 0">交叉约分</div>'
+    +   '<div style="font-size:.85em">不同分数间，分子↔分母相约，先约后乘</div>'
+    + '</div>'
+
+    + '<div class="strat-card" style="border-color:'+C.blue+';background:#eaf4fb;max-width:200px">'
+    +   '<div style="font-size:1.5em">🔀</div>'
+    +   '<div style="font-weight:bold;color:'+C.blue+';margin:4px 0">重组因数</div>'
+    +   '<div style="font-size:.85em">约分后把能凑整的配对，步骤更简洁</div>'
+    + '</div>'
+
+    + '<div class="strat-card" style="border-color:'+C.green+';background:#d5f5e3;max-width:200px">'
+    +   '<div style="font-size:1.5em">🔄</div>'
+    +   '<div style="font-weight:bold;color:'+C.green+';margin:4px 0">除法→乘法</div>'
+    +   '<div style="font-size:.85em">÷ b/c = × c/b，先翻转，再约分</div>'
+    + '</div>'
+
+    + '</div>'
+    + MV.tip('核心思路：<strong>化大为小，化繁为简</strong>；先看整体结构，再逐步约分')
+    + '<div style="margin-top:14px;font-size:.9em;color:#666">下一节：O8 循环小数化分数</div>';
+
+});
+</script>
+</body>
+</html>
