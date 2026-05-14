@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>学案38-41 · 平行四边形梯形三角形</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.hl{color:#2980b9;font-weight:bold}.hl2{color:#27ae60;font-weight:bold}.hl3{color:#e74c3c;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ══════════════════════════════════════
+     封面
+══════════════════════════════════════ -->
+<section>
+  <div style="color:#888;font-size:.9em">四年级 · 几何图形</div>
+  <h1 style="font-size:1.9em;color:#2980b9;margin:.1em 0">平行四边形、梯形、三角形</h1>
+  <p style="color:#555;margin:.2em 0">抓住「边 · 角 · 高 · 稳定性」四个核心</p>
+  <div id="cover-shapes" style="margin:14px auto"></div>
+  <div class="mv-row" style="gap:24px;margin-top:8px;font-size:.85em">
+    <span style="color:#2980b9">▪ 学案38·39 平行四边形</span>
+    <span style="color:#e67e22">▪ 学案40 梯形</span>
+    <span style="color:#27ae60">▪ 学案41 三角形</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     学习目标
+══════════════════════════════════════ -->
+<section>
+  <h2>🎯 本课学什么</h2>
+  <ul style="line-height:1.95;max-width:640px;margin:0 auto">
+    <li>说出<span class="hl">平行四边形</span>的定义和各部分名称（底 / 腰 / <span class="hl3">高</span>）</li>
+    <li>说出<span class="hl">梯形</span>的定义和四个组成部分（<span class="hl">上底</span> / <span class="hl">下底</span> / <span class="hl2">腰</span> / <span class="hl3">高</span>）</li>
+    <li>掌握<span class="hl2">三角形</span>三要素：3条边、3个角、3个顶点</li>
+    <li>利用内角和 <span class="hl">= 180°</span> 求未知角</li>
+    <li>会按<span class="hl">角</span>（锐角 / 直角 / 钝角）和按<span class="hl2">边</span>（不等边 / 等腰 / 等边）对三角形分类</li>
+    <li>理解<span class="hl3">两边之和大于第三边</span>，能判断三条线段能否组成三角形</li>
+    <li>比较平行四边形与三角形的<span class="hl2">稳定性</span></li>
+  </ul>
+</section>
+
+<!-- ══════════════════════════════════════
+     平行四边形
+══════════════════════════════════════ -->
+<section>
+
+  <!-- 平行四边形：特征 -->
+  <section>
+    <h2>1️⃣ 平行四边形的特征</h2>
+    <div class="mv-row" style="align-items:flex-start;gap:28px">
+      <div id="para-props"></div>
+      <div style="text-align:left;max-width:340px">
+        <div class="mv-tip" style="margin-bottom:8px">
+          <strong>定义：</strong>两组对边分别平行的四边形
+        </div>
+        <ul style="font-size:.88em;line-height:1.9">
+          <li><span class="hl">两组对边</span>分别<strong>平行</strong>（蓝色两边互相平行）</li>
+          <li><span class="hl">两组对边</span>分别<strong>相等</strong>（绿色两边互相平行）</li>
+          <li>从顶点向对边所作的垂线叫作<span class="hl3">高</span></li>
+          <li>平行四边形有<span class="hl3">无数条高</span>，每条高等长</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 平行四边形：高 -->
+  <section>
+    <h2>📐 平行四边形的高</h2>
+    <div id="para-height" style="margin:6px auto"></div>
+    <div class="mv-info" style="max-width:540px;margin:10px auto">
+      从上底的<strong>任意一点</strong>向下底作垂线，垂线段的长度即为<strong>高 h</strong>。<br>
+      上底有无数个点 → 有<span class="hl3">无数条高</span>，但长度都<strong>相等</strong>。
+    </div>
+    <div class="fragment mv-warn" style="max-width:540px;margin:6px auto">
+      ⚠️ 高必须与底边<strong>垂直</strong>，腰<u>不能</u>代替高！
+    </div>
+  </section>
+
+  <!-- 平行四边形：会变形 -->
+  <section>
+    <h2>⚡ 平行四边形会变形！</h2>
+    <div id="para-deform" style="margin:6px auto"></div>
+    <div class="mv-warn" style="max-width:560px;margin:10px auto">
+      不固定时，推一下顶点形状就改变——平行四边形具有<strong>不稳定性</strong>
+    </div>
+    <div class="fragment mv-tip" style="max-width:560px;margin:6px auto">
+      📎 折叠椅、伸缩门 ——<strong>利用</strong>平行四边形易变形的特点
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     梯形
+══════════════════════════════════════ -->
+<section>
+
+  <!-- 梯形：各部分名称 -->
+  <section>
+    <h2>2️⃣ 梯形的各部分名称</h2>
+    <div class="mv-row" style="align-items:flex-start;gap:28px">
+      <div id="trap-labels"></div>
+      <div style="text-align:left;max-width:310px">
+        <div class="mv-tip" style="margin-bottom:8px">
+          <strong>定义：</strong>只有<span class="hl3">一组</span>对边平行的四边形
+        </div>
+        <table class="mv-qt">
+          <tr><th>名称</th><th>说明</th></tr>
+          <tr><td><span class="hl">上底</span></td><td>较短的平行边</td></tr>
+          <tr><td><span class="hl">下底</span></td><td>较长的平行边</td></tr>
+          <tr><td><span class="hl2">腰</span></td><td>两条不平行的边</td></tr>
+          <tr><td><span class="hl3">高</span></td><td>两底之间的垂直距离</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 梯形 vs 平行四边形 -->
+  <section>
+    <h2>🔍 辨认：梯形 vs 平行四边形</h2>
+    <div id="compare-shapes" style="margin:8px auto"></div>
+    <table class="mv-qt" style="width:540px;margin:10px auto">
+      <tr><th>图形</th><th>平行对边的组数</th><th>关键特征</th></tr>
+      <tr><td><span class="hl">平行四边形</span></td><td><strong>2 组</strong></td><td>两组对边都平行</td></tr>
+      <tr><td><span class="hl2">梯形</span></td><td><strong>1 组</strong></td><td>仅一组对边平行</td></tr>
+      <tr><td>普通四边形</td><td>0 组</td><td>无平行对边</td></tr>
+    </table>
+    <div class="fragment mv-warn" style="max-width:540px;margin:6px auto">
+      易错：梯形是「<strong>一组</strong>对边平行」，不是「一条边平行」！
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     三角形
+══════════════════════════════════════ -->
+<section>
+
+  <!-- 三角形：认识 -->
+  <section>
+    <h2>3️⃣ 三角形的认识</h2>
+    <div class="mv-row" style="align-items:flex-start;gap:28px">
+      <div id="tri-props"></div>
+      <div style="text-align:left;max-width:300px">
+        <div class="mv-tip" style="margin-bottom:8px">
+          <strong>定义：</strong>由 3 条线段围成的封闭图形
+        </div>
+        <ul style="font-size:.88em;line-height:1.9">
+          <li>3 条边（a, b, c）</li>
+          <li>3 个角（∠A, ∠B, ∠C）</li>
+          <li>3 个顶点（A, B, C）</li>
+          <li>每条边上有 1 条<span class="hl2">高</span>（共 3 条高）</li>
+        </ul>
+        <div class="mv-info" style="font-size:.88em;margin-top:6px">
+          三角形具有<strong>稳定性</strong>，不会变形
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 三角形：内角和 -->
+  <section>
+    <h2>💡 三角形内角和 = 180°</h2>
+    <div id="angle-sum" style="margin:6px auto"></div>
+    <div class="mv-tip" style="max-width:540px;margin:8px auto;text-align:center">
+      任意三角形三个内角之和恒等于 <strong>180°</strong><br>
+      <span style="font-size:1.15em">∠A + ∠B + ∠C = <strong>180°</strong></span>
+    </div>
+  </section>
+
+  <!-- 三角形：求未知角 -->
+  <section>
+    <h2>✏️ 用内角和求未知角</h2>
+    <div class="mv-step" style="text-align:center;max-width:380px;margin:8px auto;font-size:1.05em">
+      第三角 = <strong>180° − 已知两角之和</strong>
+    </div>
+    <div class="mv-row" style="gap:16px;margin:10px 0;flex-wrap:wrap;justify-content:center">
+      <div class="mv-vcmp fragment">
+        <div class="mv-vcmp-q">∠A=48°，∠B=67°</div>
+        <div class="mv-vcmp-s">180°−48°−67°</div>
+        <div class="mv-vcmp-a">∠C = 65°</div>
+      </div>
+      <div class="mv-vcmp fragment">
+        <div class="mv-vcmp-q">∠A=35°，∠B=90°</div>
+        <div class="mv-vcmp-s">180°−35°−90°</div>
+        <div class="mv-vcmp-a">∠C = 55°（直角△）</div>
+      </div>
+      <div class="mv-vcmp fragment">
+        <div class="mv-vcmp-q">等腰△，顶角=40°</div>
+        <div class="mv-vcmp-s">(180°−40°)÷2</div>
+        <div class="mv-vcmp-a">底角 = 70°</div>
+      </div>
+      <div class="mv-vcmp fragment">
+        <div class="mv-vcmp-q">等边三角形</div>
+        <div class="mv-vcmp-s">180°÷3</div>
+        <div class="mv-vcmp-a">每角 = 60°</div>
+      </div>
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     三角形分类
+══════════════════════════════════════ -->
+<section>
+
+  <!-- 按角分类 -->
+  <section>
+    <h2>🔢 三角形按角分类</h2>
+    <div class="mv-row" style="gap:20px;justify-content:center;margin:10px 0">
+      <div class="mv-col">
+        <div id="tri-acute"></div>
+        <div class="mv-tip" style="width:128px;text-align:center;margin-top:6px">
+          <div class="hl">锐角三角形</div>
+          <div style="font-size:.85em">三角都 &lt; 90°</div>
+        </div>
+      </div>
+      <div class="mv-col">
+        <div id="tri-right"></div>
+        <div class="mv-info" style="width:128px;text-align:center;margin-top:6px">
+          <div class="hl">直角三角形</div>
+          <div style="font-size:.85em">一角 = 90°</div>
+        </div>
+      </div>
+      <div class="mv-col">
+        <div id="tri-obtuse"></div>
+        <div class="mv-warn" style="width:128px;text-align:center;margin-top:6px">
+          <div class="hl3">钝角三角形</div>
+          <div style="font-size:.85em">一角 &gt; 90°</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 按边分类 -->
+  <section>
+    <h2>🔢 三角形按边分类</h2>
+    <div class="mv-row" style="gap:20px;justify-content:center;margin:10px 0">
+      <div class="mv-col">
+        <div id="tri-scalene"></div>
+        <div class="mv-step" style="width:128px;text-align:center;margin-top:6px">
+          <div class="hl">不等边三角形</div>
+          <div style="font-size:.85em">三边各不同</div>
+        </div>
+      </div>
+      <div class="mv-col">
+        <div id="tri-iso"></div>
+        <div class="mv-step" style="width:128px;text-align:center;margin-top:6px;border-color:#27ae60">
+          <div class="hl2">等腰三角形</div>
+          <div style="font-size:.85em">两腰相等</div>
+        </div>
+      </div>
+      <div class="mv-col">
+        <div id="tri-equil"></div>
+        <div class="mv-step" style="width:128px;text-align:center;margin-top:6px;border-color:#e67e22">
+          <div style="color:#e67e22;font-weight:bold">等边三角形</div>
+          <div style="font-size:.85em">三边全等，每角60°</div>
+        </div>
+      </div>
+    </div>
+    <div class="fragment mv-warn" style="max-width:500px;margin:6px auto">
+      等边 ⊂ 等腰；等腰<strong>不一定</strong>等边！
+    </div>
+  </section>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     三边关系
+══════════════════════════════════════ -->
+<section>
+  <h2>📏 三角形三边关系</h2>
+  <div class="mv-tip" style="max-width:500px;margin:6px auto;text-align:center;font-size:1.05em">
+    <strong>任意两边之和 &gt; 第三边</strong><br>
+    <span style="font-size:.9em;color:#555">（只需验证两短边之和与最长边的大小）</span>
+  </div>
+  <div id="tri-ineq" style="margin:8px auto"></div>
+  <div class="mv-row" style="gap:20px;margin:8px 0;flex-wrap:wrap;justify-content:center">
+    <div class="mv-step fragment" style="border-color:#e74c3c;min-width:190px;text-align:center">
+      <div class="hl3">2+3 = 5 &lt; 6  ❌</div>
+      <div>2cm、3cm、6cm</div>
+      <div style="font-size:.9em;color:#e74c3c">不能围成三角形</div>
+    </div>
+    <div class="mv-step fragment" style="border-color:#27ae60;min-width:190px;text-align:center">
+      <div class="hl2">4+5 = 9 &gt; 6  ✅</div>
+      <div>4cm、5cm、6cm</div>
+      <div style="font-size:.9em;color:#27ae60">能围成三角形</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     稳定性对比
+══════════════════════════════════════ -->
+<section>
+  <h2>🏗️ 稳定性对比</h2>
+  <div id="stability" style="margin:6px auto"></div>
+  <div class="mv-row" style="gap:30px;margin:10px 0;flex-wrap:wrap;justify-content:center">
+    <div class="mv-warn" style="min-width:200px;text-align:center">
+      <div style="font-size:1.1em;font-weight:bold">平行四边形</div>
+      <div>不稳定，<span class="hl3">容易变形</span></div>
+      <div style="font-size:.85em;color:#888;margin-top:3px">折叠椅 · 伸缩门</div>
+    </div>
+    <div class="mv-tip" style="min-width:200px;text-align:center">
+      <div style="font-size:1.1em;font-weight:bold">三角形</div>
+      <div>稳定，<span class="hl2">不会变形</span></div>
+      <div style="font-size:.85em;color:#888;margin-top:3px">自行车架 · 屋顶桁架 · 三脚架</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     易错点归纳
+══════════════════════════════════════ -->
+<section>
+  <h2>⚠️ 易错点归纳</h2>
+  <div style="max-width:630px;margin:0 auto">
+    <div class="mv-warn fragment" style="margin:5px 0">
+      ❶ 梯形 = 「<strong>一组</strong>对边平行」，不是「一条边平行」
+    </div>
+    <div class="mv-warn fragment" style="margin:5px 0">
+      ❷ 平行四边形的高有<span class="hl3">无数条</span>，每条等长（不是只有一条）
+    </div>
+    <div class="mv-warn fragment" style="margin:5px 0">
+      ❸ 等腰三角形不一定是直角三角形；等边三角形一定是等腰三角形
+    </div>
+    <div class="mv-warn fragment" style="margin:5px 0">
+      ❹ 判断三边：<strong>两短边之和 &gt; 最长边</strong>即可，不用验证三对
+    </div>
+    <div class="mv-tip fragment" style="margin:5px 0">
+      ❺ 直角三角形中，两锐角之和恰好等于 90°
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     课堂练习
+══════════════════════════════════════ -->
+<section>
+  <h2>✏️ 课堂练习（38–41课）</h2>
+  <table class="mv-qt" style="width:700px;margin:6px auto;font-size:.83em">
+    <tr><th style="width:57%">题目</th><th>答案</th></tr>
+    <tr><td>1. 平行四边形有（  ）组对边平行。</td>
+        <td class="fragment hl">2</td></tr>
+    <tr><td>2. 梯形有（  ）组对边平行。</td>
+        <td class="fragment hl">1</td></tr>
+    <tr><td>3. 三角形的内角和是（  ）。</td>
+        <td class="fragment hl">180°</td></tr>
+    <tr><td>4. 按角分类，三角形分为（  ）、（  ）、（  ）。</td>
+        <td class="fragment hl" style="font-size:.9em">锐角△；直角△；钝角△</td></tr>
+    <tr><td>5. 平行四边形只有一条高。（  ）</td>
+        <td class="fragment hl3">×</td></tr>
+    <tr><td>6. 等边三角形的三个角都相等。（  ）</td>
+        <td class="fragment hl2">√</td></tr>
+    <tr><td>7. 3cm、4cm、8cm 这三条线段能围成三角形。（  ）</td>
+        <td class="fragment hl3">×（3+4 &lt; 8）</td></tr>
+    <tr><td>8. 两角为 35° 和 90°，第三角及三角形类型？</td>
+        <td class="fragment hl">55°，直角三角形</td></tr>
+    <tr><td>9. 等腰△顶角 40°，每个底角是多少度？</td>
+        <td class="fragment hl">(180°−40°)÷2 = 70°</td></tr>
+    <tr><td>10. 自行车架、三脚架利用了___的稳定性。</td>
+        <td class="fragment hl2">三角形</td></tr>
+  </table>
+</section>
+
+</div></div><!-- end .slides / .reveal -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+  var C = MV.C;
+
+  /* ─── tiny SVG helpers ─────────────────────────────── */
+
+  // Point on circle: standard-math angle θ° (y-up convention),
+  // mapped to SVG (y-down): x = cx+r·cos θ,  y = cy−r·sin θ
+  function cp(cx, cy, r, deg) {
+    var rad = deg * Math.PI / 180;
+    return [+(cx + r * Math.cos(rad)).toFixed(2),
+            +(cy - r * Math.sin(rad)).toFixed(2)];
+  }
+
+  // CCW sector (standard-math CCW = SVG sweep-flag 0)
+  // from angle a° to b° (counterclockwise, so b > a for short arc)
+  function sector(cx, cy, r, a, b, col, op) {
+    var p1 = cp(cx, cy, r, a), p2 = cp(cx, cy, r, b);
+    var da = ((b - a) % 360 + 360) % 360;
+    var lg = da > 180 ? 1 : 0;
+    return '<path d="M' + cx + ',' + cy +
+           ' L' + p1[0] + ',' + p1[1] +
+           ' A' + r + ',' + r + ' 0 ' + lg + ',0 ' +
+           p2[0] + ',' + p2[1] + ' Z"' +
+           ' fill="' + col + '" opacity="' + (op || 0.65) + '"/>';
+  }
+
+  // Standard-math angle (y-up) from vertex V toward point P, normalised [0,360)
+  function angVP(vx, vy, px, py) {
+    var d = Math.atan2(-(py - vy), px - vx) * 180 / Math.PI;
+    return ((d % 360) + 360) % 360;
+  }
+
+  // Filled angle-sector at vertex (vx,vy) between neighbours p1 and p2
+  function vtxSector(vx, vy, p1x, p1y, p2x, p2y, r, col) {
+    var a1 = angVP(vx, vy, p1x, p1y);
+    var a2 = angVP(vx, vy, p2x, p2y);
+    // ensure CCW span < 180° (interior arc)
+    var sp = ((a2 - a1) % 360 + 360) % 360;
+    if (sp > 180) { var t = a1; a1 = a2; a2 = t; }
+    return sector(vx, vy, r, a1, a2, col);
+  }
+
+  // Small right-angle square at vertex (cx,cy), legs toward (ax,ay) and (bx,by)
+  function ramark(cx, cy, ax, ay, bx, by, s, col) {
+    s = s || 8; col = col || '#888';
+    var dx1 = ax - cx, dy1 = ay - cy, d1 = Math.sqrt(dx1*dx1 + dy1*dy1);
+    var dx2 = bx - cx, dy2 = by - cy, d2 = Math.sqrt(dx2*dx2 + dy2*dy2);
+    var u1x = dx1/d1*s, u1y = dy1/d1*s;
+    var u2x = dx2/d2*s, u2y = dy2/d2*s;
+    return '<path d="M' + +(cx+u1x).toFixed(1) + ',' + +(cy+u1y).toFixed(1) +
+           ' L' + +(cx+u1x+u2x).toFixed(1) + ',' + +(cy+u1y+u2y).toFixed(1) +
+           ' L' + +(cx+u2x).toFixed(1) + ',' + +(cy+u2y).toFixed(1) + '"' +
+           ' fill="none" stroke="' + col + '" stroke-width="1.5"/>';
+  }
+
+  // Tick marks (n=1 or 2) centred on segment
+  function tick(x1, y1, x2, y2, n, col, w) {
+    col = col || '#333'; w = w || 1.5;
+    var mx = (x1+x2)/2, my = (y1+y2)/2;
+    var dx = x2-x1, dy = y2-y1, len = Math.sqrt(dx*dx+dy*dy);
+    var nx = -dy/len*5, ny = dx/len*5;   // perpendicular, length 5
+    var ux =  dx/len*4, uy = dy/len*4;   // along segment, spacing
+    var offsets = n === 2 ? [-0.5, 0.5] : [0];
+    var r = '';
+    offsets.forEach(function(o) {
+      var tx = mx + ux*o, ty = my + uy*o;
+      r += '<line x1="' + +(tx+nx).toFixed(1) + '" y1="' + +(ty+ny).toFixed(1) +
+           '" x2="' + +(tx-nx).toFixed(1) + '" y2="' + +(ty-ny).toFixed(1) +
+           '" stroke="' + col + '" stroke-width="' + w + '"/>';
+    });
+    return r;
+  }
+
+  /* ─── 封面：三个图形并排 ─────────────────────────────── */
+  var cs = '';
+  // Parallelogram
+  cs += '<polygon points="12,92 42,18 132,18 102,92"' +
+        ' fill="' + C.lblue + '" stroke="' + C.blue + '" stroke-width="2.5"/>';
+  cs += '<text x="72" y="110" text-anchor="middle" font-size="13"' +
+        ' fill="' + C.blue + '" font-weight="bold">平行四边形</text>';
+  // Trapezoid
+  cs += '<polygon points="152,92 268,92 248,18 172,18"' +
+        ' fill="' + C.lorange + '" stroke="' + C.orange + '" stroke-width="2.5"/>';
+  cs += '<text x="210" y="110" text-anchor="middle" font-size="13"' +
+        ' fill="' + C.orange + '" font-weight="bold">梯形</text>';
+  // Triangle
+  cs += '<polygon points="294,92 390,92 342,18"' +
+        ' fill="' + C.lgreen + '" stroke="' + C.green + '" stroke-width="2.5"/>';
+  cs += '<text x="342" y="110" text-anchor="middle" font-size="13"' +
+        ' fill="' + C.green + '" font-weight="bold">三角形</text>';
+  document.getElementById('cover-shapes').innerHTML = MV.svg(402, 115, cs);
+
+  /* ─── 平行四边形：特征（两对彩色边 + 高） ──────────────── */
+  // vertices: [BL, TL, TR, BR]
+  var pp = [[22,155],[64,22],[224,22],[182,155]];
+  var pc = '';
+  pc += '<polygon points="' + pp.map(function(p){return p.join(',');}).join(' ') + '"' +
+        ' fill="' + C.lblue + '" stroke="none"/>';
+  // bottom & top edges — blue
+  pc += '<line x1="' + pp[0][0] + '" y1="' + pp[0][1] +
+        '" x2="' + pp[3][0] + '" y2="' + pp[3][1] +
+        '" stroke="' + C.blue + '" stroke-width="3.5"/>';
+  pc += '<line x1="' + pp[1][0] + '" y1="' + pp[1][1] +
+        '" x2="' + pp[2][0] + '" y2="' + pp[2][1] +
+        '" stroke="' + C.blue + '" stroke-width="3.5"/>';
+  // left & right edges — green
+  pc += '<line x1="' + pp[0][0] + '" y1="' + pp[0][1] +
+        '" x2="' + pp[1][0] + '" y2="' + pp[1][1] +
+        '" stroke="' + C.green + '" stroke-width="3.5"/>';
+  pc += '<line x1="' + pp[3][0] + '" y1="' + pp[3][1] +
+        '" x2="' + pp[2][0] + '" y2="' + pp[2][1] +
+        '" stroke="' + C.green + '" stroke-width="3.5"/>';
+  // dashed height from TL straight down to base line
+  pc += '<line x1="' + pp[1][0] + '" y1="' + pp[1][1] +
+        '" x2="' + pp[1][0] + '" y2="' + pp[0][1] +
+        '" stroke="' + C.red + '" stroke-width="1.5" stroke-dasharray="5,3"/>';
+  pc += ramark(pp[1][0], pp[0][1],  pp[1][0], pp[0][1]-20,  pp[1][0]+12, pp[0][1],  9, C.red);
+  pc += '<text x="' + (pp[1][0]+12) + '" y="' + ((pp[1][1]+pp[0][1])/2+4) +
+        '" font-size="13" fill="' + C.red + '">高h</text>';
+  // tick marks
+  pc += tick(pp[0][0],pp[0][1], pp[3][0],pp[3][1], 2, C.blue);
+  pc += tick(pp[1][0],pp[1][1], pp[2][0],pp[2][1], 2, C.blue);
+  pc += tick(pp[0][0],pp[0][1], pp[1][0],pp[1][1], 1, C.green);
+  pc += tick(pp[3][0],pp[3][1], pp[2][0],pp[2][1], 1, C.green);
+  // bottom label
+  pc += '<text x="' + ((pp[0][0]+pp[3][0])/2) + '" y="173"' +
+        ' text-anchor="middle" font-size="12" fill="' + C.blue + '">底（平行且相等）</text>';
+  document.getElementById('para-props').innerHTML = MV.svg(260, 180, pc);
+
+  /* ─── 平行四边形：多条高 ────────────────────────────── */
+  var ph = [[20,150],[60,20],[220,20],[180,150]];
+  var phc = '';
+  phc += '<polygon points="' + ph.map(function(p){return p.join(',');}).join(' ') + '"' +
+         ' fill="' + C.lblue + '" stroke="' + C.blue + '" stroke-width="2"/>';
+  var hDefs = [
+    {x: ph[1][0],                     col: C.red,    label: 'h₁'},
+    {x: (ph[1][0]+ph[2][0])/2,        col: C.orange, label: 'h₂'},
+    {x: ph[2][0],                     col: C.purple, label: 'h₃'}
+  ];
+  hDefs.forEach(function(h) {
+    phc += '<line x1="' + h.x + '" y1="' + ph[1][1] +
+           '" x2="' + h.x + '" y2="' + ph[0][1] +
+           '" stroke="' + h.col + '" stroke-width="1.5" stroke-dasharray="5,3"/>';
+    phc += ramark(h.x, ph[0][1],  h.x, ph[0][1]-18,  h.x+12, ph[0][1],  9, h.col);
+    phc += '<text x="' + (h.x+13) + '" y="' + ((ph[1][1]+ph[0][1])/2+4) +
+           '" font-size="12" fill="' + h.col + '">' + h.label + '</text>';
+  });
+  phc += '<text x="120" y="170" text-anchor="middle" font-size="12"' +
+         ' fill="#555">三条高等长 — 还可以画无数条</text>';
+  document.getElementById('para-height').innerHTML = MV.svg(260, 178, phc);
+
+  /* ─── 平行四边形：会变形 ─────────────────────────────── */
+  var dc = '';
+  // Shape before push — nearly upright
+  dc += '<polygon points="20,138 28,18 128,18 120,138"' +
+        ' fill="' + C.lblue + '" stroke="' + C.blue + '" stroke-width="2"/>';
+  dc += '<text x="74" y="155" text-anchor="middle" font-size="12" fill="' + C.blue + '">推前</text>';
+  // Push arrow
+  dc += '<text x="28" y="11" font-size="11" fill="' + C.red + '">⬇推</text>';
+  dc += '<text x="161" y="86" text-anchor="middle" font-size="26" fill="' + C.orange + '">→</text>';
+  // Shape after push — heavily sheared
+  dc += '<polygon points="196,138 246,18 346,18 296,138"' +
+        ' fill="' + C.lorange + '" stroke="' + C.orange + '" stroke-width="2"/>';
+  dc += '<text x="271" y="155" text-anchor="middle" font-size="12" fill="' + C.orange + '">变形了！</text>';
+  document.getElementById('para-deform').innerHTML = MV.svg(370, 160, dc);
+
+  /* ─── 梯形：各部分标注 ───────────────────────────────── */
+  // vertices: [BL, BR, TR, TL]
+  var tp = [[20,148],[258,148],[212,20],[66,20]];
+  var tc = '';
+  tc += '<polygon points="' + tp.map(function(p){return p.join(',');}).join(' ') + '"' +
+        ' fill="' + C.lorange + '" stroke="none"/>';
+  // 下底 — orange
+  tc += '<line x1="' + tp[0][0] + '" y1="' + tp[0][1] +
+        '" x2="' + tp[1][0] + '" y2="' + tp[1][1] +
+        '" stroke="' + C.orange + '" stroke-width="3.5"/>';
+  // 上底 — blue
+  tc += '<line x1="' + tp[3][0] + '" y1="' + tp[3][1] +
+        '" x2="' + tp[2][0] + '" y2="' + tp[2][1] +
+        '" stroke="' + C.blue + '" stroke-width="3.5"/>';
+  // 左腰 — green
+  tc += '<line x1="' + tp[0][0] + '" y1="' + tp[0][1] +
+        '" x2="' + tp[3][0] + '" y2="' + tp[3][1] +
+        '" stroke="' + C.green + '" stroke-width="2.5"/>';
+  // 右腰 — green
+  tc += '<line x1="' + tp[1][0] + '" y1="' + tp[1][1] +
+        '" x2="' + tp[2][0] + '" y2="' + tp[2][1] +
+        '" stroke="' + C.green + '" stroke-width="2.5"/>';
+  // 高 — dashed red from midpoint of top edge straight down
+  var tmx = (tp[3][0] + tp[2][0]) / 2;
+  tc += '<line x1="' + tmx + '" y1="' + tp[3][1] +
+        '" x2="' + tmx + '" y2="' + tp[0][1] +
+        '" stroke="' + C.red + '" stroke-width="1.5" stroke-dasharray="5,3"/>';
+  tc += ramark(tmx, tp[0][1],  tmx, tp[0][1]-18,  tmx+12, tp[0][1],  9, C.red);
+  // labels
+  tc += '<text x="' + ((tp[3][0]+tp[2][0])/2) + '" y="13"' +
+        ' text-anchor="middle" font-size="13" fill="' + C.blue + '" font-weight="bold">上底</text>';
+  tc += '<text x="' + ((tp[0][0]+tp[1][0])/2) + '" y="166"' +
+        ' text-anchor="middle" font-size="13" fill="' + C.orange + '" font-weight="bold">下底</text>';
+  tc += '<text x="4" y="90" font-size="13" fill="' + C.green + '" font-weight="bold">腰</text>';
+  tc += '<text x="246" y="90" font-size="13" fill="' + C.green + '" font-weight="bold">腰</text>';
+  tc += '<text x="' + (tmx+10) + '" y="90"' +
+        ' font-size="13" fill="' + C.red + '" font-weight="bold">高</text>';
+  document.getElementById('trap-labels').innerHTML = MV.svg(280, 172, tc);
+
+  /* ─── 梯形 vs 平行四边形 对比 ───────────────────────── */
+  var cmp = '';
+  cmp += '<polygon points="15,84 42,10 122,10 95,84"' +
+         ' fill="' + C.lblue + '" stroke="' + C.blue + '" stroke-width="2"/>';
+  cmp += '<text x="68" y="100" text-anchor="middle" font-size="12"' +
+         ' fill="' + C.blue + '" font-weight="bold">平行四边形</text>';
+  cmp += '<text x="68" y="114" text-anchor="middle" font-size="11"' +
+         ' fill="' + C.blue + '">2 组平行边</text>';
+  cmp += '<polygon points="150,84 266,84 246,10 170,10"' +
+         ' fill="' + C.lorange + '" stroke="' + C.orange + '" stroke-width="2"/>';
+  cmp += '<text x="208" y="100" text-anchor="middle" font-size="12"' +
+         ' fill="' + C.orange + '" font-weight="bold">梯形</text>';
+  cmp += '<text x="208" y="114" text-anchor="middle" font-size="11"' +
+         ' fill="' + C.orange + '">1 组平行边</text>';
+  document.getElementById('compare-shapes').innerHTML = MV.svg(286, 118, cmp);
+
+  /* ─── 三角形：各部分 + 颜色角弧 + 高 ───────────────── */
+  var tri = [[20,154],[272,154],[146,20]];
+  var trc = '';
+  trc += '<polygon points="' + tri.map(function(p){return p.join(',');}).join(' ') + '"' +
+         ' fill="' + C.lgreen + '" stroke="' + C.green + '" stroke-width="2.5"/>';
+  // colored angle sectors at each vertex
+  var aR = 25;
+  trc += vtxSector(tri[0][0],tri[0][1], tri[1][0],tri[1][1], tri[2][0],tri[2][1], aR, C.red);
+  trc += vtxSector(tri[1][0],tri[1][1], tri[0][0],tri[0][1], tri[2][0],tri[2][1], aR, C.orange);
+  trc += vtxSector(tri[2][0],tri[2][1], tri[0][0],tri[0][1], tri[1][0],tri[1][1], aR, C.purple);
+  // vertex labels
+  trc += '<text x="' + (tri[0][0]-18) + '" y="' + (tri[0][1]+5) +
+         '" font-size="15" fill="' + C.blue + '" font-weight="bold">A</text>';
+  trc += '<text x="' + (tri[1][0]+5) + '" y="' + (tri[1][1]+5) +
+         '" font-size="15" fill="' + C.blue + '" font-weight="bold">B</text>';
+  trc += '<text x="' + (tri[2][0]-5) + '" y="' + (tri[2][1]-8) +
+         '" font-size="15" fill="' + C.blue + '" font-weight="bold">C</text>';
+  // angle labels
+  trc += '<text x="' + (tri[0][0]+20) + '" y="' + (tri[0][1]-10) +
+         '" font-size="12" fill="' + C.red + '">∠A</text>';
+  trc += '<text x="' + (tri[1][0]-36) + '" y="' + (tri[1][1]-10) +
+         '" font-size="12" fill="' + C.orange + '">∠B</text>';
+  trc += '<text x="' + (tri[2][0]+6) + '" y="' + (tri[2][1]+28) +
+         '" font-size="12" fill="' + C.purple + '">∠C</text>';
+  // side midpoint labels
+  var mAB = [(tri[0][0]+tri[1][0])/2, (tri[0][1]+tri[1][1])/2];
+  var mBC = [(tri[1][0]+tri[2][0])/2, (tri[1][1]+tri[2][1])/2];
+  var mAC = [(tri[0][0]+tri[2][0])/2, (tri[0][1]+tri[2][1])/2];
+  trc += '<text x="' + mAB[0] + '" y="' + (mAB[1]+14) +
+         '" text-anchor="middle" font-size="12" fill="' + C.green + '">c</text>';
+  trc += '<text x="' + (mBC[0]+12) + '" y="' + mBC[1] +
+         '" text-anchor="middle" font-size="12" fill="' + C.green + '">a</text>';
+  trc += '<text x="' + (mAC[0]-14) + '" y="' + mAC[1] +
+         '" text-anchor="middle" font-size="12" fill="' + C.green + '">b</text>';
+  // height from C perpendicular to AB (AB is horizontal, so foot is directly below C)
+  var footX = tri[2][0], footY = tri[0][1];
+  trc += '<line x1="' + footX + '" y1="' + tri[2][1] +
+         '" x2="' + footX + '" y2="' + footY +
+         '" stroke="' + C.teal + '" stroke-width="1.5" stroke-dasharray="5,3"/>';
+  trc += ramark(footX, footY,  footX, footY-18,  footX+12, footY,  9, C.teal);
+  trc += '<text x="' + (footX+13) + '" y="' + ((tri[2][1]+footY)/2+4) +
+         '" font-size="12" fill="' + C.teal + '">高h</text>';
+  document.getElementById('tri-props').innerHTML = MV.svg(305, 175, trc);
+
+  /* ─── 内角和 180° 可视证明 ──────────────────────────── */
+  // Left: triangle with three coloured angle sectors
+  // Right: the same three sectors rearranged onto a straight line = 180°
+  var asP = [[28,118],[198,118],[113,18]];
+  var asc = '';
+  // triangle outline
+  asc += '<polygon points="' + asP.map(function(p){return p.join(',');}).join(' ') + '"' +
+         ' fill="none" stroke="#444" stroke-width="2"/>';
+  // coloured sectors
+  var arcR = 26;
+  asc += vtxSector(asP[0][0],asP[0][1], asP[1][0],asP[1][1], asP[2][0],asP[2][1], arcR, C.red);
+  asc += vtxSector(asP[1][0],asP[1][1], asP[0][0],asP[0][1], asP[2][0],asP[2][1], arcR, C.blue);
+  asc += vtxSector(asP[2][0],asP[2][1], asP[0][0],asP[0][1], asP[1][0],asP[1][1], arcR, C.green);
+  asc += '<text x="' + (asP[0][0]+20) + '" y="' + (asP[0][1]-10) +
+         '" font-size="12" fill="' + C.red + '">∠A</text>';
+  asc += '<text x="' + (asP[1][0]-34) + '" y="' + (asP[1][1]-10) +
+         '" font-size="12" fill="' + C.blue + '">∠B</text>';
+  asc += '<text x="' + (asP[2][0]+5) + '" y="' + (asP[2][1]+26) +
+         '" font-size="12" fill="' + C.green + '">∠C</text>';
+  // arrow
+  asc += '<text x="228" y="76" font-size="26" fill="#888">→</text>';
+
+  // Right side: semicircle proof
+  // Actual angles for this triangle:
+  // AB=170, AC=sqrt(85²+100²)≈131.1, BC=131.1
+  // ∠A=∠B≈49.6°, ∠C≈80.8° (isoceles)
+  // Layout sectors from 180° down to 0° (CW in standard math = swap a,b for sector())
+  var scx = 378, scy = 110, sR = 52;
+  // baseline
+  asc += '<line x1="' + (scx-sR-4) + '" y1="' + scy +
+         '" x2="' + (scx+sR+4) + '" y2="' + scy +
+         '" stroke="#333" stroke-width="2"/>';
+  // ∠A (red): from 130.4° to 180°  — CCW 49.6°
+  asc += sector(scx, scy, sR, 130.4, 180,  C.red);
+  // ∠B (blue): from 80.8° to 130.4° — CCW 49.6°
+  asc += sector(scx, scy, sR, 80.8,  130.4, C.blue);
+  // ∠C (green): from 0° to 80.8°    — CCW 80.8°
+  asc += sector(scx, scy, sR, 0,     80.8,  C.green);
+  // sector labels (at radial midpoints, 62% radius)
+  var lr = sR * 0.62;
+  var lA = cp(scx, scy, lr, 155.2);
+  var lB = cp(scx, scy, lr, 105.6);
+  var lC = cp(scx, scy, lr,  40.4);
+  asc += '<text x="' + lA[0] + '" y="' + (lA[1]+4) +
+         '" text-anchor="middle" font-size="12" fill="white" font-weight="bold">∠A</text>';
+  asc += '<text x="' + lB[0] + '" y="' + (lB[1]+4) +
+         '" text-anchor="middle" font-size="12" fill="white" font-weight="bold">∠B</text>';
+  asc += '<text x="' + lC[0] + '" y="' + (lC[1]+4) +
+         '" text-anchor="middle" font-size="12" fill="white" font-weight="bold">∠C</text>';
+  asc += '<text x="' + scx + '" y="' + (scy+18) +
+         '" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">= 180° (一条直线)</text>';
+  document.getElementById('angle-sum').innerHTML = MV.svg(448, 136, asc);
+
+  /* ─── 三角形按角分类（复用 MV.triangle） ────────────── */
+  document.getElementById('tri-acute').innerHTML =
+    MV.triangle('acute',       {w:140, h:100, color: C.blue});
+  document.getElementById('tri-right').innerHTML =
+    MV.triangle('right',       {w:130, h:100, color: C.green});
+  document.getElementById('tri-obtuse').innerHTML =
+    MV.triangle('obtuse',      {w:148, h:100, color: C.red});
+
+  // Add right-angle mark to the right triangle SVG  — inject into its SVG
+  var rtEl = document.querySelector('#tri-right svg');
+  if (rtEl) {
+    var H = 100;
+    // For MV.triangle('right'): pts = [[10,H-10],[10,10],[W-10,H-10]]
+    // right angle is at pts[0] = (10, 90)
+    var rm = ramark(10, H-10,  10, 10,  140-10, H-10,  9, C.green);
+    rtEl.innerHTML += rm;
+  }
+
+  /* ─── 三角形按边分类（自定义 SVG） ─────────────────── */
+  // Scalene
+  var sca = [[12,78],[88,78],[28,10]];
+  var ss = '<polygon points="' + sca.map(function(p){return p.join(',');}).join(' ') + '"' +
+           ' fill="' + C.lblue + '" stroke="' + C.blue + '" stroke-width="2"/>';
+  document.getElementById('tri-scalene').innerHTML = MV.svg(100, 82, ss);
+
+  // Isoceles — symmetric, tick marks on equal legs
+  var iso = [[10,78],[90,78],[50,10]];
+  var si = '<polygon points="' + iso.map(function(p){return p.join(',');}).join(' ') + '"' +
+           ' fill="' + C.lgreen + '" stroke="' + C.green + '" stroke-width="2"/>';
+  si += tick(iso[0][0],iso[0][1], iso[2][0],iso[2][1], 1, C.green, 2);
+  si += tick(iso[1][0],iso[1][1], iso[2][0],iso[2][1], 1, C.green, 2);
+  document.getElementById('tri-iso').innerHTML = MV.svg(100, 82, si);
+
+  // Equilateral — side ≈ 78, height ≈ 67.5
+  var eq = [[11,78],[89,78],[50,11]];
+  var se = '<polygon points="' + eq.map(function(p){return p.join(',');}).join(' ') + '"' +
+           ' fill="' + C.lyellow + '" stroke="' + C.orange + '" stroke-width="2"/>';
+  se += tick(eq[0][0],eq[0][1], eq[1][0],eq[1][1], 2, C.orange, 2);
+  se += tick(eq[0][0],eq[0][1], eq[2][0],eq[2][1], 2, C.orange, 2);
+  se += tick(eq[1][0],eq[1][1], eq[2][0],eq[2][1], 2, C.orange, 2);
+  se += '<text x="50" y="58" text-anchor="middle" font-size="11" fill="' + C.orange + '">60°</text>';
+  document.getElementById('tri-equil').innerHTML = MV.svg(100, 82, se);
+
+  /* ─── 三边关系 ─────────────────────────────────────── */
+  // Scale: 18 px per cm
+  var SC = 18;
+  var iq = '';
+  // ── Case A: 2+3 < 6 (gap shows segments don't reach) ──
+  iq += '<text x="8" y="16" font-size="13" fill="' + C.red + '" font-weight="bold">2+3 &lt; 6  ❌</text>';
+  // 2 cm segment
+  iq += '<line x1="22" y1="36" x2="' + (22+2*SC) + '" y2="36"' +
+        ' stroke="' + C.red + '" stroke-width="5" stroke-linecap="round"/>';
+  iq += '<text x="' + (22+SC) + '" y="28" text-anchor="middle"' +
+        ' font-size="11" fill="' + C.red + '">2cm</text>';
+  // 3 cm segment (continues)
+  iq += '<line x1="' + (22+2*SC) + '" y1="36" x2="' + (22+5*SC) + '" y2="36"' +
+        ' stroke="' + C.orange + '" stroke-width="5" stroke-linecap="round"/>';
+  iq += '<text x="' + (22+3.5*SC) + '" y="28" text-anchor="middle"' +
+        ' font-size="11" fill="' + C.orange + '">3cm</text>';
+  // 6 cm segment below (full length)
+  iq += '<line x1="22" y1="54" x2="' + (22+6*SC) + '" y2="54"' +
+        ' stroke="#888" stroke-width="3" stroke-linecap="round"/>';
+  iq += '<text x="' + (22+3*SC) + '" y="68" text-anchor="middle"' +
+        ' font-size="11" fill="#666">6cm</text>';
+  // gap marker: dashed continuation showing shortage
+  iq += '<line x1="' + (22+5*SC) + '" y1="36" x2="' + (22+6*SC) + '" y2="36"' +
+        ' stroke="' + C.red + '" stroke-width="2" stroke-dasharray="3,3"/>';
+  iq += '<text x="' + (22+5.5*SC) + '" y="48" text-anchor="middle"' +
+        ' font-size="10" fill="' + C.red + '">缺口</text>';
+
+  // ── Case B: 4+5 > 6 (forms a proper triangle) ──
+  var ox = 196;
+  iq += '<text x="' + ox + '" y="16" font-size="13" fill="' + C.green + '" font-weight="bold">4+5 &gt; 6  ✅</text>';
+  var tp3 = [[ox+10,72],[ox+10+6*SC,72],[ox+10+2*SC,72-44]];
+  iq += '<polygon points="' + tp3.map(function(p){return p.join(',');}).join(' ') + '"' +
+        ' fill="' + C.lgreen + '" stroke="' + C.green + '" stroke-width="2"/>';
+  iq += '<text x="' + ((tp3[0][0]+tp3[1][0])/2) + '" y="86"' +
+        ' text-anchor="middle" font-size="11" fill="#666">6cm</text>';
+  iq += '<text x="' + ((tp3[0][0]+tp3[2][0])/2-10) + '" y="' + ((tp3[0][1]+tp3[2][1])/2) +
+        '" font-size="11" fill="' + C.green + '">4cm</text>';
+  iq += '<text x="' + ((tp3[1][0]+tp3[2][0])/2+10) + '" y="' + ((tp3[1][1]+tp3[2][1])/2) +
+        '" font-size="11" fill="' + C.green + '">5cm</text>';
+  document.getElementById('tri-ineq').innerHTML = MV.svg(390, 90, iq);
+
+  /* ─── 稳定性对比 ────────────────────────────────────── */
+  var st = '';
+  // Parallelogram — before push (upright)
+  st += '<polygon points="20,138 28,18 108,18 100,138"' +
+        ' fill="' + C.lblue + '" stroke="' + C.blue + '" stroke-width="2"/>';
+  // Parallelogram — after push (sheared)
+  st += '<polygon points="148,138 198,18 278,18 228,138"' +
+        ' fill="' + C.lorange + '" stroke="' + C.orange + '" stroke-width="2"/>';
+  // Push arrow between the two parallelograms
+  st += '<defs><marker id="arSt" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">' +
+        '<path d="M0,0 L7,3.5 L0,7 Z" fill="' + C.orange + '"/></marker></defs>';
+  st += '<path d="M118,78 C128,66 138,66 148,78" fill="none"' +
+        ' stroke="' + C.orange + '" stroke-width="2" marker-end="url(#arSt)"/>';
+  st += '<text x="64" y="156" text-anchor="middle" font-size="11" fill="' + C.blue + '">推前</text>';
+  st += '<text x="213" y="156" text-anchor="middle" font-size="11" fill="' + C.orange + '">推后（变形）</text>';
+  // Divider
+  st += '<line x1="305" y1="10" x2="305" y2="148" stroke="#ccc" stroke-width="1.5" stroke-dasharray="5,3"/>';
+  // Triangle — rigid, stable
+  var triS = [[322,138],[412,138],[367,18]];
+  st += '<polygon points="' + triS.map(function(p){return p.join(',');}).join(' ') + '"' +
+        ' fill="' + C.lgreen + '" stroke="' + C.green + '" stroke-width="2.5"/>';
+  // lock emoji at centroid
+  st += '<text x="367" y="96" text-anchor="middle" font-size="22">🔒</text>';
+  st += '<text x="367" y="156" text-anchor="middle" font-size="11" fill="' + C.green + '">稳定，不变形</text>';
+  document.getElementById('stability').innerHTML = MV.svg(426, 162, st);
+
+}); // end MV.setup
+</script>
+</body>
+</html>
