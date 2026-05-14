@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数 O33 · 植树问题</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.formula-box {
+  background:#eaf4fb; border-left:5px solid #2980b9; border-radius:6px;
+  padding:12px 18px; margin:8px auto; text-align:left;
+  max-width:560px; font-size:.95em; line-height:2;
+}
+.case-chip {
+  display:inline-block; padding:3px 14px; border-radius:12px;
+  font-weight:bold; font-size:.85em; margin:0 5px; color:white;
+}
+.pq { background:#f8f8f8; border-radius:8px; padding:8px 14px;
+      margin:5px 0; text-align:left; font-size:.92em; }
+.ans-table { margin:0 auto; border-collapse:collapse; font-size:.93em; }
+.ans-table td, .ans-table th { padding:7px 18px; border:1px solid #ccc; }
+.ans-table th { background:#d6eaf8; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ── 1. 封面 ─────────────────────────────── -->
+<section>
+  <div style="color:#888;font-size:.85em">三至四年级 · 奥数应用题</div>
+  <h1 style="font-size:2em;color:#2980b9;margin:.15em 0">植树问题</h1>
+  <div style="color:#555;font-size:1em;margin-bottom:18px">O33 &nbsp;|&nbsp; 间隔计数模型</div>
+  <div id="s0-cover"></div>
+</section>
+
+<!-- ── 2. 核心洞见 ──────────────────────────── -->
+<section>
+  <h2>🌳 表面数树，实质数间隔</h2>
+  <div id="s1-insight"></div>
+</section>
+
+<!-- ── 3. 5棵树4个间隔 ──────────────────────── -->
+<section>
+  <h2>👀 5棵树之间有几个间隔？</h2>
+  <div id="s2-visual"></div>
+</section>
+
+<!-- ── 4. 四种情况总览 ─────────────────────── -->
+<section>
+  <h2>📊 四种情况一览</h2>
+  <div id="s3-cases"></div>
+</section>
+
+<!-- ── 5. 情况一：两端都种 ─────────────────── -->
+<section>
+  <h2>🌲 情况一：两端都种</h2>
+  <div style="font-size:.9em;color:#888;margin-bottom:8px">
+    小路长 120 米，每隔 6 米种一棵，<strong>两端都种</strong>，共种多少棵？
+  </div>
+  <div id="s4-case1"></div>
+</section>
+
+<!-- ── 6. 情况二：只种一端 ─────────────────── -->
+<section>
+  <h2>💡 情况二：只种一端</h2>
+  <div style="font-size:.9em;color:#888;margin-bottom:8px">
+    走廊长 90 米，每隔 10 米安一盏路灯，<strong>只在起点安</strong>，终点不安，共安多少盏？
+  </div>
+  <div id="s5-case2"></div>
+</section>
+
+<!-- ── 7. 情况三：两端都不种 ───────────────── -->
+<section>
+  <h2>🪴 情况三：两端都不种</h2>
+  <div style="font-size:.9em;color:#888;margin-bottom:8px">
+    花坛边长 56 米，每隔 8 米放一个花盆，<strong>两端都不放</strong>，共放多少个？
+  </div>
+  <div id="s6-case3"></div>
+</section>
+
+<!-- ── 8. 情况四：围成一圈 ─────────────────── -->
+<section>
+  <h2>⭕ 情况四：围成一圈</h2>
+  <div style="font-size:.9em;color:#888;margin-bottom:8px">
+    圆形水池周长 72 米，每隔 9 米放一盆花，共需多少盆？
+  </div>
+  <div id="s7-case4"></div>
+</section>
+
+<!-- ── 9. 变式：锯木头 ────────────────────── -->
+<section>
+  <h2>🪵 变式：锯木头</h2>
+  <div style="font-size:.9em;color:#888;margin-bottom:8px">
+    一根木头锯成 <strong>7 段</strong>，每次锯需 3 分钟，共需多少分钟？
+  </div>
+  <div id="s8-log"></div>
+</section>
+
+<!-- ── 10. 变式：爬楼梯 ───────────────────── -->
+<section>
+  <h2>🏃 变式：爬楼梯</h2>
+  <div style="font-size:.9em;color:#888;margin-bottom:8px">
+    小明从 <strong>1 楼</strong>走到 <strong>8 楼</strong>，每层 18 级台阶，共走多少级？
+  </div>
+  <div id="s9-stairs"></div>
+</section>
+
+<!-- ── 11. 解题5步法 ───────────────────────── -->
+<section>
+  <h2>📋 解题步骤（5步法）</h2>
+  <div id="s10-steps"></div>
+</section>
+
+<!-- ── 12. 比较四种情况 ─────────────────────── -->
+<section>
+  <h2>🔄 四种情况对比</h2>
+  <div id="s11-compare"></div>
+</section>
+
+<!-- ── 13. 课堂练习 ───────────────────────── -->
+<section>
+  <h2>✏️ 课堂练习</h2>
+  <div id="s12-practice"></div>
+</section>
+
+<!-- ── 14. 答案 ──────────────────────────── -->
+<section>
+  <h2>✅ 答案</h2>
+  <div id="s13-answers"></div>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+
+  /* ══════════════════════════════════════
+     Helper: draw n trees in a row (SVG)
+     ══════════════════════════════════════ */
+  function treeRowSvg(nT, W, highlight) {
+    highlight = highlight !== false;
+    var H = 148, c = '', padX = 48;
+    var sp = (W - 2 * padX) / (nT - 1);
+    var xs = [], bY = 82;
+    for (var i = 0; i < nT; i++) xs.push(padX + i * sp);
+    // ground
+    c += '<line x1="15" y1="' + bY + '" x2="' + (W - 15) + '" y2="' + bY + '" stroke="#8B4513" stroke-width="3"/>';
+    // trees
+    xs.forEach(function (x, i) {
+      var xi = Math.round(x);
+      c += '<rect x="' + (xi - 5) + '" y="' + (bY - 16) + '" width="10" height="16" fill="#6D4C41"/>';
+      c += '<polygon points="' + xi + ',' + (bY - 58) + ' ' + (xi - 22) + ',' + (bY - 16) + ' ' + (xi + 22) + ',' + (bY - 16) + '" fill="#27ae60" stroke="#1a7a3c" stroke-width="1"/>';
+      c += '<text x="' + xi + '" y="' + (bY + 17) + '" text-anchor="middle" font-size="12" fill="#333">树' + (i + 1) + '</text>';
+    });
+    // gap brackets
+    if (highlight) {
+      for (var i = 0; i < nT - 1; i++) {
+        var x1 = xs[i] + 22, x2 = xs[i + 1] - 22, mid = (x1 + x2) / 2;
+        c += '<rect x="' + Math.round(x1) + '" y="' + (bY + 26) + '" width="' + Math.round(x2 - x1) + '" height="20" fill="#f39c12" opacity="0.55" rx="3"/>';
+        c += '<text x="' + Math.round(mid) + '" y="' + (bY + 40) + '" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">间隔' + (i + 1) + '</text>';
+      }
+    }
+    return MV.svg(W, H, c);
+  }
+
+  /* ══════════════════════════════════════
+     Helper: four-case comparison SVG
+     ══════════════════════════════════════ */
+  function fourCasesSvg() {
+    var W = 580, H = 168, c = '', sW = 143;
+    var cases = [
+      { lbl: '两端都种',  fml: '棵数 = 间隔 + 1', lf: true,  rf: true,  col: '#2980b9' },
+      { lbl: '只种一端',  fml: '棵数 = 间隔',     lf: false, rf: true,  col: '#27ae60' },
+      { lbl: '两端都不种', fml: '棵数 = 间隔 − 1', lf: false, rf: false, col: '#e67e22' },
+      { lbl: '围成一圈',  fml: '棵数 = 间隔',     lf: null,  rf: null,  col: '#8e44ad' }
+    ];
+    cases.forEach(function (cas, i) {
+      var xO = i * sW + 6, lY = 80, col = cas.col;
+      // title
+      c += '<text x="' + (xO + 65) + '" y="18" text-anchor="middle" font-size="13" font-weight="bold" fill="' + col + '">' + cas.lbl + '</text>';
+      if (cas.lf === null) {
+        // ring case
+        var cx = xO + 65, cy = lY, r = 33;
+        c += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + col + '" stroke-width="2.5"/>';
+        for (var j = 0; j < 8; j++) {
+          var a = j / 8 * 2 * Math.PI - Math.PI / 2;
+          var dx = (cx + r * Math.cos(a)).toFixed(1), dy = (cy + r * Math.sin(a)).toFixed(1);
+          c += '<circle cx="' + dx + '" cy="' + dy + '" r="6" fill="' + col + '"/>';
+        }
+        c += '<text x="' + cx + '" y="' + (cy + 5) + '" text-anchor="middle" font-size="10" fill="' + col + '">8棵</text>';
+      } else {
+        // line case — show 5 positions (4 gaps)
+        var lx = xO + 8, rx = xO + 122;
+        c += '<line x1="' + lx + '" y1="' + lY + '" x2="' + rx + '" y2="' + lY + '" stroke="#ccc" stroke-width="2"/>';
+        // 3 interior trees
+        for (var j = 1; j <= 3; j++) {
+          var mx = (lx + j * (rx - lx) / 4).toFixed(1);
+          c += '<circle cx="' + mx + '" cy="' + lY + '" r="6" fill="' + col + '"/>';
+        }
+        // left endpoint
+        if (cas.lf) c += '<circle cx="' + lx + '" cy="' + lY + '" r="7" fill="' + col + '"/>';
+        else        c += '<circle cx="' + lx + '" cy="' + lY + '" r="7" fill="white" stroke="' + col + '" stroke-width="2.5"/>';
+        // right endpoint
+        if (cas.rf) c += '<circle cx="' + rx + '" cy="' + lY + '" r="7" fill="' + col + '"/>';
+        else        c += '<circle cx="' + rx + '" cy="' + lY + '" r="7" fill="white" stroke="' + col + '" stroke-width="2.5"/>';
+      }
+      // formula pill
+      c += '<rect x="' + (xO + 6) + '" y="' + (lY + 40) + '" width="118" height="26" rx="6" fill="' + col + '" opacity="0.12"/>';
+      c += '<text x="' + (xO + 65) + '" y="' + (lY + 57) + '" text-anchor="middle" font-size="11" fill="' + col + '" font-weight="bold">' + cas.fml + '</text>';
+      // divider
+      if (i < 3) c += '<line x1="' + (xO + sW - 4) + '" y1="5" x2="' + (xO + sW - 4) + '" y2="' + (H - 5) + '" stroke="#e8e8e8" stroke-width="1.5"/>';
+    });
+    return MV.svg(W, H, c);
+  }
+
+  /* ══════════════════════════════════════
+     Helper: log-cutting SVG
+     ══════════════════════════════════════ */
+  function logSvg(nSeg) {
+    var W = 480, H = 102, c = '';
+    var lx = 22, lW = 436, lY = 26, lH = 46;
+    var segW = lW / nSeg;
+    // log body
+    c += '<rect x="' + lx + '" y="' + lY + '" width="' + lW + '" height="' + lH + '" rx="7" fill="#C4A35A" stroke="#8B6914" stroke-width="2"/>';
+    // wood-grain end faces
+    c += '<ellipse cx="' + lx + '" cy="' + (lY + lH / 2) + '" rx="9" ry="' + (lH / 2) + '" fill="#A0742A" stroke="#8B6914" stroke-width="1.5"/>';
+    c += '<ellipse cx="' + (lx + lW) + '" cy="' + (lY + lH / 2) + '" rx="9" ry="' + (lH / 2) + '" fill="#A0742A" stroke="#8B6914" stroke-width="1.5"/>';
+    // segments and cuts
+    for (var i = 0; i < nSeg; i++) {
+      var sx = lx + i * segW, mid = sx + segW / 2;
+      c += '<text x="' + mid.toFixed(1) + '" y="' + (lY + lH / 2 + 6) + '" text-anchor="middle" font-size="16" fill="#5D4037" font-weight="bold">' + (i + 1) + '</text>';
+      if (i > 0) {
+        c += '<line x1="' + sx.toFixed(1) + '" y1="' + (lY - 10) + '" x2="' + sx.toFixed(1) + '" y2="' + (lY + lH + 10) + '" stroke="#e74c3c" stroke-width="3"/>';
+        c += '<text x="' + sx.toFixed(1) + '" y="' + (lY + lH + 24) + '" text-anchor="middle" font-size="11" fill="#e74c3c">切' + i + '</text>';
+      }
+    }
+    return MV.svg(W, H, c);
+  }
+
+  /* ══════════════════════════════════════
+     Helper: 5-dot line for case examples
+     ══════════════════════════════════════ */
+  function caseDotLine(fillLeft, fillRight, col) {
+    var W = 300, H = 60, c = '';
+    var xs = [15, 82, 150, 218, 285];
+    c += '<line x1="9" y1="25" x2="291" y2="25" stroke="#ccc" stroke-width="2"/>';
+    // 3 interior
+    for (var j = 1; j <= 3; j++) c += '<circle cx="' + xs[j] + '" cy="25" r="7" fill="' + col + '"/>';
+    // endpoints
+    if (fillLeft) c += '<circle cx="15" cy="25" r="8" fill="' + col + '"/>';
+    else          c += '<circle cx="15" cy="25" r="8" fill="white" stroke="' + col + '" stroke-width="2.5"/>';
+    if (fillRight) c += '<circle cx="285" cy="25" r="8" fill="' + col + '"/>';
+    else           c += '<circle cx="285" cy="25" r="8" fill="white" stroke="' + col + '" stroke-width="2.5"/>';
+    return MV.svg(W, H, c);
+  }
+
+  /* ══════════════════════════════════════════════════════
+     SLIDE CONTENT
+     ══════════════════════════════════════════════════════ */
+
+  /* ── 1. 封面 ──────────────────────────────────────── */
+  document.getElementById('s0-cover').innerHTML =
+    '<div style="text-align:center;margin-bottom:10px">' + treeRowSvg(4, 320, true) + '</div>' +
+    MV.row(
+      MV.step('核心：总长 ÷ 间距 = <b>间隔数</b>', MV.C.blue),
+      MV.step('再根据端点情况换算棵数', MV.C.green)
+    ) +
+    MV.tip('口诀：先数"缝"，再数"齿"！');
+
+  /* ── 2. 核心洞见 ──────────────────────────────────── */
+  document.getElementById('s1-insight').innerHTML =
+    MV.row(
+      MV.col(
+        MV.step('长度 → 对应<b>间隔</b>（一段一段的空间）', MV.C.orange),
+        MV.step('总长 ÷ 间距 = <b>间隔数</b>（不是棵数！）', MV.C.blue),
+        MV.step('棵数 = 间隔数 ± 0 / ± 1（取决于两端）', MV.C.green),
+        '<br>',
+        MV.warn('"总长 ÷ 间距"求出的是<b>间隔数</b>，<br>不是直接求出树的棵数！')
+      ),
+      MV.col(
+        '<div style="text-align:center">' +
+        (function () {
+          var W = 220, H = 105, c = '', xs = [22, 80, 138, 196], bY = 68;
+          c += '<line x1="8" y1="' + bY + '" x2="212" y2="' + bY + '" stroke="#8B4513" stroke-width="2"/>';
+          xs.forEach(function (x, i) {
+            c += '<rect x="' + (x - 4) + '" y="' + (bY - 13) + '" width="8" height="13" fill="#6D4C41"/>';
+            c += '<polygon points="' + x + ',' + (bY - 46) + ' ' + (x - 17) + ',' + (bY - 13) + ' ' + (x + 17) + ',' + (bY - 13) + '" fill="#27ae60"/>';
+            c += '<text x="' + x + '" y="' + (bY + 13) + '" text-anchor="middle" font-size="10" fill="#333">树' + (i + 1) + '</text>';
+          });
+          for (var i = 0; i < 3; i++) {
+            var x1 = xs[i] + 17, x2 = xs[i + 1] - 17, mid = (x1 + x2) / 2;
+            c += '<rect x="' + Math.round(x1) + '" y="' + (bY + 20) + '" width="' + Math.round(x2 - x1) + '" height="14" fill="#f39c12" opacity="0.5" rx="2"/>';
+            c += '<text x="' + Math.round(mid) + '" y="' + (bY + 31) + '" text-anchor="middle" font-size="9" fill="#333" font-weight="bold">间隔' + (i + 1) + '</text>';
+          }
+          c += '<text x="110" y="' + (H - 2) + '" text-anchor="middle" font-size="12" fill="#e67e22" font-weight="bold">4棵树 → 3个间隔</text>';
+          return MV.svg(W, H, c);
+        })() +
+        '</div>'
+      )
+    );
+
+  /* ── 3. 5棵树，4个间隔 ─────────────────────────── */
+  document.getElementById('s2-visual').innerHTML =
+    '<div style="text-align:center">' + treeRowSvg(5, 500, true) + '</div>' +
+    MV.fragDiv(
+      MV.row(
+        MV.info('<b>5</b> 棵树之间恰好有 <b style="color:#e74c3c">4</b> 个间隔'),
+        MV.tip('普遍规律：n 棵树（两端都种） → <b>n − 1</b> 个间隔')
+      ),
+      1
+    );
+
+  /* ── 4. 四种情况总览 ──────────────────────────── */
+  document.getElementById('s3-cases').innerHTML =
+    '<div style="text-align:center;margin-bottom:10px">' + fourCasesSvg() + '</div>' +
+    MV.fragDiv(
+      MV.tip('注意：围成一圈与"只种一端"的公式相同，但原因不同——圆形没有独立的"两端"！'),
+      1
+    );
+
+  /* ── 5. 情况一：两端都种 ─────────────────────── */
+  document.getElementById('s4-case1').innerHTML =
+    '<div style="text-align:center">' + caseDotLine(true, true, MV.C.blue) + '</div>' +
+    '<div class="formula-box">' +
+    '① 间隔数 = 120 ÷ 6 = <b>20</b> 个<br>' +
+    '② 两端都种 → 棵数 = 间隔数 + 1 = 20 + 1 = <b style="color:#2980b9">21 棵</b>' +
+    '</div>' +
+    MV.fragDiv(
+      MV.row(
+        MV.step('两端各多 1 棵 → 总多 1 棵', MV.C.blue),
+        MV.tip('验算：(21 − 1) × 6 = 20 × 6 = 120 米 ✔')
+      ),
+      1
+    );
+
+  /* ── 6. 情况二：只种一端 ─────────────────────── */
+  document.getElementById('s5-case2').innerHTML =
+    '<div style="text-align:center">' + caseDotLine(true, false, MV.C.green) + '</div>' +
+    '<div class="formula-box">' +
+    '① 间隔数 = 90 ÷ 10 = <b>9</b> 个<br>' +
+    '② 只种一端 → 盏数 = 间隔数 = <b style="color:#27ae60">9 盏</b>' +
+    '</div>' +
+    MV.fragDiv(
+      MV.row(
+        MV.step('一端有灯，另一端空出<br>→ 不需要 +1', MV.C.green),
+        MV.tip('验算：9 × 10 = 90 米 ✔')
+      ),
+      1
+    );
+
+  /* ── 7. 情况三：两端都不种 ───────────────────── */
+  document.getElementById('s6-case3').innerHTML =
+    '<div style="text-align:center">' + caseDotLine(false, false, MV.C.orange) + '</div>' +
+    '<div class="formula-box">' +
+    '① 间隔数 = 56 ÷ 8 = <b>7</b> 个<br>' +
+    '② 两端都不种 → 花盆数 = 间隔数 − 1 = 7 − 1 = <b style="color:#e67e22">6 个</b>' +
+    '</div>' +
+    MV.fragDiv(
+      MV.row(
+        MV.step('两端各少 1 个 → 总少 1 个', MV.C.orange),
+        MV.tip('验算：中间 6 个，形成 7 个间隔 ✔')
+      ),
+      1
+    );
+
+  /* ── 8. 情况四：围成一圈 ─────────────────────── */
+  document.getElementById('s7-case4').innerHTML =
+    MV.row(
+      MV.col(
+        '<div class="formula-box" style="margin-top:10px">' +
+        '① 间隔数 = 72 ÷ 9 = <b>8</b> 个<br>' +
+        '② 围成一圈 → 花盆数 = 间隔数 = <b style="color:#8e44ad">8 盆</b>' +
+        '</div>' +
+        MV.fragDiv(
+          MV.tip('圆形上，每棵树（花盆）正好对应一段间隔，<br>不多也不少，所以棵数 = 间隔数。'),
+          1
+        )
+      ),
+      MV.col(
+        '<div style="text-align:center">' +
+        (function () {
+          var W = 180, H = 130, c = '', cx = 90, cy = 65, r = 46;
+          c += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="#8e44ad" stroke-width="2.5"/>';
+          for (var j = 0; j < 8; j++) {
+            var a = j / 8 * 2 * Math.PI - Math.PI / 2;
+            var dx = (cx + r * Math.cos(a)).toFixed(1), dy = (cy + r * Math.sin(a)).toFixed(1);
+            c += '<circle cx="' + dx + '" cy="' + dy + '" r="7" fill="#8e44ad"/>';
+            c += '<text x="' + dx + '" y="' + (parseFloat(dy) + 5) + '" text-anchor="middle" font-size="9" fill="white">' + (j + 1) + '</text>';
+          }
+          // arc-gap label for one gap
+          c += '<text x="' + cx + '" y="' + (cy + 5) + '" text-anchor="middle" font-size="11" fill="#8e44ad">8 盆</text>';
+          return MV.svg(W, H, c);
+        })() +
+        '</div>'
+      )
+    );
+
+  /* ── 9. 变式：锯木头 ──────────────────────────── */
+  document.getElementById('s8-log').innerHTML =
+    '<div style="text-align:center;margin-bottom:8px">' + logSvg(7) + '</div>' +
+    '<div class="formula-box">' +
+    '7 段 → 锯 <b>6 次</b>（段数 − 1）<br>' +
+    '总时间 = 6 × 3 = <b style="color:#2980b9">18 分钟</b>' +
+    '</div>' +
+    MV.fragDiv(
+      MV.row(
+        MV.tip('"段"对应"间隔"，"锯的次数"对应植树问题里的"棵数−1"'),
+        MV.step('公式：锯次数 = 段数 − 1', MV.C.red)
+      ),
+      1
+    );
+
+  /* ── 10. 变式：爬楼梯 ────────────────────────── */
+  document.getElementById('s9-stairs').innerHTML =
+    MV.row(
+      MV.col(
+        '<div style="text-align:center;margin-top:8px">' +
+        (function () {
+          var W = 200, H = 190, c = '', fH = 17, fW = 110, sx = 30, sy = 176;
+          for (var i = 0; i < 8; i++) {
+            var fy = sy - i * (fH + 4);
+            var fc = (i === 0) ? '#d5f5e3' : (i === 7) ? '#d6eaf8' : '#fef9e7';
+            c += '<rect x="' + sx + '" y="' + fy + '" width="' + fW + '" height="' + fH + '" fill="' + fc + '" stroke="#aaa" stroke-width="1"/>';
+            c += '<text x="' + (sx + fW / 2) + '" y="' + (fy + 12) + '" text-anchor="middle" font-size="11" fill="#333">' + (i + 1) + ' 楼</text>';
+          }
+          // bracket for 7 gaps
+          var bx = sx + fW + 16;
+          var by1 = sy + fH, by2 = sy - 7 * (fH + 4);
+          c += '<line x1="' + bx + '" y1="' + by1 + '" x2="' + bx + '" y2="' + by2 + '" stroke="#e67e22" stroke-width="2"/>';
+          c += '<line x1="' + bx + '" y1="' + by1 + '" x2="' + (bx + 8) + '" y2="' + by1 + '" stroke="#e67e22" stroke-width="2"/>';
+          c += '<line x1="' + bx + '" y1="' + by2 + '" x2="' + (bx + 8) + '" y2="' + by2 + '" stroke="#e67e22" stroke-width="2"/>';
+          c += '<text x="' + (bx + 18) + '" y="' + ((by1 + by2) / 2 + 5) + '" font-size="14" fill="#e67e22" font-weight="bold">7</text>';
+          c += '<text x="' + (bx + 34) + '" y="' + ((by1 + by2) / 2 + 5) + '" font-size="10" fill="#888">个</text>';
+          c += '<text x="' + (bx + 34) + '" y="' + ((by1 + by2) / 2 + 18) + '" font-size="10" fill="#888">间隔</text>';
+          return MV.svg(W, H, c);
+        })() +
+        '</div>'
+      ),
+      MV.col(
+        '<div class="formula-box">' +
+        '从 1 楼到 8 楼，<br>经过 8 − 1 = <b>7 个间隔</b><br>' +
+        '总台阶 = 7 × 18 = <b style="color:#2980b9">126 级</b>' +
+        '</div>' +
+        MV.fragDiv(
+          MV.warn('易错：层数差 8−1=7，<br>不是直接用 8 个间隔！'),
+          1
+        )
+      )
+    );
+
+  /* ── 11. 解题步骤 ─────────────────────────────── */
+  document.getElementById('s10-steps').innerHTML =
+    MV.col(
+      MV.step('① 确认是否<b>等距</b>，不等距不能直接套公式', MV.C.blue),
+      MV.step('② 求间隔数：<b>间隔数 = 总长度 ÷ 间距</b>', MV.C.green),
+      MV.step('③ 判断端点情况（两端都种 / 只种一端 / 两端都不种 / 围成一圈）', MV.C.orange),
+      MV.step('④ 套公式：棵数 = 间隔 + 1 / 间隔 / 间隔 − 1 / 间隔（圈）', MV.C.purple),
+      MV.step('⑤ 验算：(棵数 − 1) × 间距 = 总长度 ✔', MV.C.red)
+    ) +
+    MV.fragDiv(
+      MV.tip('反过来求间距？间距 = 总长 ÷ 间隔数，间隔数用棵数反推即可。'),
+      1
+    );
+
+  /* ── 12. 四种情况对比表 ───────────────────────── */
+  document.getElementById('s11-compare').innerHTML =
+    '<table class="ans-table" style="margin:0 auto">' +
+    '<tr><th>情况</th><th>端点示意</th><th>公式</th><th>例题答案</th></tr>' +
+    '<tr><td><span class="case-chip" style="background:#2980b9">两端都种</span></td>' +
+      '<td>● ─ ● ─ ● ─ ●</td><td>棵数 = 间隔 + 1</td><td>120÷6+1 = <b>21</b></td></tr>' +
+    '<tr><td><span class="case-chip" style="background:#27ae60">只种一端</span></td>' +
+      '<td>● ─ ● ─ ● ─ ○</td><td>棵数 = 间隔</td><td>90÷10 = <b>9</b></td></tr>' +
+    '<tr><td><span class="case-chip" style="background:#e67e22">两端都不种</span></td>' +
+      '<td>○ ─ ● ─ ● ─ ○</td><td>棵数 = 间隔 − 1</td><td>56÷8−1 = <b>6</b></td></tr>' +
+    '<tr><td><span class="case-chip" style="background:#8e44ad">围成一圈</span></td>' +
+      '<td>○─●─●─●─ (圈)</td><td>棵数 = 间隔</td><td>72÷9 = <b>8</b></td></tr>' +
+    '</table>' +
+    MV.fragDiv(MV.tip('变式：锯木头用"两端都种"逻辑（第一刀之前已有一段）；爬楼梯看楼层间隔数。'), 1);
+
+  /* ── 13. 课堂练习 ─────────────────────────────── */
+  document.getElementById('s12-practice').innerHTML =
+    MV.col(
+      '<div class="pq">① 一条路长 150 米，每隔 15 米栽一棵树，<b>两端都栽</b>，一共栽多少棵？' +
+        MV.frag('&nbsp;→ <b style="color:#2980b9">150÷15+1 = 11 棵</b>', 1) + '</div>',
+      '<div class="pq">② 走廊长 80 米，每隔 10 米挂一面旗，<b>只在起点挂</b>，一共挂多少面？' +
+        MV.frag('&nbsp;→ <b style="color:#27ae60">80÷10 = 8 面</b>', 2) + '</div>',
+      '<div class="pq">③ 围栏长 48 米，每隔 6 米立一根木桩，<b>两端都不立</b>，一共立多少根？' +
+        MV.frag('&nbsp;→ <b style="color:#e67e22">48÷6−1 = 7 根</b>', 3) + '</div>',
+      '<div class="pq">④ 圆形花坛周长 60 米，每隔 5 米摆一盆花，<b>围成一圈</b>，一共摆多少盆？' +
+        MV.frag('&nbsp;→ <b style="color:#8e44ad">60÷5 = 12 盆</b>', 4) + '</div>',
+      '<div class="pq">⑤ 一根绳子剪成 9 段，需要剪几次？' +
+        MV.frag('&nbsp;→ <b style="color:#e74c3c">9−1 = 8 次</b>', 5) + '</div>',
+      '<div class="pq">⑥ 从 3 楼走到 11 楼，每上一层有 14 级台阶，一共走多少级？' +
+        MV.frag('&nbsp;→ <b style="color:#2980b9">(11−3)×14 = 112 级</b>', 6) + '</div>'
+    );
+
+  /* ── 14. 答案 ─────────────────────────────────── */
+  document.getElementById('s13-answers').innerHTML =
+    '<table class="ans-table">' +
+    '<tr><th>题号</th><th>关键步骤</th><th>答案</th></tr>' +
+    '<tr><td>①</td><td>150÷15=10，10+1</td><td><b>11 棵</b></td></tr>' +
+    '<tr><td>②</td><td>80÷10=8，只起点</td><td><b>8 面</b></td></tr>' +
+    '<tr><td>③</td><td>48÷6=8，8−1</td><td><b>7 根</b></td></tr>' +
+    '<tr><td>④</td><td>60÷5=12，圈</td><td><b>12 盆</b></td></tr>' +
+    '<tr><td>⑤</td><td>9段，段数−1</td><td><b>8 次</b></td></tr>' +
+    '<tr><td>⑥</td><td>(11−3)×14</td><td><b>112 级</b></td></tr>' +
+    '</table>' +
+    MV.fragDiv(MV.tip('所有题目的共同步骤：先求间隔数，再看端点，最后套公式！'), 1);
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数 O34·O35·O36 · 年龄 · 鸡兔同笼 · 牛吃草</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.formula-box {
+  background:#eaf4fb; border-left:5px solid #2980b9; border-radius:6px;
+  padding:12px 18px; margin:8px auto; text-align:left;
+  max-width:560px; font-size:.95em; line-height:2;
+}
+.formula-box2 {
+  background:#eafaf1; border-left:5px solid #27ae60; border-radius:6px;
+  padding:12px 18px; margin:8px auto; text-align:left;
+  max-width:560px; font-size:.95em; line-height:2;
+}
+.formula-box3 {
+  background:#fef9e7; border-left:5px solid #e67e22; border-radius:6px;
+  padding:12px 18px; margin:8px auto; text-align:left;
+  max-width:560px; font-size:.95em; line-height:2;
+}
+.topic-badge {
+  display:inline-block; padding:3px 16px; border-radius:14px;
+  font-weight:bold; font-size:.88em; margin:4px 6px; color:white;
+}
+.pq { background:#f8f8f8; border-radius:8px; padding:8px 14px;
+      margin:5px 0; text-align:left; font-size:.9em; }
+.ans-table { margin:0 auto; border-collapse:collapse; font-size:.9em; }
+.ans-table td, .ans-table th { padding:6px 16px; border:1px solid #ccc; }
+.ans-table th { background:#d6eaf8; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ── 1. 封面 ─────────────────────────────── -->
+<section>
+  <div style="color:#888;font-size:.85em">四至六年级 · 奥数应用题</div>
+  <h1 style="font-size:1.8em;color:#2980b9;margin:.12em 0">年龄 · 鸡兔同笼 · 牛吃草</h1>
+  <div style="color:#555;font-size:.95em;margin-bottom:16px">
+    O34 年龄问题 &nbsp;|&nbsp; O35 鸡兔同笼 &nbsp;|&nbsp; O36 牛吃草
+  </div>
+  <div id="s0-cover"></div>
+</section>
+
+<!-- ── 2. 年龄问题：核心性质 ─────────────────── -->
+<section>
+  <h2>⏳ O34 年龄问题：核心性质</h2>
+  <div id="s1-age-core"></div>
+</section>
+
+<!-- ── 3. 年龄时间轴可视化 ──────────────────── -->
+<section>
+  <h2>📅 年龄差永远不变</h2>
+  <div id="s2-age-timeline"></div>
+</section>
+
+<!-- ── 4. 年龄例题1：几年后是几倍 ───────────── -->
+<section>
+  <h2>📝 O34 例1：几年后是几倍？</h2>
+  <div style="font-size:.9em;color:#888;margin-bottom:8px">
+    今年父亲 40 岁，儿子 10 岁。几年后父亲年龄是儿子的 <strong>3 倍</strong>？
+  </div>
+  <div id="s3-age-ex1"></div>
+</section>
+
+<!-- ── 5. 年龄例题2：两条件求两年龄 ─────────── -->
+<section>
+  <h2>📝 O34 例2：两条件求两年龄</h2>
+  <div style="font-size:.9em;color:#888;margin-bottom:8px">
+    现在父亲年龄是儿子的 <strong>4 倍</strong>；5 年前父亲年龄是儿子的 <strong>7 倍</strong>。求两人现在年龄。
+  </div>
+  <div id="s4-age-ex2"></div>
+</section>
+
+<!-- ── 6. 年龄问题小结与练习 ────────────────── -->
+<section>
+  <h2>⚠️ O34 易错点 &amp; 练习</h2>
+  <div id="s5-age-warn"></div>
+</section>
+
+<!-- ── 7. 鸡兔同笼：问题引入 ─────────────────── -->
+<section>
+  <h2>🐔🐇 O35 鸡兔同笼：问题引入</h2>
+  <div id="s6-cr-intro"></div>
+</section>
+
+<!-- ── 8. 鸡兔同笼：假设法核心 ──────────────── -->
+<section>
+  <h2>🔑 O35 假设法：核心思路</h2>
+  <div id="s7-cr-method"></div>
+</section>
+
+<!-- ── 9. 鸡兔同笼：主例题 ───────────────────── -->
+<section>
+  <h2>📝 O35 例题：35头94腿</h2>
+  <div style="font-size:.9em;color:#888;margin-bottom:8px">
+    笼中有雉（2条腿）和兔（4条腿），共 35 个头，94 条腿。各有多少只？
+  </div>
+  <div id="s8-cr-ex"></div>
+</section>
+
+<!-- ── 10. 鸡兔同笼变式 ─────────────────────── -->
+<section>
+  <h2>🔄 O35 同类变式</h2>
+  <div id="s9-cr-variants"></div>
+</section>
+
+<!-- ── 11. 牛吃草：问题引入 ──────────────────── -->
+<section>
+  <h2>🐄 O36 牛吃草（Newton's Pasture）</h2>
+  <div id="s10-cg-intro"></div>
+</section>
+
+<!-- ── 12. 牛吃草：建模公式 ──────────────────── -->
+<section>
+  <h2>📐 O36 建模：设未知量列方程</h2>
+  <div id="s11-cg-formula"></div>
+</section>
+
+<!-- ── 13. 牛吃草：例题（10头20天）────────────── -->
+<section>
+  <h2>📝 O36 例题：10头20天 vs 15头10天</h2>
+  <div id="s12-cg-ex"></div>
+</section>
+
+<!-- ── 14. 综合练习 ──────────────────────────── -->
+<section>
+  <h2>✏️ 综合练习</h2>
+  <div id="s13-practice"></div>
+</section>
+
+<!-- ── 15. 答案 ──────────────────────────────── -->
+<section>
+  <h2>✅ 答案</h2>
+  <div id="s14-answers"></div>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+
+  /* ══════════════════════════════════════════════════
+     Helper: age timeline SVG
+     Shows two horizontal bars (father, son) over time
+     ══════════════════════════════════════════════════ */
+  function ageTimelineSvg(fNow, sNow, futureYrs) {
+    var W = 520, H = 140, c = '';
+    var padL = 70, padR = 30, barH = 26, gap = 16;
+    var maxAge = fNow + futureYrs + 5;
+    var scale = (W - padL - padR) / maxAge;
+    var fY = 30, sY = fY + barH + gap;
+    var fCol = MV.C.blue, sCol = MV.C.green;
+
+    // axis
+    c += '<line x1="' + padL + '" y1="' + (H - 20) + '" x2="' + (W - padR) + '" y2="' + (H - 20) + '" stroke="#ccc" stroke-width="1.5"/>';
+
+    // Father bar (now)
+    c += '<rect x="' + padL + '" y="' + fY + '" width="' + (fNow * scale).toFixed(1) + '" height="' + barH + '" fill="' + fCol + '" opacity="0.7" rx="3"/>';
+    c += '<text x="' + (padL - 6) + '" y="' + (fY + barH / 2 + 5) + '" text-anchor="end" font-size="13" fill="' + fCol + '" font-weight="bold">父亲</text>';
+    c += '<text x="' + (padL + fNow * scale / 2) + '" y="' + (fY + barH / 2 + 5) + '" text-anchor="middle" font-size="12" fill="white" font-weight="bold">' + fNow + '岁</text>';
+
+    // Son bar (now)
+    c += '<rect x="' + padL + '" y="' + sY + '" width="' + (sNow * scale).toFixed(1) + '" height="' + barH + '" fill="' + sCol + '" opacity="0.7" rx="3"/>';
+    c += '<text x="' + (padL - 6) + '" y="' + (sY + barH / 2 + 5) + '" text-anchor="end" font-size="13" fill="' + sCol + '" font-weight="bold">儿子</text>';
+    c += '<text x="' + (padL + sNow * scale / 2) + '" y="' + (sY + barH / 2 + 5) + '" text-anchor="middle" font-size="12" fill="white" font-weight="bold">' + sNow + '岁</text>';
+
+    // Future extension (dashed)
+    if (futureYrs > 0) {
+      var fX1 = padL + fNow * scale, fX2 = fX1 + futureYrs * scale;
+      c += '<rect x="' + fX1.toFixed(1) + '" y="' + fY + '" width="' + (futureYrs * scale).toFixed(1) + '" height="' + barH + '" fill="' + fCol + '" opacity="0.25" rx="3" stroke="' + fCol + '" stroke-width="1.5" stroke-dasharray="5,3"/>';
+      c += '<text x="' + ((fX1 + fX2) / 2).toFixed(1) + '" y="' + (fY + barH / 2 + 5) + '" text-anchor="middle" font-size="11" fill="' + fCol + '">+' + futureYrs + '</text>';
+
+      var sX1 = padL + sNow * scale, sX2 = sX1 + futureYrs * scale;
+      c += '<rect x="' + sX1.toFixed(1) + '" y="' + sY + '" width="' + (futureYrs * scale).toFixed(1) + '" height="' + barH + '" fill="' + sCol + '" opacity="0.25" rx="3" stroke="' + sCol + '" stroke-width="1.5" stroke-dasharray="5,3"/>';
+      c += '<text x="' + ((sX1 + sX2) / 2).toFixed(1) + '" y="' + (sY + barH / 2 + 5) + '" text-anchor="middle" font-size="11" fill="' + sCol + '">+' + futureYrs + '</text>';
+    }
+
+    // Difference bracket
+    var diffX1 = padL + sNow * scale + 4;
+    var diffX2 = padL + fNow * scale - 4;
+    var midDiffX = (diffX1 + diffX2) / 2;
+    var bY = sY + barH + 8;
+    c += '<line x1="' + diffX1.toFixed(1) + '" y1="' + bY + '" x2="' + diffX2.toFixed(1) + '" y2="' + bY + '" stroke="#e74c3c" stroke-width="2"/>';
+    c += '<line x1="' + diffX1.toFixed(1) + '" y1="' + (bY - 5) + '" x2="' + diffX1.toFixed(1) + '" y2="' + (bY + 5) + '" stroke="#e74c3c" stroke-width="2"/>';
+    c += '<line x1="' + diffX2.toFixed(1) + '" y1="' + (bY - 5) + '" x2="' + diffX2.toFixed(1) + '" y2="' + (bY + 5) + '" stroke="#e74c3c" stroke-width="2"/>';
+    c += '<text x="' + midDiffX.toFixed(1) + '" y="' + (bY + 16) + '" text-anchor="middle" font-size="12" fill="#e74c3c" font-weight="bold">差 = ' + (fNow - sNow) + '（永不变）</text>';
+
+    return MV.svg(W, H, c);
+  }
+
+  /* ══════════════════════════════════════════════════
+     Helper: chicken / rabbit leg SVG
+     Shows simple bird & rabbit stick figures
+     ══════════════════════════════════════════════════ */
+  function chickenRabbitSvg(nChick, nRabbit) {
+    var perRow = 8, cW = 48, cH = 70, pad = 10;
+    var total = nChick + nRabbit;
+    var rows = Math.ceil(total / perRow);
+    var W = Math.min(total, perRow) * cW + 2 * pad;
+    var H = rows * cH + 2 * pad;
+    var c = '';
+
+    for (var i = 0; i < total; i++) {
+      var isChick = i < nChick;
+      var col = Math.floor(i / perRow);
+      var row2 = i % perRow;
+      var x = pad + row2 * cW + cW / 2;
+      var y = pad + col * cH;
+      var fc = isChick ? MV.C.orange : MV.C.purple;
+      // body oval
+      c += '<ellipse cx="' + x + '" cy="' + (y + 28) + '" rx="14" ry="10" fill="' + fc + '" opacity="0.8"/>';
+      // head
+      c += '<circle cx="' + x + '" cy="' + (y + 14) + '" r="9" fill="' + fc + '"/>';
+      // legs
+      if (isChick) {
+        // 2 legs
+        c += '<line x1="' + (x - 5) + '" y1="' + (y + 36) + '" x2="' + (x - 7) + '" y2="' + (y + 50) + '" stroke="' + fc + '" stroke-width="2"/>';
+        c += '<line x1="' + (x + 5) + '" y1="' + (y + 36) + '" x2="' + (x + 7) + '" y2="' + (y + 50) + '" stroke="' + fc + '" stroke-width="2"/>';
+        c += '<text x="' + x + '" y="' + (y + 62) + '" text-anchor="middle" font-size="9" fill="' + fc + '">鸡</text>';
+      } else {
+        // 4 legs
+        c += '<line x1="' + (x - 8) + '" y1="' + (y + 34) + '" x2="' + (x - 12) + '" y2="' + (y + 50) + '" stroke="' + fc + '" stroke-width="2"/>';
+        c += '<line x1="' + (x - 3) + '" y1="' + (y + 36) + '" x2="' + (x - 4) + '" y2="' + (y + 50) + '" stroke="' + fc + '" stroke-width="2"/>';
+        c += '<line x1="' + (x + 3) + '" y1="' + (y + 36) + '" x2="' + (x + 4) + '" y2="' + (y + 50) + '" stroke="' + fc + '" stroke-width="2"/>';
+        c += '<line x1="' + (x + 8) + '" y1="' + (y + 34) + '" x2="' + (x + 12) + '" y2="' + (y + 50) + '" stroke="' + fc + '" stroke-width="2"/>';
+        c += '<text x="' + x + '" y="' + (y + 62) + '" text-anchor="middle" font-size="9" fill="' + fc + '">兔</text>';
+      }
+    }
+    return MV.svg(W, H, c);
+  }
+
+  /* ══════════════════════════════════════════════════
+     Helper: pasture (grass field) SVG
+     Shows field, growing arrows, cows eating
+     ══════════════════════════════════════════════════ */
+  function pastureSvg() {
+    var W = 480, H = 140, c = '';
+    // Field rectangle
+    c += '<rect x="20" y="60" width="440" height="60" rx="6" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>';
+    // Grass blades (decorative)
+    for (var i = 0; i < 22; i++) {
+      var gx = 30 + i * 19;
+      c += '<line x1="' + gx + '" y1="60" x2="' + (gx - 4) + '" y2="46" stroke="#27ae60" stroke-width="2"/>';
+      c += '<line x1="' + gx + '" y1="60" x2="' + (gx + 4) + '" y2="48" stroke="#27ae60" stroke-width="1.5"/>';
+    }
+    // Growth arrow (left side)
+    c += '<text x="10" y="42" text-anchor="middle" font-size="22" fill="#27ae60">↑</text>';
+    c += '<text x="10" y="30" text-anchor="middle" font-size="10" fill="#27ae60">每天</text>';
+    c += '<text x="10" y="20" text-anchor="middle" font-size="10" fill="#27ae60">生长</text>';
+    // Cow icons (simple ovals + head)
+    var cowXs = [100, 200, 300, 400];
+    cowXs.forEach(function (cx) {
+      c += '<ellipse cx="' + cx + '" cy="85" rx="20" ry="12" fill="#8B4513" opacity="0.7"/>';
+      c += '<circle cx="' + (cx + 20) + '" cy="78" r="10" fill="#8B4513" opacity="0.7"/>';
+      // legs
+      [cx - 14, cx - 6, cx + 6, cx + 14].forEach(function (lx) {
+        c += '<line x1="' + lx + '" y1="97" x2="' + lx + '" y2="112" stroke="#8B4513" stroke-width="2"/>';
+      });
+      c += '<text x="' + cx + '" y="130" text-anchor="middle" font-size="9" fill="#555">吃</text>';
+    });
+    // Balance arrow in middle
+    c += '<text x="240" y="158" text-anchor="middle" font-size="12" fill="#555">原有量 + 生长量×天数 = 牛数×天数</text>';
+    return MV.svg(W, H + 20, c);
+  }
+
+  /* ══════════════════════════════════════════════════
+     SLIDE CONTENT
+     ══════════════════════════════════════════════════ */
+
+  /* ── 1. 封面 ────────────────────────────────────── */
+  document.getElementById('s0-cover').innerHTML =
+    MV.row(
+      MV.col(
+        '<span class="topic-badge" style="background:#2980b9">O34 年龄问题</span>',
+        MV.segBar([
+          { label: '儿子', value: 10, color: MV.C.green,  sublabel: '10岁' },
+          { label: '父亲', value: 40, color: MV.C.blue,   sublabel: '40岁' }
+        ], { scale: 4, barH: 26, gap: 6, labelW: 56 }),
+        '<div style="font-size:.78em;color:#666">年龄差30，永远不变</div>'
+      ),
+      MV.col(
+        '<span class="topic-badge" style="background:#e67e22">O35 鸡兔同笼</span>',
+        MV.segBar([
+          { label: '鸡（2腿）', value: 46, color: MV.C.orange, sublabel: '23只' },
+          { label: '兔（4腿）', value: 48, color: MV.C.purple, sublabel: '12只' }
+        ], { scale: 2, barH: 26, gap: 6, labelW: 72 }),
+        '<div style="font-size:.78em;color:#666">35头94腿</div>'
+      ),
+      MV.col(
+        '<span class="topic-badge" style="background:#27ae60">O36 牛吃草</span>',
+        '<div style="font-size:.82em;color:#444;margin-top:6px">草一边长，一边被吃<br>原有量 + 生长量×t = 牛数×t</div>'
+      )
+    ) +
+    MV.tip('三类题共同核心：抓住<b>不变量</b>（年龄差、头数、原有草量）');
+
+  /* ── 2. 年龄问题核心性质 ─────────────────────── */
+  document.getElementById('s1-age-core').innerHTML =
+    MV.row(
+      MV.col(
+        '<div style="font-size:1em;font-weight:bold;color:#2980b9;margin-bottom:8px">核心规律</div>',
+        MV.step('所有人同时过了 n 年，每人年龄各增加 n 岁', MV.C.blue),
+        MV.step('<b>年龄差永远不变</b>，不论过了多少年', MV.C.blue),
+        MV.step('两人年龄和：每过一年多 2 岁（k人多 k 岁）', MV.C.green)
+      ),
+      MV.col(
+        '<div style="text-align:center">' +
+        (function () {
+          var W = 260, H = 120, c = '';
+          // Three time points: 5 years ago, now, 5 years later
+          var rows = [
+            { label: '5年前', f: 35, s: 5, y: 10 },
+            { label: '现在',  f: 40, s: 10, y: 50 },
+            { label: '5年后', f: 45, s: 15, y: 90 }
+          ];
+          rows.forEach(function (row) {
+            c += '<text x="50" y="' + (row.y + 4) + '" text-anchor="middle" font-size="12" fill="#555">' + row.label + '</text>';
+            c += '<rect x="72" y="' + (row.y - 12) + '" width="' + (row.f * 2.5) + '" height="14" rx="3" fill="#2980b9" opacity="0.7"/>';
+            c += '<text x="' + (72 + row.f * 1.25) + '" y="' + (row.y) + '" text-anchor="middle" font-size="10" fill="white">' + row.f + '</text>';
+            c += '<rect x="72" y="' + (row.y + 4) + '" width="' + (row.s * 2.5) + '" height="12" rx="3" fill="#27ae60" opacity="0.7"/>';
+            c += '<text x="' + (72 + row.s * 1.25) + '" y="' + (row.y + 14) + '" text-anchor="middle" font-size="10" fill="white">' + row.s + '</text>';
+            // difference bracket
+            var dx = 72 + row.s * 2.5 + 5;
+            var dx2 = 72 + row.f * 2.5 - 5;
+            var by = row.y + 10;
+            c += '<line x1="' + dx.toFixed(0) + '" y1="' + by + '" x2="' + dx2.toFixed(0) + '" y2="' + by + '" stroke="#e74c3c" stroke-width="1.5"/>';
+            c += '<text x="' + ((dx + dx2) / 2).toFixed(0) + '" y="' + (by + 12) + '" text-anchor="middle" font-size="9" fill="#e74c3c">差30</text>';
+          });
+          return MV.svg(W, H, c);
+        })() +
+        '</div>'
+      )
+    ) +
+    MV.fragDiv(
+      MV.tip('年龄差 = 大 − 小，永远不变。题目一般先求"什么时候几倍"，<br>用差 ÷ (倍数 − 1) = 小的年龄来解。'),
+      1
+    );
+
+  /* ── 3. 年龄时间轴 ───────────────────────────── */
+  document.getElementById('s2-age-timeline').innerHTML =
+    '<div style="text-align:center;margin-bottom:10px">' +
+    ageTimelineSvg(40, 10, 5) + '</div>' +
+    MV.row(
+      MV.step('年龄差 = 40 − 10 = <b>30 岁</b>，永远不变', MV.C.red),
+      MV.step('5年后：父45岁，子15岁，差仍为 30 ✔', MV.C.blue)
+    ) +
+    MV.fragDiv(
+      MV.tip('关键公式：<br>设 x 年后是 k 倍 → 差 = (k−1) × 小年龄<br>小年龄 = 差 ÷ (k−1)'),
+      1
+    );
+
+  /* ── 4. 年龄例题1 ─────────────────────────────── */
+  document.getElementById('s3-age-ex1').innerHTML =
+    '<div style="text-align:center;margin-bottom:8px">' +
+    ageTimelineSvg(40, 10, 5) + '</div>' +
+    '<div class="formula-box">' +
+    '年龄差 = 40 − 10 = <b>30 岁</b><br>' +
+    '3倍关系 → 差对应 3−1 = <b>2 份</b><br>' +
+    '那时儿子年龄 = 30 ÷ 2 = <b>15 岁</b><br>' +
+    '经过年数 = 15 − 10 = <b style="color:#2980b9">5 年后</b>' +
+    '</div>' +
+    MV.fragDiv(
+      MV.row(
+        MV.step('验算：5年后父 45，子 15，45÷15 = 3 ✔', MV.C.green),
+        MV.tip('公式：儿子年龄 = 差 ÷ (倍数 − 1)')
+      ),
+      1
+    );
+
+  /* ── 5. 年龄例题2 ─────────────────────────────── */
+  document.getElementById('s4-age-ex2').innerHTML =
+    MV.row(
+      MV.col(
+        MV.step('设儿子现在年龄 = <b>x</b>，父亲 = <b>4x</b>', MV.C.blue),
+        MV.step('5年前：父 = 4x−5，子 = x−5', MV.C.blue),
+        MV.step('条件：4x−5 = 7(x−5)', MV.C.orange)
+      ),
+      MV.col(
+        MV.fragDiv(
+          '<div class="formula-box">' +
+          '4x − 5 = 7x − 35<br>' +
+          '30 = 3x<br>' +
+          'x = <b>10</b>（儿子）<br>' +
+          '父亲 = 4 × 10 = <b style="color:#2980b9">40</b>' +
+          '</div>',
+          1
+        )
+      )
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.step('验算现在：40 = 4 × 10 ✔', MV.C.green),
+        MV.step('验算5年前：35 = 7 × 5 ✔', MV.C.green)
+      ),
+      2
+    );
+
+  /* ── 6. 年龄易错点 ───────────────────────────── */
+  document.getElementById('s5-age-warn').innerHTML =
+    MV.col(
+      MV.warn('差是 30 岁，问"几倍时儿子多少"，除数是 <b>(倍数−1)</b>，不是倍数！'),
+      MV.warn('"几年后"和"几年前"方向不同，注意正负！'),
+      MV.tip('两人年龄差不变；和每年 +人数 岁')
+    ) +
+    '<br>' +
+    MV.col(
+      '<div class="pq">练习：父子年龄和 48 岁，父比子大 24 岁。父子各多少岁？' +
+        MV.frag('&nbsp;→ 子=(48−24)÷2=<b>12</b>，父=<b>36</b>', 1) + '</div>',
+      '<div class="pq">练习：今年哥 14 岁，弟 8 岁，差 6 岁。几年后哥是弟 2 倍？' +
+        MV.frag('&nbsp;→ 弟=差÷(2−1)=6，但弟现在8岁，<b>2年前</b>才是', 2) + '</div>'
+    );
+
+  /* ── 7. 鸡兔同笼引入 ─────────────────────────── */
+  document.getElementById('s6-cr-intro').innerHTML =
+    '<div style="text-align:center;margin-bottom:8px">' +
+    chickenRabbitSvg(4, 3) + '</div>' +
+    MV.row(
+      MV.step('头数（总只数）已知', MV.C.orange),
+      MV.step('腿数（总腿数）已知', MV.C.purple),
+      MV.step('鸡2腿，兔4腿，差 2 条', MV.C.red)
+    ) +
+    MV.fragDiv(
+      MV.tip('关键洞察：总头数固定时，腿数差异完全来自"每只贡献几条腿"的不同！'),
+      1
+    );
+
+  /* ── 8. 假设法核心 ───────────────────────────── */
+  document.getElementById('s7-cr-method').innerHTML =
+    MV.row(
+      MV.col(
+        '<div style="font-weight:bold;color:#e67e22;margin-bottom:8px">假设全是鸡</div>',
+        MV.step('总腿数 = 头数 × 2', MV.C.orange),
+        MV.step('少了的腿数 = 实际腿数 − 头数×2', MV.C.orange),
+        MV.step('每换1只鸡→兔，多 2 条腿', MV.C.orange),
+        MV.step('<b>兔数 = 多出腿数 ÷ 2</b>', MV.C.red)
+      ),
+      MV.col(
+        '<div style="font-weight:bold;color:#8e44ad;margin-bottom:8px">假设全是兔</div>',
+        MV.step('总腿数 = 头数 × 4', MV.C.purple),
+        MV.step('多了的腿数 = 头数×4 − 实际腿数', MV.C.purple),
+        MV.step('每换1只兔→鸡，少 2 条腿', MV.C.purple),
+        MV.step('<b>鸡数 = 多出腿数 ÷ 2</b>', MV.C.red)
+      )
+    ) +
+    MV.fragDiv(
+      MV.tip('"差量"÷"单位差"= 需要换的只数。这是鸡兔同笼的本质！'),
+      1
+    );
+
+  /* ── 9. 主例题：35头94腿 ─────────────────────── */
+  document.getElementById('s8-cr-ex').innerHTML =
+    MV.row(
+      MV.col(
+        '<div style="font-weight:bold;color:#e67e22;margin-bottom:6px">法一：假设全是兔</div>',
+        '<div class="formula-box3">' +
+        '假设全是兔：4 × 35 = <b>140 条</b>腿<br>' +
+        '多了：140 − 94 = <b>46 条</b><br>' +
+        '每换1只兔→鸡少2腿<br>' +
+        '鸡数 = 46 ÷ 2 = <b style="color:#e67e22">23 只</b><br>' +
+        '兔数 = 35 − 23 = <b style="color:#8e44ad">12 只</b>' +
+        '</div>'
+      ),
+      MV.col(
+        MV.fragDiv(
+          '<div style="font-weight:bold;color:#8e44ad;margin-bottom:6px">法二：假设全是鸡</div>' +
+          '<div class="formula-box">' +
+          '假设全是鸡：2 × 35 = <b>70 条</b>腿<br>' +
+          '少了：94 − 70 = <b>24 条</b><br>' +
+          '兔数 = 24 ÷ 2 = <b style="color:#8e44ad">12 只</b><br>' +
+          '鸡数 = 35 − 12 = <b style="color:#e67e22">23 只</b>' +
+          '</div>',
+          1
+        )
+      )
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.step('验算头数：23 + 12 = 35 ✔', MV.C.green),
+        MV.step('验算腿数：23×2 + 12×4 = 46+48 = 94 ✔', MV.C.green)
+      ),
+      2
+    );
+
+  /* ── 10. 鸡兔变式 ─────────────────────────────── */
+  document.getElementById('s9-cr-variants').innerHTML =
+    MV.row(
+      MV.col(
+        '<div style="font-weight:bold;color:#2980b9;margin-bottom:6px">变式1：自行车和三轮车</div>',
+        '<div class="pq">共 18 辆，轮子 42 个。<br>（自行车2轮，三轮车3轮）</div>',
+        MV.fragDiv(
+          '<div style="font-size:.88em;color:#2980b9">假设全是自行车：18×2=36<br>' +
+          '多：42−36=6；差=3−2=1<br>' +
+          '三轮车 = 6÷1 = <b>6辆</b>，自行车 = <b>12辆</b></div>',
+          1
+        )
+      ),
+      MV.col(
+        '<div style="font-weight:bold;color:#27ae60;margin-bottom:6px">变式2：得分问题</div>',
+        '<div class="pq">答对得5分，答错得1分。<br>共答 12 题，得 44 分。</div>',
+        MV.fragDiv(
+          '<div style="font-size:.88em;color:#27ae60">假设全错：12×1=12<br>' +
+          '多：44−12=32；差=5−1=4<br>' +
+          '答对 = 32÷4 = <b>8题</b>，答错 = <b>4题</b></div>',
+          2
+        )
+      )
+    ) +
+    MV.fragDiv(
+      MV.tip('通用公式：差量 ÷ 单位差 = 需替换的个数。<br>关键是找准"每个对象对应几"。'),
+      3
+    );
+
+  /* ── 11. 牛吃草引入 ───────────────────────────── */
+  document.getElementById('s10-cg-intro').innerHTML =
+    '<div style="text-align:center;margin-bottom:8px">' + pastureSvg() + '</div>' +
+    MV.row(
+      MV.step('草场原有草量（固定）', MV.C.green),
+      MV.step('每天新长草量（固定）', MV.C.orange),
+      MV.step('每头牛每天消耗 1 份', MV.C.blue)
+    ) +
+    MV.fragDiv(
+      MV.warn('不能直接"总草量 ÷ 每天吃草量"！<br>草还在长，要把生长量算进去。'),
+      1
+    );
+
+  /* ── 12. 牛吃草公式 ───────────────────────────── */
+  document.getElementById('s11-cg-formula').innerHTML =
+    MV.row(
+      MV.col(
+        '<div style="font-weight:bold;color:#27ae60;margin-bottom:8px">建模</div>',
+        MV.step('设原有草量 = <b>A</b>', MV.C.green),
+        MV.step('每天长草量 = <b>B</b>（恒定）', MV.C.orange),
+        MV.step('每头牛每天吃草 = <b>1 份</b>', MV.C.blue),
+        MV.step('列方程：A + B×天数 = 牛数×天数', MV.C.red)
+      ),
+      MV.col(
+        '<div style="font-weight:bold;color:#e67e22;margin-bottom:8px">两组条件联立</div>',
+        '<div class="formula-box2">' +
+        'A + B·t₁ = n₁·t₁ &nbsp;… 条件①<br>' +
+        'A + B·t₂ = n₂·t₂ &nbsp;… 条件②<br>' +
+        '① − ② 消去 A，求 B<br>' +
+        '代回求 A，再求目标天数' +
+        '</div>'
+      )
+    ) +
+    MV.fragDiv(
+      MV.tip('同一片草地，A 和 B 不变。两组条件 → 两个方程 → 解出 A 和 B。'),
+      1
+    );
+
+  /* ── 13. 牛吃草例题 ───────────────────────────── */
+  document.getElementById('s12-cg-ex').innerHTML =
+    '<div class="formula-box2" style="max-width:460px">' +
+    '条件①：10 头牛，20 天吃完 → A + 20B = 200<br>' +
+    '条件②：15 头牛，10 天吃完 → A + 10B = 150' +
+    '</div>' +
+    MV.fragDiv(
+      '<div class="formula-box">' +
+      '① − ②：10B = 50 → <b>B = 5</b>（每天长草 5 份）<br>' +
+      '代入②：A + 50 = 150 → <b>A = 100</b>' +
+      '</div>',
+      1
+    ) +
+    MV.fragDiv(
+      '<div class="formula-box3">' +
+      '设 25 头牛 x 天吃完：100 + 5x = 25x<br>' +
+      '100 = 20x → <b style="color:#e67e22">x = 5 天</b>' +
+      '</div>',
+      2
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.step('验算：100 + 5×5 = 125 = 25×5 ✔', MV.C.green)
+      ),
+      3
+    );
+
+  /* ── 14. 综合练习 ─────────────────────────────── */
+  document.getElementById('s13-practice').innerHTML =
+    MV.col(
+      '<div style="font-weight:bold;color:#2980b9;margin-bottom:4px">年龄问题</div>',
+      '<div class="pq">① 父子年龄和 54 岁，父比子大 30 岁，父子各多少岁？' +
+        MV.frag('&nbsp;→ 子=(54−30)÷2=<b>12</b>，父=<b>42</b>', 1) + '</div>',
+      '<div class="pq">② 今年妈妈 40 岁，女儿 12 岁。几年后妈妈比女儿大 28 岁？' +
+        MV.frag('&nbsp;→ 差永远是 28，<b>现在就是，以后一直如此</b>', 2) + '</div>',
+      '<div style="font-weight:bold;color:#e67e22;margin-top:8px;margin-bottom:4px">鸡兔同笼</div>',
+      '<div class="pq">③ 鸡兔共 15 只，腿共 44 条，鸡兔各几只？' +
+        MV.frag('&nbsp;→ 假设全兔：60−44=16，16÷2=8只鸡，7只兔', 3) + '</div>',
+      '<div class="pq">④ 停车场汽车和摩托车共 14 辆，轮子 40 个，各几辆？' +
+        MV.frag('&nbsp;→ 假设全是汽车：14×4=56，56−40=16，16÷2=8摩托，6汽车', 4) + '</div>',
+      '<div style="font-weight:bold;color:#27ae60;margin-top:8px;margin-bottom:4px">牛吃草</div>',
+      '<div class="pq">⑤ 8头牛30天吃完，12头牛18天吃完，每天长草多少份？' +
+        MV.frag('&nbsp;→ A+30B=240，A+18B=216，12B=24，<b>B=2份</b>', 5) + '</div>',
+      '<div class="pq">⑥ 草每天长3份，原有草够18头牛吃8天，9头牛几天吃完？' +
+        MV.frag('&nbsp;→ A=18×8=144，净消耗=9−3=6份/天，144÷6=<b>24天</b>', 6) + '</div>'
+    );
+
+  /* ── 15. 答案 ─────────────────────────────────── */
+  document.getElementById('s14-answers').innerHTML =
+    '<table class="ans-table">' +
+    '<tr><th>题号</th><th>类型</th><th>关键步骤</th><th>答案</th></tr>' +
+    '<tr><td>①</td><td>年龄</td><td>(54−30)÷2</td><td>父42，子12</td></tr>' +
+    '<tr><td>②</td><td>年龄</td><td>差=28，永不变</td><td>现在就是</td></tr>' +
+    '<tr><td>③</td><td>鸡兔</td><td>(60−44)÷2=8鸡</td><td>鸡8，兔7</td></tr>' +
+    '<tr><td>④</td><td>鸡兔</td><td>(56−40)÷2=8摩托</td><td>汽车6，摩托8</td></tr>' +
+    '<tr><td>⑤</td><td>牛吃草</td><td>12B=240−216=24</td><td>B = 2 份/天</td></tr>' +
+    '<tr><td>⑥</td><td>牛吃草</td><td>144÷(9−3)</td><td>24 天</td></tr>' +
+    '</table>' +
+    MV.fragDiv(
+      MV.tip('三类题的核心：<br>年龄 → 差不变；鸡兔 → 差量推个数；牛吃草 → 两方程联立'),
+      1
+    );
+
+});
+</script>
+</body>
+</html>
