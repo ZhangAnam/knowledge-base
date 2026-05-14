@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>O5 · 异分母分数加减法</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.reveal h2 { font-size: 1.32em; margin: .1em 0 .25em; }
+.ex-q { font-size:1.1em; font-weight:bold; text-align:center; margin:4px 0 8px; }
+.conv-row { display:flex; align-items:center; gap:10px; justify-content:center;
+            margin:5px 0; font-size:.95em; }
+.mult-box { background:#f0f0f0; border:1.5px solid #aaa; border-radius:4px;
+            padding:2px 8px; display:inline-flex; align-items:center; }
+.prac-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:.88em; }
+.prac-box { border-radius:6px; padding:10px 14px; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ═══ S1 封面 ═══ -->
+<section>
+<div style="text-align:center;padding:28px 0">
+  <div class="mv-chap-title">异分母分数加减法</div>
+  <div class="mv-chap-sub">奥数计算模块 A1 &nbsp;·&nbsp; O5</div>
+  <div id="s1vis" style="margin-top:20px"></div>
+  <div style="margin-top:16px;font-size:.84em;color:#888">先通分，再加减，单位一致才能算</div>
+</div>
+</section>
+
+<!-- ═══ S2 为什么要通分 ═══ -->
+<section>
+<h2>为什么要通分？</h2>
+<div id="s2why"></div>
+</section>
+
+<!-- ═══ S3 解题步骤 ═══ -->
+<section>
+<h2>解题步骤</h2>
+<div id="s3stp"></div>
+</section>
+
+<!-- ═══ S4 例1：加法（和 < 1）═══ -->
+<section>
+<h2>例1：同分后相加（和 &lt; 1）</h2>
+<div id="s4e1"></div>
+</section>
+
+<!-- ═══ S5 例2：异分母减法 ═══ -->
+<section>
+<h2>例2：同分后相减</h2>
+<div id="s5e2"></div>
+</section>
+
+<!-- ═══ S6 例3：加法（和 > 1）═══ -->
+<section>
+<h2>例3：结果超过 1 的加法</h2>
+<div id="s6e3"></div>
+</section>
+
+<!-- ═══ S7 例4：三个分数相加 ═══ -->
+<section>
+<h2>例4：三个分数相加</h2>
+<div id="s7e4"></div>
+</section>
+
+<!-- ═══ S8 例5：综合（和 > 1）═══ -->
+<section>
+<h2>例5：连续通分（和 &gt; 1）</h2>
+<div id="s8e5"></div>
+</section>
+
+<!-- ═══ S9 检验结果 ═══ -->
+<section>
+<h2>🔍 如何检验答案</h2>
+<div id="s9chk"></div>
+</section>
+
+<!-- ═══ S10 易错点 ═══ -->
+<section>
+<h2>⚠️ 易错点总结</h2>
+<div id="s10err"></div>
+</section>
+
+<!-- ═══ S11 A/B 组练习 ═══ -->
+<section>
+<h2>📝 A / B 组练习</h2>
+<div id="s11ab"></div>
+</section>
+
+<!-- ═══ S12 C 组综合 ═══ -->
+<section>
+<h2>🌟 C 组综合练习</h2>
+<div id="s12c"></div>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+
+  /* ─────────────────────────────────────────
+     convRow: show fraction conversion visually
+     Renders: barFrom × mult = barTo (with labels)
+  ───────────────────────────────────────── */
+  function convRow(fromD, fromN, toD, toN, multN, multD, color) {
+    color = color || MV.C.blue;
+    var bW = 200, bH = 40;
+    return '<div class="conv-row">'
+      + '<div style="text-align:center">'
+      + MV.fracRect(fromD, fromN, bW, bH, color)
+      + '<div style="font-size:.88em;color:' + color + ';font-weight:bold;margin-top:2px">' + MV.frac(fromN, fromD) + '</div>'
+      + '</div>'
+      + '<span style="font-size:1.3em;color:#666">×</span>'
+      + '<div class="mult-box">' + MV.frac(multN, multD) + '</div>'
+      + '<span style="font-size:1.3em;color:#666">=</span>'
+      + '<div style="text-align:center">'
+      + MV.fracRect(toD, toN, bW, bH, color)
+      + '<div style="font-size:.88em;color:' + color + ';font-weight:bold;margin-top:2px">' + MV.frac(toN, toD) + '</div>'
+      + '</div>'
+      + '</div>';
+  }
+
+  /* ════════════════════════════════════════
+     SLIDE INJECTIONS
+  ════════════════════════════════════════ */
+
+  // ── S1 Cover visual ──
+  document.getElementById('s1vis').innerHTML =
+    MV.row(
+      MV.col(MV.fracRect(3, 1, 100, 40, MV.C.blue),   MV.label(MV.frac(1,3))),
+      '<span style="font-size:1.6em;color:#aaa;margin:0 6px">+</span>',
+      MV.col(MV.fracRect(4, 1, 130, 40, MV.C.orange), MV.label(MV.frac(1,4))),
+      '<span style="font-size:1.6em;color:#aaa;margin:0 6px">=</span>',
+      MV.col(MV.fracRect(12, 7, 230, 40, MV.C.green), MV.label(MV.frac(7,12)))
+    );
+
+  // ── S2 Why ──
+  document.getElementById('s2why').innerHTML =
+    MV.warn('分母不同 = <strong>单位不同</strong>，不能直接相加减！')
+    + '<div style="margin:10px 0">'
+    + MV.row(
+        '<div style="text-align:center">'
+        + MV.fracRect(2, 1, 200, 48, MV.C.blue)
+        + '<div style="font-size:.9em;color:' + MV.C.blue + ';margin-top:3px">每格 = ' + MV.frac(1,2) + ' （2等份）</div></div>',
+        '<span style="font-size:1.5em;color:#aaa;margin:0 14px">vs</span>',
+        '<div style="text-align:center">'
+        + MV.fracRect(3, 1, 200, 48, MV.C.orange)
+        + '<div style="font-size:.9em;color:' + MV.C.orange + ';margin-top:3px">每格 = ' + MV.frac(1,3) + '（3等份）</div></div>'
+      )
+    + '</div>'
+    + MV.fragDiv(
+        MV.tip('<strong>通分</strong>：把两个分母化为<strong>公倍数</strong>，使每格大小相同，再加减')
+        + '<div style="margin-top:8px">'
+        + MV.row(
+            '<div style="text-align:center">'
+            + MV.fracRect(6, 3, 200, 48, MV.C.blue)
+            + '<div style="font-size:.9em;color:' + MV.C.blue + ';margin-top:3px">' + MV.frac(3,6) + ' （同分后）</div></div>',
+            '<span style="font-size:1.5em;color:#aaa;margin:0 14px">同</span>',
+            '<div style="text-align:center">'
+            + MV.fracRect(6, 2, 200, 48, MV.C.orange)
+            + '<div style="font-size:.9em;color:' + MV.C.orange + ';margin-top:3px">' + MV.frac(2,6) + '（同分后）</div></div>'
+          )
+        + '</div>',
+        1);
+
+  // ── S3 Steps ──
+  document.getElementById('s3stp').innerHTML =
+    MV.col(
+      MV.step('<strong>① 找最小公倍数（LCM）：</strong>对两个（或多个）分母求 LCM', MV.C.blue),
+      MV.step('<strong>② 通分（等比扩分）：</strong>分子分母同乘同一个整数，使分母变成 LCM', MV.C.orange),
+      MV.step('<strong>③ 加减分子：</strong>分母不变，直接对分子进行加减', MV.C.green),
+      MV.step('<strong>④ 化简：</strong>结果能约分就约分；假分数可转化为带分数', MV.C.purple)
+    )
+    + '<div style="margin-top:10px;text-align:center">'
+    + '<div class="formula">'
+    + MV.frac('<em>a</em>','<em>b</em>') + ' ± ' + MV.frac('<em>c</em>','<em>d</em>')
+    + '&nbsp; = &nbsp;'
+    + MV.frac('<em>a</em> × (<em>lcm</em>/<em>b</em>)','<em>lcm</em>')
+    + ' ± ' + MV.frac('<em>c</em> × (<em>lcm</em>/<em>d</em>)','<em>lcm</em>')
+    + '&nbsp; ，其中 <em>lcm</em> = LCM(<em>b</em>,<em>d</em>)'
+    + '</div></div>';
+
+  // ── S4 Example 1: 1/2 + 1/3 = 5/6 ──
+  document.getElementById('s4e1').innerHTML =
+    '<p class="ex-q">' + MV.frac(1,2) + ' + ' + MV.frac(1,3) + '</p>'
+    + MV.row(
+        '<div style="min-width:280px">'
+        + MV.step('通分：LCM(2,3) = 6', MV.C.blue)
+        + convRow(2, 1, 6, 3, 3, 3, MV.C.blue)
+        + convRow(3, 1, 6, 2, 2, 2, MV.C.orange)
+        + '</div>',
+        '<div style="min-width:260px">'
+        + MV.step('合并：', MV.C.green)
+        + '<div style="text-align:center;padding:8px">'
+        + MV.fracAnimAdd(6, 3, 2, MV.C.blue, MV.C.orange, 210, 50)
+        + '</div>'
+        + MV.vcmp(MV.frac(1,2)+'+'+MV.frac(1,3),
+            [MV.frac(3,6)+'+'+MV.frac(2,6)],
+            '= '+MV.frac(5,6))
+        + '</div>'
+      );
+
+  // ── S5 Example 2: 2/5 - 1/3 = 1/15 ──
+  document.getElementById('s5e2').innerHTML =
+    '<p class="ex-q">' + MV.frac(2,5) + ' − ' + MV.frac(1,3) + '</p>'
+    + MV.row(
+        '<div style="min-width:280px">'
+        + MV.step('通分：LCM(5,3) = 15', MV.C.blue)
+        + convRow(5, 2, 15, 6, 3, 3, MV.C.blue)
+        + convRow(3, 1, 15, 5, 5, 5, MV.C.red)
+        + '</div>',
+        '<div style="min-width:260px">'
+        + MV.step('减去：', MV.C.green)
+        + '<div style="text-align:center;padding:8px">'
+        + MV.fracAnimSub(15, 6, 5, MV.C.blue, MV.C.red, 210, 50)
+        + '</div>'
+        + MV.vcmp(MV.frac(2,5)+' − '+MV.frac(1,3),
+            [MV.frac(6,15)+' − '+MV.frac(5,15)],
+            '= '+MV.frac(1,15))
+        + '</div>'
+      );
+
+  // ── S6 Example 3: 5/6 + 3/8 = 29/24 ──
+  document.getElementById('s6e3').innerHTML =
+    '<p class="ex-q">' + MV.frac(5,6) + ' + ' + MV.frac(3,8) + '</p>'
+    + MV.row(
+        '<div style="min-width:280px">'
+        + MV.step('通分：LCM(6,8) = 24', MV.C.blue)
+        + convRow(6, 5, 24, 20, 4, 4, MV.C.blue)
+        + convRow(8, 3, 24, 9, 3, 3, MV.C.orange)
+        + '</div>',
+        '<div style="min-width:260px">'
+        + MV.step('两段加在一起：', MV.C.green)
+        + '<div style="text-align:center;margin:6px 0">'
+        + MV.fracRect(24, 20, 210, 44, MV.C.blue, MV.frac(20,24))
+        + '</div>'
+        + '<div style="text-align:center;margin:6px 0">'
+        + MV.fracRect(24, 9, 210, 44, MV.C.orange, MV.frac(9,24))
+        + '</div>'
+        + MV.vcmp(MV.frac(5,6)+'+'+MV.frac(3,8),
+            [MV.frac(20,24)+'+'+MV.frac(9,24)],
+            '= '+MV.frac(29,24))
+        + '</div>'
+      )
+    + MV.frag(MV.warn(MV.frac(29,24) + ' 是<strong>假分数</strong>，可化为带分数 <strong>1' + MV.frac(5,24) + '</strong>'), 1);
+
+  // ── S7 Example 4: 1/2 + 1/3 + 1/6 = 1 ──
+  document.getElementById('s7e4').innerHTML =
+    '<p class="ex-q">' + MV.frac(1,2) + ' + ' + MV.frac(1,3) + ' + ' + MV.frac(1,6) + '</p>'
+    + MV.row(
+        '<div style="min-width:280px">'
+        + MV.step('通分：LCM(2,3,6) = 6', MV.C.blue)
+        + convRow(2, 1, 6, 3, 3, 3, MV.C.blue)
+        + convRow(3, 1, 6, 2, 2, 2, MV.C.orange)
+        + '<div class="conv-row" style="margin-top:0">'
+        + '<div style="text-align:center">'
+        + MV.fracRect(6, 1, 200, 40, MV.C.teal)
+        + '<div style="font-size:.88em;color:' + MV.C.teal + ';font-weight:bold;margin-top:2px">' + MV.frac(1,6) + '（不变）</div>'
+        + '</div></div>'
+        + '</div>',
+        '<div style="min-width:220px">'
+        + MV.step('合并后恰好满格：', MV.C.green)
+        + '<div style="text-align:center;margin:8px 0">'
+        + MV.fracRect(6, 3, 200, 44, MV.C.blue, MV.frac(3,6))
+        + '</div>'
+        + '<div style="text-align:center;margin:6px 0">'
+        + MV.fracRect(6, 2, 200, 44, MV.C.orange, MV.frac(2,6))
+        + '</div>'
+        + '<div style="text-align:center;margin:6px 0">'
+        + MV.fracRect(6, 1, 200, 44, MV.C.teal, MV.frac(1,6))
+        + '</div>'
+        + MV.vcmp(MV.frac(3,6)+'+'+MV.frac(2,6)+'+'+MV.frac(1,6),
+            [MV.frac('3+2+1','6')],
+            '= '+MV.frac(6,6)+' = <strong>1</strong>')
+        + '</div>'
+      )
+    + MV.frag(MV.tip('3 + 2 + 1 = 6，分子之和恰好等于公分母 6，结果 = 1！'), 1);
+
+  // ── S8 Example 5: 7/10 + 3/4 = 29/20 ──
+  document.getElementById('s8e5').innerHTML =
+    '<p class="ex-q">' + MV.frac(7,10) + ' + ' + MV.frac(3,4) + '</p>'
+    + MV.row(
+        '<div style="min-width:280px">'
+        + MV.step('通分：LCM(10,4) = 20', MV.C.blue)
+        + convRow(10, 7, 20, 14, 2, 2, MV.C.blue)
+        + convRow(4, 3, 20, 15, 5, 5, MV.C.orange)
+        + '</div>',
+        '<div style="min-width:260px">'
+        + MV.step('两段相加（超过 1 格）：', MV.C.green)
+        + '<div style="text-align:center;margin:6px 0">'
+        + MV.fracRect(20, 14, 210, 44, MV.C.blue, MV.frac(14,20))
+        + '</div>'
+        + '<div style="text-align:center;margin:6px 0">'
+        + MV.fracRect(20, 15, 210, 44, MV.C.orange, MV.frac(15,20))
+        + '</div>'
+        + MV.vcmp(MV.frac(7,10)+'+'+MV.frac(3,4),
+            [MV.frac(14,20)+'+'+MV.frac(15,20),
+             MV.frac('14+15','20')],
+            '= '+MV.frac(29,20)+' = <strong>1'+MV.frac(9,20)+'</strong>')
+        + '</div>'
+      )
+    + MV.frag(MV.warn('14+15 = <strong>29 > 20</strong>，结果是假分数！记得化成带分数 <strong>1' + MV.frac(9,20) + '</strong>'), 1);
+
+  // ── S9 Check ──
+  document.getElementById('s9chk').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
+    + '<div style="background:#e8f4fd;border-radius:8px;padding:12px 16px">'
+    + '<div style="color:' + MV.C.blue + ';font-weight:bold;margin-bottom:6px">✅ 检验步骤</div>'
+    + '<ol style="margin:0;padding-left:18px;font-size:.9em">'
+    + '<li>把答案化成<strong>同分母</strong>形式</li>'
+    + '<li>减去已知加数，看是否等于另一加数</li>'
+    + '<li>确认结果已<strong>最简分数</strong>（约分）</li>'
+    + '</ol></div>'
+    + '<div style="background:#e8fff2;border-radius:8px;padding:12px 16px">'
+    + '<div style="color:' + MV.C.green + ';font-weight:bold;margin-bottom:6px">📋 最简分数判断</div>'
+    + '<ul style="margin:0;padding-left:18px;font-size:.9em">'
+    + '<li>分子分母 GCD = 1 → 最简</li>'
+    + '<li>若不是最简：除以 GCD 化简</li>'
+    + '<li>假分数 → 带分数（分子 ÷ 分母，商为整数部分）</li>'
+    + '</ul></div>'
+    + '</div>'
+    + '<div style="margin-top:10px">'
+    + MV.tip('口诀：<strong>通分→加减→化简</strong>，三步缺一不可')
+    + '</div>';
+
+  // ── S10 Errors ──
+  document.getElementById('s10err').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;font-size:.86em">'
+    + MV.warn('❌ 分母直接相加<br><small>' + MV.frac(1,2)+'+'+MV.frac(1,3) + ' ≠ ' + MV.frac(2,5) + '（分母绝对不能相加！）</small>')
+    + MV.warn('❌ 忘记通分只通了分母<br><small>分母变了，分子也必须同步乘以相同的数</small>')
+    + MV.warn('❌ LCM 找错，用了公倍数但非最小公倍数<br><small>结果还是对的，但计算量更大，最后要再化简</small>')
+    + MV.warn('❌ 减法时分子算反<br><small>' + MV.frac(6,15)+' − '+MV.frac(5,15) + ' = ' + MV.frac(1,15) + '，不是 '+MV.frac(5,15)+' − '+MV.frac(6,15)+'</small>')
+    + MV.warn('❌ 假分数不化简就填答案<br><small>结果 > 1 时一般要化为带分数</small>')
+    + MV.warn('❌ 三个分数只通了两个<br><small>多个分数时，所有分母都要化为同一个 LCM</small>')
+    + '</div>';
+
+  // ── S11 A/B Practice ──
+  document.getElementById('s11ab').innerHTML =
+    '<div class="prac-grid">'
+    + '<div class="prac-box" style="background:#e8f4fd">'
+    + '<div style="color:' + MV.C.blue + ';font-weight:bold;margin-bottom:6px">A 组（和或差 &lt; 1）</div>'
+    + '<ol style="margin:0;padding-left:18px">'
+    + '<li>' + MV.frac(1,3)+' + '+MV.frac(1,4)+' = ' + MV.frag(MV.frac(7,12), 1) + '</li>'
+    + '<li>' + MV.frac(3,5)+' − '+MV.frac(1,2)+' = ' + MV.frag(MV.frac(1,10), 2) + '</li>'
+    + '<li>' + MV.frac(5,8)+' + '+MV.frac(1,6)+' = ' + MV.frag(MV.frac(19,24), 3) + '</li>'
+    + '</ol></div>'
+    + '<div class="prac-box" style="background:#f3ffe8">'
+    + '<div style="color:' + MV.C.green + ';font-weight:bold;margin-bottom:6px">B 组（三个分数）</div>'
+    + '<ol style="margin:0;padding-left:18px">'
+    + '<li>' + MV.frac(1,2)+' + '+MV.frac(1,4)+' + '+MV.frac(1,8)+' = ' + MV.frag(MV.frac(7,8), 4) + '</li>'
+    + '<li>' + MV.frac(2,3)+' − '+MV.frac(1,6)+' − '+MV.frac(1,4)+' = ' + MV.frag(MV.frac(1,4), 5) + '</li>'
+    + '<li>' + MV.frac(11,12)+' − '+MV.frac(5,18)+' = ' + MV.frag(MV.frac(23,36), 6) + '</li>'
+    + '</ol></div>'
+    + '</div>'
+    + '<div style="margin-top:8px">' + MV.info('点击空格可以逐个显示答案') + '</div>';
+
+  // ── S12 C Practice ──
+  document.getElementById('s12c').innerHTML =
+    '<div style="background:#fff9e8;border-radius:8px;padding:14px 18px;font-size:.9em">'
+    + '<div style="color:' + MV.C.orange + ';font-weight:bold;margin-bottom:8px">🌟 综合进阶（结果需化简）</div>'
+    + '<ol style="margin:0;padding-left:20px">'
+    + '<li style="margin-bottom:6px">' + MV.frac(7,9)+' − '+MV.frac(2,5)+' = ' + MV.frag(MV.frac(17,45), 1) + '</li>'
+    + '<li style="margin-bottom:6px">' + MV.frac(1,2)+' + '+MV.frac(2,3)+' − '+MV.frac(1,6)+' = ' + MV.frag('<strong>1</strong>', 2) + '</li>'
+    + '<li style="margin-bottom:6px">' + MV.frac(3,4)+' + '+MV.frac(5,6)+' − '+MV.frac(1,3)+' = ' + MV.frag('<strong>1</strong>'+MV.frac(1,4), 3) + '</li>'
+    + '</ol></div>'
+    + '<div style="margin-top:10px">'
+    + MV.row(
+        '<div style="background:#e8f4fd;border-radius:6px;padding:10px 14px;font-size:.88em;min-width:200px">'
+        + '<strong>' + MV.frac(1,2)+'+'+MV.frac(2,3)+' − '+MV.frac(1,6) + '</strong>'
+        + MV.vcmp('LCM(2,3,6)=6',
+            [MV.frac(3,6)+'+'+MV.frac(4,6)+' − '+MV.frac(1,6),
+             MV.frac('3+4−1','6')],
+            '= '+MV.frac(6,6)+' = <strong>1</strong>')
+        + '</div>',
+        '<div style="background:#fff3e8;border-radius:6px;padding:10px 14px;font-size:.88em;min-width:200px">'
+        + '<strong>' + MV.frac(3,4)+'+'+MV.frac(5,6)+' − '+MV.frac(1,3) + '</strong>'
+        + MV.vcmp('LCM(4,6,3)=12',
+            [MV.frac(9,12)+'+'+MV.frac(10,12)+' − '+MV.frac(4,12),
+             MV.frac('9+10−4','12')],
+            '= '+MV.frac(15,12)+' = <strong>1'+MV.frac(1,4)+'</strong>')
+        + '</div>'
+      )
+    + '</div>';
+
+});
+</script>
+</body>
+</html>

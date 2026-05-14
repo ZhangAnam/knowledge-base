@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>O3-O4 · 基准数法与变形约分</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.reveal h2 { font-size: 1.32em; margin: .1em 0 .25em; }
+.tag { display:inline-block; padding:2px 10px; border-radius:4px; font-weight:bold;
+       font-size:.78em; margin-right:6px; vertical-align:middle; }
+.tag-o3 { background:#2980b9; color:white; }
+.tag-o4 { background:#8e44ad; color:white; }
+.formula { background:#f0f4f8; border:2px solid #2980b9; border-radius:6px;
+           padding:8px 18px; text-align:center; font-size:1.05em;
+           margin:8px auto; display:table; }
+.ex-q { font-size:1.1em; font-weight:bold; text-align:center; margin:4px 0; }
+.prac-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:.88em; }
+.prac-box { border-radius:6px; padding:10px 14px; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ═══ S1 封面 ═══ -->
+<section>
+<div style="text-align:center;padding:30px 0">
+  <div class="mv-chap-title">基准数法 &amp; 变形约分</div>
+  <div class="mv-chap-sub">奥数计算模块 A1 &nbsp;·&nbsp; O3 · O4</div>
+  <div id="s1vis" style="margin-top:22px"></div>
+  <div style="margin-top:18px;font-size:.84em;color:#888">先整理结构，再动笔计算</div>
+</div>
+</section>
+
+<!-- ═══ S2 本课内容 ═══ -->
+<section>
+<h2>本课内容</h2>
+<div id="s2ov"></div>
+</section>
+
+<!-- ═══ S3 O3 核心思路 ═══ -->
+<section>
+<h2><span class="tag tag-o3">O3</span>基准数法 — 核心思路</h2>
+<div id="s3con"></div>
+</section>
+
+<!-- ═══ S4 O3 步骤 ═══ -->
+<section>
+<h2><span class="tag tag-o3">O3</span>解题步骤</h2>
+<div id="s4stp"></div>
+</section>
+
+<!-- ═══ S5 O3 例1 ═══ -->
+<section>
+<h2><span class="tag tag-o3">O3</span>例1：四数求和</h2>
+<div id="s5e1"></div>
+</section>
+
+<!-- ═══ S6 O3 例2 ═══ -->
+<section>
+<h2><span class="tag tag-o3">O3</span>例2：五数求和</h2>
+<div id="s6e2"></div>
+</section>
+
+<!-- ═══ S7 O3 例3 ═══ -->
+<section>
+<h2><span class="tag tag-o3">O3</span>例3：连续整数之和</h2>
+<div id="s7e3"></div>
+</section>
+
+<!-- ═══ S8 O4 核心思路 ═══ -->
+<section>
+<h2><span class="tag tag-o4">O4</span>变形约分 — 核心思路</h2>
+<div id="s8con"></div>
+</section>
+
+<!-- ═══ S9 O4 例4 ═══ -->
+<section>
+<h2><span class="tag tag-o4">O4</span>例4：加号变形连乘</h2>
+<div id="s9e4"></div>
+</section>
+
+<!-- ═══ S10 O4 例5 ═══ -->
+<section>
+<h2><span class="tag tag-o4">O4</span>例5：减号变形连乘</h2>
+<div id="s10e5"></div>
+</section>
+
+<!-- ═══ S11 O4 例6 ═══ -->
+<section>
+<h2><span class="tag tag-o4">O4</span>例6：更长的连乘链</h2>
+<div id="s11e6"></div>
+</section>
+
+<!-- ═══ S12 易错点 ═══ -->
+<section>
+<h2>⚠️ 易错点总结</h2>
+<div id="s12err"></div>
+</section>
+
+<!-- ═══ S13 练习 ═══ -->
+<section>
+<h2>📝 分层练习</h2>
+<div id="s13prac"></div>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+
+  /* ─────────────────────────────────────────
+     Helper 1: deviation number line SVG
+     entries: [{val, dev (string label), color}]
+  ───────────────────────────────────────── */
+  var _uid = 0;
+  function deviationSVG(base, entries, w) {
+    w = w || 480;
+    var uid = ++_uid;
+    var pad = 64;
+    var allVals = entries.map(function (e) { return e.val; }).concat([base]);
+    var minV = Math.min.apply(null, allVals) - 4;
+    var maxV = Math.max.apply(null, allVals) + 4;
+    var sc   = (w - 2 * pad) / (maxV - minV);
+    function px(v) { return Math.round(pad + (v - minV) * sc); }
+
+    var lefts  = entries.filter(function (e) { return e.val < base; })
+                        .sort(function (a, b) { return a.val - b.val; });
+    var rights = entries.filter(function (e) { return e.val > base; })
+                        .sort(function (a, b) { return a.val - b.val; });
+    var maxSide = Math.max(lefts.length, rights.length, 1);
+    var h     = 46 + maxSide * 26 + 54;
+    var lineY = h - 40;
+
+    var s = '<defs>';
+    entries.forEach(function (e, i) {
+      s += '<marker id="dm' + uid + '_' + i + '" markerWidth="7" markerHeight="7"'
+        + ' refX="7" refY="3.5" orient="auto">'
+        + '<path d="M0,0 L7,3.5 L0,7 Z" fill="' + e.color + '"/></marker>';
+    });
+    s += '</defs>';
+
+    // Axis
+    s += '<line x1="' + (pad - 14) + '" y1="' + lineY + '" x2="' + (w - pad + 16) + '" y2="' + lineY + '" stroke="#555" stroke-width="2.5"/>';
+    s += '<polygon points="' + (w - pad + 16) + ',' + lineY + ' ' + (w - pad + 7) + ',' + (lineY - 5) + ' ' + (w - pad + 7) + ',' + (lineY + 5) + '" fill="#555"/>';
+
+    // Base marker
+    var bx = px(base);
+    s += '<line x1="' + bx + '" y1="' + (lineY - 16) + '" x2="' + bx + '" y2="' + (lineY + 16) + '" stroke="' + MV.C.red + '" stroke-width="3.5"/>';
+    s += '<rect x="' + (bx - 25) + '" y="' + (lineY - 40) + '" width="50" height="21" rx="4" fill="' + MV.C.red + '" opacity=".12"/>';
+    s += '<text x="' + bx + '" y="' + (lineY - 24) + '" text-anchor="middle" font-size="12" fill="' + MV.C.red + '" font-weight="bold">基准</text>';
+    s += '<text x="' + bx + '" y="' + (lineY + 32) + '" text-anchor="middle" font-size="15" fill="' + MV.C.red + '" font-weight="bold">' + base + '</text>';
+
+    function drawEntry(e, sideIdx) {
+      var idx = entries.indexOf(e);
+      var x   = px(e.val);
+      var arY = lineY - 38 - sideIdx * 26;
+      s += '<line x1="' + bx + '" y1="' + arY + '" x2="' + x + '" y2="' + arY + '"'
+        + ' stroke="' + e.color + '" stroke-width="2.5" marker-end="url(#dm' + uid + '_' + idx + ')"/>';
+      s += '<text x="' + Math.round((bx + x) / 2) + '" y="' + (arY - 8) + '"'
+        + ' text-anchor="middle" font-size="13" fill="' + e.color + '" font-weight="bold">' + e.dev + '</text>';
+      s += '<line x1="' + x + '" y1="' + (lineY - 14) + '" x2="' + x + '" y2="' + (arY + 2) + '"'
+        + ' stroke="' + e.color + '" stroke-width="1.5" stroke-dasharray="4,3" opacity=".55"/>';
+      s += '<circle cx="' + x + '" cy="' + lineY + '" r="5.5" fill="' + e.color + '"/>';
+      s += '<text x="' + x + '" y="' + (lineY + 32) + '" text-anchor="middle" font-size="13" fill="' + e.color + '">' + e.val + '</text>';
+    }
+    lefts.forEach(function (e, i) { drawEntry(e, i); });
+    rights.forEach(function (e, i) { drawEntry(e, i); });
+
+    return '<div style="text-align:center"><svg width="' + w + '" height="' + h + '" style="overflow:visible">' + s + '</svg></div>';
+  }
+
+  /* ─────────────────────────────────────────
+     Helper 2: cancellation chain SVG
+     fracs: [{n, d, cancelN, cancelD}]
+       use n='...' for placeholder dots
+     resultN/resultD: surviving fraction (null to hide)
+     showCancel: true draws red strikethrough lines
+  ───────────────────────────────────────── */
+  function cancelChain(fracs, resultN, resultD, showCancel) {
+    var bW = 52, bH = 64, gap = 28, midY = 40;
+    var hasResult = (resultN != null);
+    var W = fracs.length * (bW + gap) - gap + (hasResult ? 90 : 14);
+    var H = bH + 14;
+    var s = '';
+
+    fracs.forEach(function (f, i) {
+      var x = i * (bW + gap);
+      var isDots  = (f.n === '...');
+      var nClr    = (showCancel && f.cancelN) ? '#ccc' : MV.C.blue;
+      var dClr    = (showCancel && f.cancelD) ? '#ccc' : MV.C.green;
+      var allGrey = showCancel && f.cancelN && f.cancelD;
+
+      if (!isDots) {
+        s += '<rect x="' + x + '" y="' + (midY - 32) + '" width="' + bW + '" height="' + bH + '"'
+          + ' rx="6" fill="' + (allGrey ? '#f8f8f8' : '#eef4fb') + '"'
+          + ' stroke="' + (allGrey ? '#ddd' : MV.C.blue) + '" stroke-width="1.5"/>';
+      }
+
+      // Numerator
+      s += '<text x="' + (x + bW / 2) + '" y="' + (midY - 10) + '" text-anchor="middle"'
+        + ' font-size="19" fill="' + (isDots ? '#aaa' : nClr) + '" font-weight="bold">' + f.n + '</text>';
+      if (!isDots) {
+        if (showCancel && f.cancelN)
+          s += '<line x1="' + (x + 7) + '" y1="' + (midY - 22) + '" x2="' + (x + bW - 7) + '" y2="' + (midY - 3) + '"'
+            + ' stroke="' + MV.C.red + '" stroke-width="2.5"/>';
+        // Fraction bar
+        s += '<line x1="' + (x + 7) + '" y1="' + midY + '" x2="' + (x + bW - 7) + '" y2="' + midY + '" stroke="#333" stroke-width="1.5"/>';
+        // Denominator
+        s += '<text x="' + (x + bW / 2) + '" y="' + (midY + 20) + '" text-anchor="middle"'
+          + ' font-size="19" fill="' + dClr + '" font-weight="bold">' + f.d + '</text>';
+        if (showCancel && f.cancelD)
+          s += '<line x1="' + (x + 7) + '" y1="' + (midY + 9) + '" x2="' + (x + bW - 7) + '" y2="' + (midY + 25) + '"'
+            + ' stroke="' + MV.C.red + '" stroke-width="2.5"/>';
+      } else {
+        s += '<text x="' + (x + bW / 2) + '" y="' + (midY + 20) + '" text-anchor="middle" font-size="19" fill="#aaa" font-weight="bold">⋯</text>';
+      }
+
+      if (i < fracs.length - 1)
+        s += '<text x="' + (x + bW + gap / 2) + '" y="' + (midY + 7) + '" text-anchor="middle" font-size="18" fill="#666">×</text>';
+    });
+
+    if (hasResult) {
+      var rx = fracs.length * (bW + gap) + 8;
+      s += '<text x="' + rx + '" y="' + (midY + 7) + '" font-size="18" fill="#555">=</text>';
+      if (resultD) {
+        s += '<text x="' + (rx + 26) + '" y="' + (midY - 10) + '" text-anchor="middle" font-size="22" fill="' + MV.C.red + '" font-weight="bold">' + resultN + '</text>';
+        s += '<line x1="' + (rx + 13) + '" y1="' + midY + '" x2="' + (rx + 40) + '" y2="' + midY + '" stroke="#333" stroke-width="1.8"/>';
+        s += '<text x="' + (rx + 26) + '" y="' + (midY + 21) + '" text-anchor="middle" font-size="22" fill="' + MV.C.blue + '" font-weight="bold">' + resultD + '</text>';
+      } else {
+        s += '<text x="' + (rx + 14) + '" y="' + (midY + 8) + '" font-size="24" fill="' + MV.C.red + '" font-weight="bold">' + resultN + '</text>';
+      }
+    }
+    return '<div style="text-align:center"><svg width="' + W + '" height="' + H + '">' + s + '</svg></div>';
+  }
+
+  /* ════════════════════════════════════════
+     SLIDE INJECTIONS
+  ════════════════════════════════════════ */
+
+  // ── S1 Cover ──
+  document.getElementById('s1vis').innerHTML =
+    MV.row(
+      MV.col(MV.fracRect(4, 1, 130, 42, MV.C.blue),  MV.label('O3 基准法')),
+      '<span style="font-size:1.5em;color:#aaa;margin:0 10px">+</span>',
+      MV.col(MV.fracRect(5, 4, 160, 42, MV.C.purple), MV.label('O4 约分链'))
+    );
+
+  // ── S2 Overview ──
+  document.getElementById('s2ov').innerHTML =
+    MV.row(
+      '<div style="background:#e8f4fd;border:2px solid ' + MV.C.blue + ';border-radius:8px;padding:14px 20px;min-width:230px;max-width:310px">'
+      + '<div style="color:' + MV.C.blue + ';font-weight:bold;font-size:1.1em;margin-bottom:8px"><span class="tag tag-o3">O3</span> 基准数法</div>'
+      + '<ul style="text-align:left;margin:0;padding-left:18px">'
+      + '<li>找共同接近的基准数</li>'
+      + '<li>总和 = 基准×个数 + 偏差之和</li>'
+      + '<li>偏差有正有负，可以互相抵消</li>'
+      + '</ul></div>',
+      '<div style="background:#f3e8fd;border:2px solid ' + MV.C.purple + ';border-radius:8px;padding:14px 20px;min-width:230px;max-width:310px">'
+      + '<div style="color:' + MV.C.purple + ';font-weight:bold;font-size:1.1em;margin-bottom:8px"><span class="tag tag-o4">O4</span> 变形约分</div>'
+      + '<ul style="text-align:left;margin:0;padding-left:18px">'
+      + '<li>把 1±' + MV.frac('1','n') + ' 改写成分数</li>'
+      + '<li>连乘时相邻项分子分母约分</li>'
+      + '<li>中间全消，只剩最首和最末</li>'
+      + '</ul></div>'
+    )
+    + '<div style="margin-top:10px">' + MV.tip('共同核心：<strong>先整理结构，再动笔计算</strong>') + '</div>';
+
+  // ── S3 O3 Concept ──
+  document.getElementById('s3con').innerHTML =
+    '<p style="text-align:center;margin:0 0 8px">几个数都靠近 <strong style="color:' + MV.C.red + '">200</strong>，以 200 为<strong>基准数</strong></p>'
+    + deviationSVG(200, [
+        {val:198, dev:'−2', color:MV.C.blue},
+        {val:199, dev:'−1', color:MV.C.orange},
+        {val:201, dev:'+1', color:MV.C.green},
+        {val:202, dev:'+2', color:MV.C.purple}
+      ], 500)
+    + '<div style="text-align:center;margin-top:8px;font-size:1.05em">'
+    + '198+199+201+202 = <strong style="color:' + MV.C.red + '">200×4</strong>'
+    + ' + (<span style="color:' + MV.C.blue + '">−2</span>'
+    + '+<span style="color:' + MV.C.orange + '">−1</span>'
+    + '+<span style="color:' + MV.C.green + '">+1</span>'
+    + '+<span style="color:' + MV.C.purple + '">+2</span>)'
+    + ' = 800 + 0 = <strong>800</strong></div>';
+
+  // ── S4 O3 Steps ──
+  document.getElementById('s4stp').innerHTML =
+    MV.col(
+      MV.step('<strong>① 找基准数：</strong>选所有数都接近的整十 / 整百 / 整千数', MV.C.blue),
+      MV.step('<strong>② 算偏差：</strong>偏差 = 每个数 − 基准&nbsp;&nbsp;（偏大为正，偏小为负）', MV.C.orange),
+      MV.step('<strong>③ 先乘：</strong>计算 基准 × 个数', MV.C.green),
+      MV.step('<strong>④ 再加：</strong>加上所有偏差之和（正负相消）', MV.C.purple)
+    )
+    + '<div style="margin-top:12px"><div class="formula"><strong>总和 = 基准 × 个数 + 偏差之和</strong></div></div>';
+
+  // ── S5 O3 Example 1 ──
+  document.getElementById('s5e1').innerHTML =
+    '<p class="ex-q">计算：98 + 101 + 99 + 102</p>'
+    + deviationSVG(100, [
+        {val:98,  dev:'−2', color:MV.C.blue},
+        {val:99,  dev:'−1', color:MV.C.orange},
+        {val:101, dev:'+1', color:MV.C.green},
+        {val:102, dev:'+2', color:MV.C.purple}
+      ], 480)
+    + MV.vcmp('98+101+99+102',
+        ['= 100×4 + (<span style="color:' + MV.C.blue + '">−2</span>'
+         + '+<span style="color:' + MV.C.green + '">+1</span>'
+         + '+<span style="color:' + MV.C.orange + '">−1</span>'
+         + '+<span style="color:' + MV.C.purple + '">+2</span>)',
+         '= 400 + 0'],
+        '= <strong>400</strong>')
+    + MV.frag(MV.tip('偏差之和 = 0，正负恰好全部抵消！'), 1);
+
+  // ── S6 O3 Example 2 ──
+  document.getElementById('s6e2').innerHTML =
+    '<p class="ex-q">计算：198 + 199 + 203 + 201 + 197</p>'
+    + deviationSVG(200, [
+        {val:197, dev:'−3', color:MV.C.blue},
+        {val:198, dev:'−2', color:MV.C.orange},
+        {val:199, dev:'−1', color:MV.C.purple},
+        {val:201, dev:'+1', color:MV.C.green},
+        {val:203, dev:'+3', color:MV.C.teal}
+      ], 520)
+    + MV.vcmp('198+199+203+201+197',
+        ['= 200×5 + (<span style="color:' + MV.C.blue + '">−3</span>'
+         + '+<span style="color:' + MV.C.orange + '">−2</span>'
+         + '+<span style="color:' + MV.C.purple + '">−1</span>'
+         + '+<span style="color:' + MV.C.green + '">+1</span>'
+         + '+<span style="color:' + MV.C.teal + '">+3</span>)',
+         '= 1000 + (−2)'],
+        '= <strong>998</strong>')
+    + MV.frag(MV.warn('偏差之和是 <strong>−2</strong>，不是 0，不要漏算！'), 1);
+
+  // ── S7 O3 Example 3 ──
+  document.getElementById('s7e3').innerHTML =
+    '<p class="ex-q">计算：48 + 49 + 50 + 51 + 52</p>'
+    + deviationSVG(50, [
+        {val:48, dev:'−2', color:MV.C.blue},
+        {val:49, dev:'−1', color:MV.C.orange},
+        {val:51, dev:'+1', color:MV.C.green},
+        {val:52, dev:'+2', color:MV.C.purple}
+      ], 440)
+    + MV.vcmp('48+49+50+51+52',
+        ['= 50×5 + (<span style="color:' + MV.C.blue + '">−2</span>'
+         + '+<span style="color:' + MV.C.orange + '">−1</span>'
+         + '+0'
+         + '+<span style="color:' + MV.C.green + '">+1</span>'
+         + '+<span style="color:' + MV.C.purple + '">+2</span>)',
+         '= 250 + 0'],
+        '= <strong>250</strong>')
+    + MV.frag(MV.tip('<strong>连续整数</strong>以中间数为基准，偏差之和恒为 0 → 直接 中间数 × 个数'), 1);
+
+  // ── S8 O4 Concept ──
+  document.getElementById('s8con').innerHTML =
+    '<div style="text-align:center;margin-bottom:10px">'
+    + '<div style="display:inline-block;background:#f8f0ff;border:2px solid ' + MV.C.purple + ';border-radius:8px;padding:12px 24px;font-size:1.05em">'
+    + '<strong>变形公式：</strong>&nbsp;&nbsp;'
+    + '1 + ' + MV.frac('1','n') + ' = ' + MV.frac('n+1','n')
+    + '&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;'
+    + '1 − ' + MV.frac('1','n') + ' = ' + MV.frac('n−1','n')
+    + '</div></div>'
+    + MV.row(
+        '<div style="background:#eef4fb;border-radius:6px;padding:10px 16px;text-align:center;min-width:160px">'
+        + '<div style="color:' + MV.C.blue + ';font-weight:bold;margin-bottom:6px">加法变形</div>'
+        + '<table style="font-size:.95em;margin:0 auto"><tr><td>1+' + MV.frac('1','2') + '</td><td>&nbsp;=&nbsp;</td><td>' + MV.frac('3','2') + '</td></tr>'
+        + '<tr><td>1+' + MV.frac('1','3') + '</td><td>&nbsp;=&nbsp;</td><td>' + MV.frac('4','3') + '</td></tr>'
+        + '<tr><td>1+' + MV.frac('1','4') + '</td><td>&nbsp;=&nbsp;</td><td>' + MV.frac('5','4') + '</td></tr></table></div>',
+        '<div style="background:#fff3f3;border-radius:6px;padding:10px 16px;text-align:center;min-width:160px">'
+        + '<div style="color:' + MV.C.red + ';font-weight:bold;margin-bottom:6px">减法变形</div>'
+        + '<table style="font-size:.95em;margin:0 auto"><tr><td>1−' + MV.frac('1','2') + '</td><td>&nbsp;=&nbsp;</td><td>' + MV.frac('1','2') + '</td></tr>'
+        + '<tr><td>1−' + MV.frac('1','3') + '</td><td>&nbsp;=&nbsp;</td><td>' + MV.frac('2','3') + '</td></tr>'
+        + '<tr><td>1−' + MV.frac('1','4') + '</td><td>&nbsp;=&nbsp;</td><td>' + MV.frac('3','4') + '</td></tr></table></div>',
+        MV.tip('连乘时，前一项<strong>分子</strong> = 后一项<strong>分母</strong><br>→ 可以约掉！')
+      );
+
+  // ── S9 O4 Example 4: (1+½)(1+⅓)(1+¼)(1+⅕) ──
+  var f4p = [{n:'3',d:'2',cancelN:false,cancelD:false},{n:'4',d:'3',cancelN:false,cancelD:false},
+             {n:'5',d:'4',cancelN:false,cancelD:false},{n:'6',d:'5',cancelN:false,cancelD:false}];
+  var f4c = [{n:'3',d:'2',cancelN:true, cancelD:false},{n:'4',d:'3',cancelN:true, cancelD:true},
+             {n:'5',d:'4',cancelN:true, cancelD:true}, {n:'6',d:'5',cancelN:false,cancelD:true}];
+
+  document.getElementById('s9e4').innerHTML =
+    '<p class="ex-q">(1+' + MV.frac('1','2') + ')(1+' + MV.frac('1','3') + ')(1+' + MV.frac('1','4') + ')(1+' + MV.frac('1','5') + ')</p>'
+    + MV.step('先把每项变形为分数：', MV.C.blue)
+    + cancelChain(f4p, null, null, false)
+    + MV.fragDiv(
+        MV.step('观察相邻约分（红线划掉的数互相消掉）：', MV.C.orange)
+        + cancelChain(f4c, '6', '2', true)
+        + '<div style="text-align:center;font-size:1.1em;margin-top:4px">'
+        + MV.frac('6','2') + ' = <strong>3</strong></div>',
+        1)
+    + MV.frag(MV.tip('中间的 3、4、5 全部消掉，只剩 <strong style="color:' + MV.C.red + '">6</strong>（首项分子）和 <strong style="color:' + MV.C.blue + '">2</strong>（末项分母）'), 2);
+
+  // ── S10 O4 Example 5: (1−½)(1−⅓)(1−¼)(1−⅕) ──
+  var f5p = [{n:'1',d:'2',cancelN:false,cancelD:false},{n:'2',d:'3',cancelN:false,cancelD:false},
+             {n:'3',d:'4',cancelN:false,cancelD:false},{n:'4',d:'5',cancelN:false,cancelD:false}];
+  var f5c = [{n:'1',d:'2',cancelN:false,cancelD:true}, {n:'2',d:'3',cancelN:true, cancelD:true},
+             {n:'3',d:'4',cancelN:true, cancelD:true}, {n:'4',d:'5',cancelN:true, cancelD:false}];
+
+  document.getElementById('s10e5').innerHTML =
+    '<p class="ex-q">(1−' + MV.frac('1','2') + ')(1−' + MV.frac('1','3') + ')(1−' + MV.frac('1','4') + ')(1−' + MV.frac('1','5') + ')</p>'
+    + MV.step('先把每项变形为分数：', MV.C.blue)
+    + cancelChain(f5p, null, null, false)
+    + MV.fragDiv(
+        MV.step('观察相邻约分：', MV.C.orange)
+        + cancelChain(f5c, '1', '5', true)
+        + '<div style="text-align:center;font-size:1.1em;margin-top:4px">'
+        + ' = ' + MV.frac('1','5') + '</div>',
+        1)
+    + MV.frag(MV.tip('分子链中间 2、3、4 全消，只剩 <strong style="color:' + MV.C.red + '">1</strong> 和 <strong style="color:' + MV.C.blue + '">5</strong>'), 2);
+
+  // ── S11 O4 Example 6: long chain ──
+  var f6p = [{n:'3',d:'2',cancelN:false,cancelD:false},{n:'4',d:'3',cancelN:false,cancelD:false},
+             {n:'...',d:'...',cancelN:false,cancelD:false},{n:'11',d:'10',cancelN:false,cancelD:false}];
+  var f6c = [{n:'3',d:'2',cancelN:true, cancelD:false},{n:'4',d:'3',cancelN:true, cancelD:true},
+             {n:'...',d:'...',cancelN:false,cancelD:false},{n:'11',d:'10',cancelN:false,cancelD:true}];
+
+  document.getElementById('s11e6').innerHTML =
+    '<p class="ex-q">(1+' + MV.frac('1','2') + ')(1+' + MV.frac('1','3') + ')&thinsp;⋯&thinsp;(1+' + MV.frac('1','10') + ')</p>'
+    + MV.step('展开为：' + MV.frac('3','2') + '×' + MV.frac('4','3') + '×' + MV.frac('5','4') + '×⋯×' + MV.frac('11','10'), MV.C.blue)
+    + cancelChain(f6p, null, null, false)
+    + MV.fragDiv(
+        MV.step('中间各项全部约掉，只剩首项分子 <strong style="color:' + MV.C.red + '">11</strong> 和末项分母 <strong style="color:' + MV.C.blue + '">2</strong>：', MV.C.orange)
+        + cancelChain(f6c, '11', '2', true),
+        1)
+    + MV.frag(
+        '<div style="text-align:center;font-size:1.1em;margin-top:8px">= ' + MV.frac('11','2') + '</div>'
+        + MV.tip('规律：(1+' + MV.frac('1','2') + ')⋯(1+' + MV.frac('1','n') + ') = ' + MV.frac('n+1','2')),
+        2);
+
+  // ── S12 Errors ──
+  document.getElementById('s12err').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;font-size:.86em">'
+    + MV.warn('❌ 基准数选错<br><small>要选所有数都接近的整十/整百，不是随便挑一个</small>')
+    + MV.warn('❌ 偏差正负写反<br><small>198 比 200 <em>少</em> 2，偏差是 <strong>−2</strong>，不是 +2</small>')
+    + MV.warn('❌ 漏算或算错偏差之和<br><small>偏差不总是 0，要把每项一一加起来</small>')
+    + MV.warn('❌ 在加减法里约分<br><small>约分只能在<strong>乘法</strong>结构中！' + MV.frac('1','2') + '+' + MV.frac('1','4') + ' 不能直接约</small>')
+    + MV.warn('❌ 1−' + MV.frac('1','5') + ' 写成 ' + MV.frac('1','4') + '<br><small>1−' + MV.frac('1','5') + ' = ' + MV.frac('4','5') + '，分母是 5 不变</small>')
+    + MV.warn('❌ 只看局部不看整体<br><small>连乘的关键是<strong>全链</strong>约分，不要分步硬算大分数</small>')
+    + '</div>';
+
+  // ── S13 Practice ──
+  document.getElementById('s13prac').innerHTML =
+    '<div class="prac-grid">'
+    + '<div class="prac-box" style="background:#e8f4fd">'
+    + '<div style="color:' + MV.C.blue + ';font-weight:bold;margin-bottom:6px"><span class="tag tag-o3">O3</span> A 组</div>'
+    + '<ol style="margin:0;padding-left:18px">'
+    + '<li>49+50+51 = ' + MV.frag('<strong>150</strong>', 1) + '</li>'
+    + '<li>298+301+299+302 = ' + MV.frag('<strong>1200</strong>', 2) + '</li>'
+    + '<li>1002+998+1001+999 = ' + MV.frag('<strong>4000</strong>', 3) + '</li>'
+    + '</ol></div>'
+    + '<div class="prac-box" style="background:#f3e8fd">'
+    + '<div style="color:' + MV.C.purple + ';font-weight:bold;margin-bottom:6px"><span class="tag tag-o4">O4</span> B 组</div>'
+    + '<ol style="margin:0;padding-left:18px">'
+    + '<li>(1+' + MV.frac('1','2') + ')(1+' + MV.frac('1','3') + ')(1+' + MV.frac('1','4') + ') = ' + MV.frag(MV.frac(5,2), 4) + '</li>'
+    + '<li>(1−' + MV.frac('1','2') + ')⋯(1−' + MV.frac('1','6') + ') = ' + MV.frag(MV.frac(1,6), 5) + '</li>'
+    + '<li>(1+' + MV.frac('1','3') + ')(1+' + MV.frac('1','4') + ')(1+' + MV.frac('1','5') + ') = ' + MV.frag('<strong>2</strong>', 6) + '</li>'
+    + '</ol></div>'
+    + '<div class="prac-box" style="background:#e8fff2;grid-column:1/3">'
+    + '<div style="color:' + MV.C.green + ';font-weight:bold;margin-bottom:6px">🌟 C 组（综合）</div>'
+    + '<ol style="margin:0;padding-left:18px;display:grid;grid-template-columns:1fr 1fr;gap:2px">'
+    + '<li>(1+' + MV.frac('1','2') + ')⋯(1+' + MV.frac('1','8') + ') = ' + MV.frag(MV.frac(9,2), 7) + '</li>'
+    + '<li>97+98+99+100+101+102+103 = ' + MV.frag('<strong>700</strong>', 8) + '</li>'
+    + '<li>(1−' + MV.frac('1','2') + ')⋯(1−' + MV.frac('1','10') + ') = ' + MV.frag(MV.frac(1,10), 9) + '</li>'
+    + '</ol></div>'
+    + '</div>';
+
+});
+</script>
+</body>
+</html>
