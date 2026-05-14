@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数 L10–L12 · 统筹规划</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.ans-table { border-collapse:collapse; margin:.5em auto; font-size:.9em; }
+.ans-table th, .ans-table td { border:1px solid #bbb; padding:5px 12px; text-align:center; }
+.ans-table th { background:#2980b9; color:#fff; }
+.ans-table td { background:#f8f8f8; }
+.big-ans { font-size:1.5em; font-weight:bold; color:#e74c3c; text-align:center; margin:10px 0; }
+.prac-q  { font-size:.9em; margin:.45em 0; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- 1. Cover -->
+<section>
+  <div style="color:#888;font-size:.85em;margin-bottom:.4em">二至四年级 · 奥数 L10–L12</div>
+  <h1 style="font-size:1.75em;color:#2980b9;margin:.1em 0">统筹规划</h1>
+  <div style="color:#555;font-size:.88em;margin-bottom:18px">最优安排 · 烙饼问题 · 过桥问题 · 日程规划</div>
+  <div id="s0-cover"></div>
+</section>
+
+<!-- 2. 核心思想 -->
+<section>
+  <h2>统筹规划：核心思想</h2>
+  <div id="s1-core"></div>
+</section>
+
+<!-- 3. L10 烙饼：问题引入 -->
+<section>
+  <h2>L10 · 烙饼问题：如何最快？</h2>
+  <div id="s2-pancake-intro"></div>
+</section>
+
+<!-- 4. L10 烙饼：动画时间表 -->
+<section>
+  <h2>🥞 烙 3 张饼的最优安排</h2>
+  <div id="s3-pancake-grid"></div>
+</section>
+
+<!-- 5. L10 烙饼：最优性证明 -->
+<section>
+  <h2>✅ 为什么这是最优解？</h2>
+  <div id="s4-pancake-proof"></div>
+</section>
+
+<!-- 6. L11 过桥：问题引入 -->
+<section>
+  <h2>L11 · 过桥问题</h2>
+  <div id="s5-bridge-intro"></div>
+</section>
+
+<!-- 7. L11 过桥：1,2,5,10 步骤表 -->
+<section>
+  <h2>🌉 过桥步骤：1, 2, 5, 10 分钟</h2>
+  <div id="s6-bridge-steps"></div>
+</section>
+
+<!-- 8. L11 过桥：时间线 SVG -->
+<section>
+  <h2>⏱️ 过桥时间线可视化</h2>
+  <div id="s7-bridge-timeline"></div>
+</section>
+
+<!-- 9. L11 过桥：为什么最优 -->
+<section>
+  <h2>💡 为什么是 17 分钟？</h2>
+  <div id="s8-bridge-why"></div>
+</section>
+
+<!-- 10. L12 日常规划 -->
+<section>
+  <h2>L12 · 日常规划：泡茶最快几分钟？</h2>
+  <div id="s9-daily"></div>
+</section>
+
+<!-- 11. L12 甘特图 -->
+<section>
+  <h2>📊 泡茶时间甘特图对比</h2>
+  <div id="s10-gantt"></div>
+</section>
+
+<!-- 12. 易错点 -->
+<section>
+  <h2>⚠️ 易错点总结</h2>
+  <div id="s11-warn"></div>
+</section>
+
+<!-- 13. 练习题 -->
+<section>
+  <h2>✏️ 综合练习</h2>
+  <div id="s12-prac"></div>
+</section>
+
+<!-- 14. 参考答案 -->
+<section>
+  <h2>✅ 参考答案</h2>
+  <div id="s13-ans"></div>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+
+  /* ─── S0: Cover ──────────────────────────────────────── */
+  document.getElementById('s0-cover').innerHTML = (function () {
+    var W = 600, H = 100, s = '';
+    var topics = [
+      { id:'L10', sub:'烙饼问题', c:MV.C.blue   },
+      { id:'L11', sub:'过桥问题', c:MV.C.green  },
+      { id:'L12', sub:'日程规划', c:MV.C.orange },
+    ];
+    var xs = [100, 300, 500];
+    topics.forEach(function (t, i) {
+      var x = xs[i];
+      s += '<rect x="' + (x-80) + '" y="8" width="160" height="80" rx="12" fill="' +
+           t.c + '" opacity=".13" stroke="' + t.c + '" stroke-width="2"/>';
+      s += '<text x="' + x + '" y="46" text-anchor="middle" font-size="20" fill="' +
+           t.c + '" font-weight="bold">' + t.id + '</text>';
+      s += '<text x="' + x + '" y="70" text-anchor="middle" font-size="14" fill="' + t.c + '">' + t.sub + '</text>';
+    });
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>';
+  }()) +
+  MV.tip('统筹核心：<b>并行优先</b>——让等待时间去做别的事，消灭空闲');
+
+  /* ─── S1: 核心思想 ──────────────────────────────────────── */
+  document.getElementById('s1-core').innerHTML =
+    MV.row(
+      MV.col(MV.step('<b>① 找瓶颈</b><br>哪道工序最慢？<br>其他围绕它排', MV.C.blue)),
+      MV.col(MV.step('<b>② 并行化</b><br>不依赖的工序<br>同时进行', MV.C.green)),
+      MV.col(MV.step('<b>③ 填空档</b><br>等待间隙<br>塞入小任务', MV.C.orange))
+    ) +
+    MV.fragDiv(
+      MV.tip('口诀：<b>先抓最长路，再填等待空，总时 = 关键路径长度</b>') +
+      '<p style="font-size:.88em;margin:.4em 0">关键路径 = 无法并行、必须顺序完成的最长时间链</p>',
+      1
+    );
+
+  /* ─── S2: 烙饼问题引入 ──────────────────────────────────── */
+  document.getElementById('s2-pancake-intro').innerHTML = (function () {
+    var html = '<div style="font-size:.9em;margin:.3em 0 .6em;padding:8px 12px;background:#fff8e1;' +
+      'border-radius:8px;border-left:4px solid #f39c12">' +
+      '<b>题：</b>平底锅每次只能放 <b>2 张</b>饼，烙熟一面需 <b>1 分钟</b>，共 3 张饼，最少需几分钟？' +
+      '</div>';
+    html += MV.row(
+      MV.col(MV.step('<b>顺序做法</b><br>先烙饼A（2分钟）<br>再烙饼B（2分钟）<br>再烙饼C（2分钟）<br>共 <b>6 分钟</b>', MV.C.red)),
+      MV.col(MV.step('<b>最优做法</b><br>充分利用锅的<br>每次可放2张<br>交错安排饼A/B/C<br>共 <b>3 分钟</b>！', MV.C.green))
+    );
+    html += MV.fragDiv(
+      MV.tip('锅一直满载 = 效率最高；让每张饼"排队上锅"而不是"空锅等待"'),
+      1
+    );
+    return html;
+  }());
+
+  /* ─── S3: 烙饼动画时间表 ─────────────────────────────────── */
+  document.getElementById('s3-pancake-grid').innerHTML = (function () {
+    /* Grid:
+       col header: Round1, Round2, Round3
+       row header: 饼A, 饼B, 饼C
+       ox=78, oy=35, cw=110, rh=56 */
+    var W = 480, H = 260;
+    var ox = 78, oy = 35, cw = 110, rh = 56;
+    var s = '';
+    var rounds = ['第1分钟', '第2分钟', '第3分钟'];
+    var pies   = ['饼 A', '饼 B', '饼 C'];
+    var pcolors = [MV.C.blue, MV.C.green, MV.C.orange];
+    var rcol = MV.C.purple;
+
+    // Corner
+    s += '<rect x="' + (ox-cw) + '" y="' + oy + '" width="' + cw + '" height="' + rh +
+         '" fill="#eee" stroke="#bbb" stroke-width="1.5"/>';
+
+    // Column headers (rounds)
+    for (var ci = 0; ci < 3; ci++) {
+      var cx2 = ox + ci*cw;
+      s += '<rect x="' + cx2 + '" y="' + oy + '" width="' + cw + '" height="' + rh +
+           '" fill="' + rcol + '" opacity=".15" stroke="#bbb" stroke-width="1.5"/>';
+      s += '<text x="' + (cx2+cw/2) + '" y="' + (oy+rh/2+5) +
+           '" text-anchor="middle" font-size="14" fill="' + rcol + '" font-weight="bold">' +
+           rounds[ci] + '</text>';
+    }
+
+    // Row headers (pies)
+    for (var ri = 0; ri < 3; ri++) {
+      var ry2 = oy + (ri+1)*rh;
+      s += '<rect x="' + (ox-cw) + '" y="' + ry2 + '" width="' + cw + '" height="' + rh +
+           '" fill="' + pcolors[ri] + '" opacity=".15" stroke="#bbb" stroke-width="1.5"/>';
+      s += '<text x="' + (ox-cw/2) + '" y="' + (ry2+rh/2+5) +
+           '" text-anchor="middle" font-size="15" fill="' + pcolors[ri] + '" font-weight="bold">' +
+           pies[ri] + '</text>';
+      // Cell borders
+      for (var ci2 = 0; ci2 < 3; ci2++) {
+        s += '<rect x="' + (ox+ci2*cw) + '" y="' + ry2 + '" width="' + cw + '" height="' + rh +
+             '" fill="none" stroke="#ddd" stroke-width="1.5"/>';
+      }
+    }
+
+    function cellText(row, col, txt, col_color, fragIdx) {
+      var x = ox + col*cw + cw/2;
+      var y = oy + (row+1)*rh + rh/2 + 5;
+      return '<text x="' + x + '" y="' + y +
+             '" text-anchor="middle" font-size="14" fill="' + col_color +
+             '" font-weight="bold" class="fragment" data-fragment-index="' + fragIdx + '">' +
+             txt + '</text>';
+    }
+    function cellRect(row, col, bg, fragIdx) {
+      var x = ox + col*cw + 3;
+      var y = oy + (row+1)*rh + 3;
+      return '<rect x="' + x + '" y="' + y + '" width="' + (cw-6) + '" height="' + (rh-6) +
+             '" rx="6" fill="' + bg + '" opacity=".35"' +
+             ' class="fragment" data-fragment-index="' + fragIdx + '"/>';
+    }
+
+    // Round 1: A正面, B正面
+    s += cellRect(0, 0, pcolors[0], 1);
+    s += cellText(0, 0, 'A 正面', pcolors[0], 1);
+    s += cellRect(1, 0, pcolors[1], 1);
+    s += cellText(1, 0, 'B 正面', pcolors[1], 1);
+
+    // Round 2: A反面, C正面
+    s += cellRect(0, 1, pcolors[0], 2);
+    s += cellText(0, 1, 'A 反面', pcolors[0], 2);
+    s += cellRect(2, 1, pcolors[2], 2);
+    s += cellText(2, 1, 'C 正面', pcolors[2], 2);
+
+    // A done after round 2 — label in row A col 2 (Round3 = col index 2)
+    s += '<text x="' + (ox+3*cw - cw/2) + '" y="' + (oy+rh+rh/2+5) +
+         '" text-anchor="middle" font-size="13" fill="' + MV.C.green +
+         '" class="fragment" data-fragment-index="2">✅ 完成</text>';
+
+    // Round 3: B反面, C反面
+    s += cellRect(1, 2, pcolors[1], 3);
+    s += cellText(1, 2, 'B 反面', pcolors[1], 3);
+    s += cellRect(2, 2, pcolors[2], 3);
+    s += cellText(2, 2, 'C 反面', pcolors[2], 3);
+
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>' +
+      MV.fragDiv('<div class="big-ans">最少 3 分钟！锅每分钟都满载</div>', 4);
+  }());
+
+  /* ─── S4: 最优性证明 ─────────────────────────────────────── */
+  document.getElementById('s4-pancake-proof').innerHTML = (function () {
+    var html = '<p style="font-size:.9em;margin:.3em 0">3 张饼共 <b>6 面</b>，每次烙 2 面，至少需 6÷2 = <b>3 次</b>（3 分钟）。</p>';
+    html += MV.row(
+      MV.col(MV.step('<b>下界论证</b><br>每面必须烙 1 次<br>每次最多烙 2 面<br>∴ ≥ 3 分钟', MV.C.blue)),
+      MV.col(MV.step('<b>构造方案</b><br>交错 A/B/C 可在<br>恰好 3 分钟完成<br>∴ 下界可达', MV.C.green))
+    );
+    html += MV.fragDiv(
+      MV.tip('n 张饼最少时间：n 为偶数 → n 分钟；n 为奇数 → n+1 分钟（奇数+1 变偶数后同理）<br>' +
+             '<b>3 张是特殊情况</b>：3 面×2÷2=3，刚好整除！'),
+      1
+    );
+    html += MV.fragDiv(
+      '<p style="font-size:.87em;margin:.4em 0"><b>推广：</b>k 张饼，2n+1 个奇数中，答案 = ⌈k/2⌉×2 = k+（k为奇数时+1）</p>',
+      2
+    );
+    return html;
+  }());
+
+  /* ─── S5: 过桥引入 ──────────────────────────────────────── */
+  document.getElementById('s5-bridge-intro').innerHTML = (function () {
+    var html = '<div style="font-size:.9em;margin:.3em 0 .6em;padding:8px 12px;background:#fff8e1;' +
+      'border-radius:8px;border-left:4px solid #f39c12">' +
+      '<b>题：</b>夜晚，4 人过独木桥，每次最多 2 人，须持火把。' +
+      '4人过桥速度分别为 <b>1、2、5、10</b> 分钟，两人同行取<b>慢者时间</b>。<br>' +
+      '火把只有 1 个，需人送回。<b>最少几分钟全部过桥？</b>' +
+      '</div>';
+    html += MV.row(
+      MV.col(MV.step('<b>关键洞察</b><br>10 和 5 必须<br>同行（否则浪费）<br>送回用最快的人', MV.C.blue)),
+      MV.col(MV.step('<b>策略</b><br>让快人 1 充当<br>"摆渡手"送回<br>或配对后送 2 回', MV.C.green)),
+      MV.col(MV.step('<b>算法</b><br>最慢两人一起走<br>最快两人轮流<br>送回火把', MV.C.orange))
+    );
+    return html;
+  }());
+
+  /* ─── S6: 过桥步骤表 ─────────────────────────────────────── */
+  document.getElementById('s6-bridge-steps').innerHTML = (function () {
+    var steps = [
+      { step:'第1步', action:'1 和 2 过桥 →',  time:2,  cumul:2,  note:'派最快的1和2先过',    fi:1 },
+      { step:'第2步', action:'← 1 返回',        time:1,  cumul:3,  note:'最快的1送火把回来',  fi:2 },
+      { step:'第3步', action:'5 和 10 过桥 →',  time:10, cumul:13, note:'最慢两人一起，省时',  fi:3 },
+      { step:'第4步', action:'← 2 返回',        time:2,  cumul:15, note:'留在对岸的2送火把回', fi:4 },
+      { step:'第5步', action:'1 和 2 过桥 →',   time:2,  cumul:17, note:'最后两人一起过',     fi:5 },
+    ];
+    var html = '<table class="ans-table" style="width:98%;font-size:.84em">' +
+      '<tr><th>步骤</th><th>动作</th><th>耗时</th><th>累计</th><th>说明</th></tr>';
+    steps.forEach(function (st) {
+      html += '<tr class="fragment" data-fragment-index="' + st.fi + '">' +
+        '<td><b>' + st.step + '</b></td>' +
+        '<td>' + st.action + '</td>' +
+        '<td>' + st.time + ' 分钟</td>' +
+        '<td><b>' + st.cumul + ' 分钟</b></td>' +
+        '<td style="text-align:left;font-size:.9em">' + st.note + '</td></tr>';
+    });
+    html += '</table>';
+    html += MV.fragDiv('<div class="big-ans">总计：17 分钟</div>', 6);
+    return html;
+  }());
+
+  /* ─── S7: 过桥时间线 SVG ─────────────────────────────────── */
+  document.getElementById('s7-bridge-timeline').innerHTML = (function () {
+    var W = 700, H = 200;
+    var s = '';
+    var scale = 22; // px per minute
+    var laneH = 30, laneGap = 6;
+    var startX = 80, topY = 20;
+    var colors = { fwd: MV.C.blue, ret: MV.C.red };
+    // Lanes: 0=step1, 1=step2, 2=step3, 3=step4, 4=step5
+    var lanes = [
+      { label:'1,2→', t0:0,  t1:2,  color:MV.C.blue,   dir:'→' },
+      { label:'←1',   t0:2,  t1:3,  color:MV.C.red,    dir:'←' },
+      { label:'5,10→',t0:3,  t1:13, color:MV.C.green,  dir:'→' },
+      { label:'←2',   t0:13, t1:15, color:MV.C.red,    dir:'←' },
+      { label:'1,2→', t0:15, t1:17, color:MV.C.blue,   dir:'→' },
+    ];
+    var totalT = 17;
+
+    // Time axis
+    s += '<line x1="' + startX + '" y1="' + (topY + 5*(laneH+laneGap) + 10) +
+         '" x2="' + (startX + totalT*scale + 10) + '" y2="' + (topY + 5*(laneH+laneGap) + 10) +
+         '" stroke="#aaa" stroke-width="2"/>';
+    for (var t = 0; t <= totalT; t += 1) {
+      var tx = startX + t*scale;
+      var axisY = topY + 5*(laneH+laneGap) + 10;
+      s += '<line x1="' + tx + '" y1="' + (axisY-4) + '" x2="' + tx + '" y2="' + (axisY+4) +
+           '" stroke="#aaa" stroke-width="1.5"/>';
+      if (t % 2 === 0 || t === 1 || t === 3 || t === 13 || t === 15 || t === 17) {
+        s += '<text x="' + tx + '" y="' + (axisY+16) +
+             '" text-anchor="middle" font-size="11" fill="#666">' + t + '</text>';
+      }
+    }
+    s += '<text x="' + (startX + totalT*scale + 22) + '" y="' + (topY + 5*(laneH+laneGap) + 14) +
+         '" font-size="12" fill="#888">分钟</text>';
+
+    // Lanes
+    lanes.forEach(function (lane, i) {
+      var x0 = startX + lane.t0*scale;
+      var w2 = (lane.t1 - lane.t0)*scale;
+      var y2 = topY + i*(laneH+laneGap);
+      s += '<g class="fragment" data-fragment-index="' + (i+1) + '">';
+      s += '<rect x="' + x0 + '" y="' + y2 + '" width="' + w2 + '" height="' + laneH +
+           '" rx="5" fill="' + lane.color + '" opacity=".7"/>';
+      s += '<text x="' + (x0+w2/2) + '" y="' + (y2+laneH/2+5) +
+           '" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">' +
+           lane.label + ' (' + (lane.t1-lane.t0) + '分)</text>';
+      s += '</g>';
+      // Row label
+      s += '<text x="' + (startX-5) + '" y="' + (y2+laneH/2+5) +
+           '" text-anchor="end" font-size="12" fill="#555">步骤' + (i+1) + '</text>';
+    });
+
+    // Finish marker
+    s += '<g class="fragment" data-fragment-index="6">';
+    s += '<line x1="' + (startX+17*scale) + '" y1="' + topY +
+         '" x2="' + (startX+17*scale) + '" y2="' + (topY+5*(laneH+laneGap)+10) +
+         '" stroke="' + MV.C.green + '" stroke-width="2.5" stroke-dasharray="6 3"/>';
+    s += '<text x="' + (startX+17*scale) + '" y="' + (topY-6) +
+         '" text-anchor="middle" font-size="13" fill="' + MV.C.green + '" font-weight="bold">17分 完成</text>';
+    s += '</g>';
+
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>';
+  }());
+
+  /* ─── S8: 为什么 17 分钟最优 ────────────────────────────── */
+  document.getElementById('s8-bridge-why').innerHTML = (function () {
+    var html = '<p style="font-size:.9em;margin:.3em 0"><b>下界分析：</b>10 号必须过桥，耗时至少 10 分钟；</p>' +
+      '<p style="font-size:.9em;margin:.3em 0">5 号也要过，且火把要送回，必须有人返回。</p>';
+    html += MV.fragDiv(
+      '<div style="background:#d5f5e3;border-radius:8px;border:2px solid #27ae60;padding:8px 12px;font-size:.88em">' +
+      '<b>关键不等式：</b>只要 10 在场（或等待），每次返回都浪费时间。<br>' +
+      '最佳策略让 10 和 5 <b>只走一次</b>，返回交给最快的人（1或2）。<br>' +
+      '方案：步骤 2 用 1 返（+1）、步骤 4 用 2 返（+2）→ 返回共 3 分钟 → 17 = 2+1+10+2+2 ✓' +
+      '</div>', 1
+    );
+    html += MV.fragDiv(
+      '<div style="background:#d6eaf8;border-radius:8px;border:2px solid #2980b9;padding:8px 12px;font-size:.88em">' +
+      '<b>错误方案：</b>每次让 1 号送回 → 步骤：(1,10)→10, ←1, (1,5)→5, ←1, (1,2)→2 = 10+1+5+1+2 = <b>19 分钟</b>，更慢！' +
+      '</div>', 2
+    );
+    html += MV.fragDiv(MV.tip('口诀：<b>最慢两人结伴走，最快两人轮回头</b>'), 3);
+    return html;
+  }());
+
+  /* ─── S9: 日常规划泡茶 ──────────────────────────────────── */
+  document.getElementById('s9-daily').innerHTML = (function () {
+    var html = '<div style="font-size:.9em;margin:.3em 0 .6em;padding:8px 12px;background:#fff8e1;' +
+      'border-radius:8px;border-left:4px solid #f39c12">' +
+      '<b>题：</b>泡茶需要：<b>烧水 10 分钟</b>、接水 1 分钟、洗茶杯 2 分钟。<br>' +
+      '接水后才能烧水，洗杯随时可做。<b>最少几分钟能喝上茶？</b>' +
+      '</div>';
+    html += MV.row(
+      MV.col(MV.step('<b>顺序做</b><br>接水(1)+洗杯(2)<br>+烧水(10)<br>= <b>13 分钟</b>', MV.C.red)),
+      MV.col(MV.step('<b>最优做</b><br>接水(1)→烧水(10)<br>烧水<b>同时</b>洗杯(2)<br>= <b>11 分钟</b>！', MV.C.green))
+    );
+    html += MV.fragDiv(
+      MV.tip('关键路径：接水(1) + 烧水(10) = <b>11 分钟</b>；洗杯在烧水期间完成，不占路径') +
+      '<p style="font-size:.87em;margin:.3em 0">⟹ 总时间 = 关键路径 = 1 + 10 = <b>11 分钟</b></p>',
+      1
+    );
+    return html;
+  }());
+
+  /* ─── S10: 甘特图 ───────────────────────────────────────── */
+  document.getElementById('s10-gantt').innerHTML = (function () {
+    var W = 700, H = 200;
+    var s = '';
+    var scale = 44; // px per minute  (13 min × 44 = 572 < 700 ✓)
+    var barH = 30, laneGap = 10;
+    var startX = 90, topY = 15;
+    var taskColors = { '接水':MV.C.blue, '洗茶杯':MV.C.orange, '烧水':MV.C.green };
+
+    function drawBar(y, t0, dur, label, color, fragIdx) {
+      var x0 = startX + t0*scale;
+      var w2 = dur*scale;
+      var g = '<g class="fragment" data-fragment-index="' + fragIdx + '">';
+      g += '<rect x="' + x0 + '" y="' + y + '" width="' + w2 + '" height="' + barH +
+           '" rx="5" fill="' + color + '" opacity=".78"/>';
+      g += '<text x="' + (x0+w2/2) + '" y="' + (y+barH/2+5) +
+           '" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">' +
+           label + '(' + dur + '分)</text>';
+      g += '</g>';
+      return g;
+    }
+
+    // Row labels
+    var rows = ['顺序', '最优'];
+    for (var ri = 0; ri < 2; ri++) {
+      var ry2 = topY + ri*(barH*2+laneGap*3);
+      s += '<text x="' + (startX-10) + '" y="' + (ry2+barH/2+5) +
+           '" text-anchor="end" font-size="14" fill="#555" font-weight="bold">' + rows[ri] + '</text>';
+      s += '<text x="' + (startX-10) + '" y="' + (ry2+barH+barH/2+5) +
+           '" text-anchor="end" font-size="14" fill="#888">—</text>';
+    }
+
+    // Sequential (row 0): 接水@0-1, 洗杯@1-3, 烧水@3-13
+    var r0y = topY;
+    s += drawBar(r0y, 0, 1, '接水',   taskColors['接水'],   1);
+    s += drawBar(r0y, 1, 2, '洗茶杯', taskColors['洗茶杯'], 2);
+    s += drawBar(r0y, 3, 10,'烧水',   taskColors['烧水'],   3);
+    // Marker 13min
+    s += '<g class="fragment" data-fragment-index="3">';
+    s += '<line x1="' + (startX+13*scale) + '" y1="' + (r0y-2) +
+         '" x2="' + (startX+13*scale) + '" y2="' + (r0y+barH+4) +
+         '" stroke="' + MV.C.red + '" stroke-width="2.5" stroke-dasharray="5 3"/>';
+    s += '<text x="' + (startX+13*scale) + '" y="' + (r0y-8) +
+         '" text-anchor="middle" font-size="12" fill="' + MV.C.red + '">13分</text>';
+    s += '</g>';
+
+    // Optimal (row 1): 接水@0-1, 烧水@1-11, 洗杯@1-3
+    var r1y = topY + barH*2 + laneGap*3;
+    s += drawBar(r1y,        0, 1,  '接水',   taskColors['接水'],   4);
+    s += drawBar(r1y,        1, 10, '烧水',   taskColors['烧水'],   5);
+    s += drawBar(r1y+barH+4, 1, 2,  '洗茶杯', taskColors['洗茶杯'], 5);
+    // Marker 11min
+    s += '<g class="fragment" data-fragment-index="5">';
+    s += '<line x1="' + (startX+11*scale) + '" y1="' + (r1y-2) +
+         '" x2="' + (startX+11*scale) + '" y2="' + (r1y+barH*2+10) +
+         '" stroke="' + MV.C.green + '" stroke-width="2.5" stroke-dasharray="5 3"/>';
+    s += '<text x="' + (startX+11*scale) + '" y="' + (r1y-8) +
+         '" text-anchor="middle" font-size="12" fill="' + MV.C.green + '" font-weight="bold">11分 ✓</text>';
+    s += '</g>';
+
+    // Time axis
+    var axisY = topY + barH*2 + laneGap*3 + barH*2 + laneGap*2;
+    s += '<line x1="' + startX + '" y1="' + axisY + '" x2="' + (startX+13*scale+20) +
+         '" y2="' + axisY + '" stroke="#aaa" stroke-width="2"/>';
+    for (var t = 0; t <= 13; t++) {
+      var tx = startX + t*scale;
+      s += '<line x1="' + tx + '" y1="' + (axisY-4) + '" x2="' + tx + '" y2="' + (axisY+4) +
+           '" stroke="#aaa" stroke-width="1.5"/>';
+      s += '<text x="' + tx + '" y="' + (axisY+16) +
+           '" text-anchor="middle" font-size="11" fill="#666">' + t + '</text>';
+    }
+    s += '<text x="' + (startX+13*scale+28) + '" y="' + (axisY+5) +
+         '" font-size="11" fill="#888">分钟</text>';
+
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>';
+  }());
+
+  /* ─── S11: 易错点 ──────────────────────────────────────── */
+  document.getElementById('s11-warn').innerHTML =
+    MV.warn('烙饼问题：<b>不是每次放满就对</b>，3张饼时需特殊交错，不能顺序烙') +
+    MV.warn('过桥问题：<b>不是每次都让最快的人送回</b>，当最慢两人可配对时要配对') +
+    MV.warn('过桥答案验证：算完要重新算每步时间累加，不能只靠感觉') +
+    MV.warn('泡茶问题：<b>接水后才能烧水</b>（有依赖），洗杯无依赖可并行；别混淆') +
+    MV.warn('关键路径：总时间 = 关键路径长度，不是所有任务时间之和');
+
+  /* ─── S12: 练习题 ──────────────────────────────────────── */
+  document.getElementById('s12-prac').innerHTML =
+    '<ol style="font-size:.88em;margin:.2em 0;padding-left:1.4em">' +
+    '<li class="prac-q">平底锅每次放 2 张饼，烙一面 1 分钟，共烙 <b>5 张</b>饼，最少几分钟？</li>' +
+    '<li class="prac-q">4 人过桥，速度分别为 1、3、6、8 分钟，规则同前，最少几分钟全部过桥？</li>' +
+    '<li class="prac-q">完成一批任务：A 需 4 分钟（依赖 B），B 需 3 分钟，C 需 5 分钟（依赖 B），D 需 2 分钟（可随时做）。<br>' +
+    '&emsp;先画关键路径，再求最短完成时间。</li>' +
+    '</ol>';
+
+  /* ─── S13: 参考答案 ─────────────────────────────────────── */
+  document.getElementById('s13-ans').innerHTML =
+    '<table class="ans-table" style="width:98%">' +
+    '<tr><th>题号</th><th>答案</th><th>关键步骤</th></tr>' +
+    '<tr><td>1</td><td><b>5 分钟</b></td><td>5张=10面；每分钟烙2面；10÷2=5分钟；交错安排：(A正,B正),(A反,C正),(B反,C反),(D正,E正),(D反,E反)</td></tr>' +
+    '<tr><td>2</td><td><b>18 分钟</b></td><td>(1,3)→3, ←1(1), (6,8)→8(11), ←3(3), (1,3)→3(3) = 3+1+8+3+3=18分</td></tr>' +
+    '<tr><td>3</td><td><b>8 分钟</b></td><td>B(3)→A(4)或C(5)；关键路径 B+C=3+5=8；D在B结束后立即做(2分)，不延长路径</td></tr>' +
+    '</table>';
+
+});
+</script>
+</body>
+</html>

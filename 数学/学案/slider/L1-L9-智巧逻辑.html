@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数 L1–L9 · 智巧逻辑</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.ans-table { border-collapse:collapse; margin:.5em auto; font-size:.92em; }
+.ans-table th, .ans-table td { border:1px solid #bbb; padding:5px 14px; text-align:center; }
+.ans-table th { background:#2980b9; color:#fff; }
+.ans-table td { background:#f8f8f8; }
+.big-ans { font-size:1.5em; font-weight:bold; color:#e74c3c; text-align:center; margin:10px 0; }
+.prac-q  { font-size:.92em; margin:.45em 0; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- 1. Cover -->
+<section>
+  <div style="color:#888;font-size:.85em;margin-bottom:.4em">二至四年级 · 奥数 L1–L9</div>
+  <h1 style="font-size:1.75em;color:#2980b9;margin:.1em 0">智巧逻辑</h1>
+  <div style="color:#555;font-size:.88em;margin-bottom:18px">移火柴 · 数列规律 · 鸽巢原理 · 逻辑推理</div>
+  <div id="s0-cover"></div>
+</section>
+
+<!-- 2. L1 移火柴：思路 -->
+<section>
+  <h2>L1 · 移火柴：解题策略</h2>
+  <div id="s1-match-strategy"></div>
+</section>
+
+<!-- 3. L1 移火柴：动画示例 -->
+<section>
+  <h2>🔥 移 1 根火柴：两正方形变两三角形</h2>
+  <div id="s2-match-anim"></div>
+</section>
+
+<!-- 4. L2 数列规律：策略 -->
+<section>
+  <h2>L2 · 数列规律：找差找商</h2>
+  <div id="s3-seq-strategy"></div>
+</section>
+
+<!-- 5. L2 数列规律：4 个例题 -->
+<section>
+  <h2>📋 数列规律：4 种典型题型</h2>
+  <div id="s4-seq-examples"></div>
+</section>
+
+<!-- 6. L3 图形规律 -->
+<section>
+  <h2>L3 · 图形规律：看结构看周期</h2>
+  <div id="s5-shape"></div>
+</section>
+
+<!-- 7. L5–L6 鸽巢原理：核心模型 -->
+<section>
+  <h2>L5–L6 · 鸽巢原理</h2>
+  <div id="s6-pigeon-core"></div>
+</section>
+
+<!-- 8. L5 袜子问题：动画 -->
+<section>
+  <h2>🧦 袜子问题：至少取几只？</h2>
+  <div id="s7-sock-anim"></div>
+</section>
+
+<!-- 9. L5–L6 鸽巢 3 道例题 -->
+<section>
+  <h2>📋 鸽巢原理：例题 3 道</h2>
+  <div id="s8-pigeon-ex"></div>
+</section>
+
+<!-- 10. L7–L9 逻辑推理：介绍 -->
+<section>
+  <h2>L7–L9 · 逻辑推理</h2>
+  <div id="s9-logic-intro"></div>
+</section>
+
+<!-- 11. L8 逻辑表格：动画推导 -->
+<section>
+  <h2>📊 逻辑表格：爱好推理</h2>
+  <div id="s10-logic-table"></div>
+</section>
+
+<!-- 12. L9 真假话 -->
+<section>
+  <h2>L9 · 真假话：假设法</h2>
+  <div id="s11-truth"></div>
+</section>
+
+<!-- 13. 易错点 -->
+<section>
+  <h2>⚠️ 易错点总结</h2>
+  <div id="s12-warn"></div>
+</section>
+
+<!-- 14. 练习题 -->
+<section>
+  <h2>✏️ 综合练习</h2>
+  <div id="s13-prac"></div>
+</section>
+
+<!-- 15. 参考答案 -->
+<section>
+  <h2>✅ 参考答案</h2>
+  <div id="s14-ans"></div>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+
+  /* ─── S0: Cover ──────────────────────────────────────── */
+  document.getElementById('s0-cover').innerHTML = (function () {
+    var W = 600, H = 100, s = '';
+    var topics = [
+      { id:'L1–L3', sub:'规律发现', c:MV.C.blue   },
+      { id:'L5–L6', sub:'鸽巢原理', c:MV.C.green  },
+      { id:'L7–L9', sub:'逻辑推理', c:MV.C.orange },
+    ];
+    var xs = [100, 300, 500];
+    topics.forEach(function (t, i) {
+      var x = xs[i];
+      s += '<rect x="' + (x-80) + '" y="8" width="160" height="80" rx="12" fill="' +
+           t.c + '" opacity=".13" stroke="' + t.c + '" stroke-width="2"/>';
+      s += '<text x="' + x + '" y="46" text-anchor="middle" font-size="20" fill="' +
+           t.c + '" font-weight="bold">' + t.id + '</text>';
+      s += '<text x="' + x + '" y="70" text-anchor="middle" font-size="14" fill="' + t.c + '">' + t.sub + '</text>';
+    });
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>';
+  }()) +
+  MV.tip('核心思想：<b>有序思考 + 极端情形 + 假设验证</b>');
+
+  /* ─── S1: L1 移火柴策略 ──────────────────────────────── */
+  document.getElementById('s1-match-strategy').innerHTML =
+    MV.row(
+      MV.col(MV.step('<b>① 数清楚</b><br><span style="font-size:.88em">先数共几根火柴<br>哪几根可以移</span>', MV.C.blue)),
+      MV.col(MV.step('<b>② 目标驱动</b><br><span style="font-size:.88em">想好移后形状<br>再倒推哪根动</span>', MV.C.green)),
+      MV.col(MV.step('<b>③ 验证等式</b><br><span style="font-size:.88em">移完后数图形数<br>确认等式成立</span>', MV.C.orange))
+    ) +
+    MV.fragDiv(
+      MV.tip('策略口诀：<b>先想目标形，再找关键根，移完必验证</b>') +
+      '<p style="font-size:.9em;margin:.5em 0">常见题型：移一根 → 等式成立 / 图形变形 / 正方形变三角形</p>',
+      1
+    );
+
+  /* ─── S2: L1 火柴动画 ──────────────────────────────────── */
+  document.getElementById('s2-match-anim').innerHTML = (function () {
+    var sq = 88, bx = 60, by = 70;
+    /* Two adjacent squares share one vertical wall = 7 sticks
+       S0 top-left horiz, S1 top-right horiz
+       S2 bottom-left horiz, S3 bottom-right horiz
+       S4 left vert, S5 mid vert (shared wall, to be moved), S6 right vert */
+    function stick(x1, y1, x2, y2, col, extra) {
+      col = col || '#555';
+      extra = extra || '';
+      return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 +
+             '" stroke="' + col + '" stroke-width="7" stroke-linecap="round"' + extra + '/>';
+    }
+    var s = '';
+    // Label "移前"
+    s += '<text x="' + (bx+sq) + '" y="' + (by-15) + '" text-anchor="middle" font-size="14" fill="#888">移 前（两个正方形，共 7 根）</text>';
+    // Fixed sticks
+    s += stick(bx,       by,    bx+sq,    by);          // S0 top-left
+    s += stick(bx+sq,    by,    bx+2*sq,  by);          // S1 top-right
+    s += stick(bx,       by+sq, bx+sq,    by+sq);       // S2 bot-left
+    s += stick(bx+sq,    by+sq, bx+2*sq,  by+sq);       // S3 bot-right
+    s += stick(bx,       by,    bx,       by+sq);        // S4 left vert
+    s += stick(bx+2*sq,  by,    bx+2*sq,  by+sq);       // S6 right vert
+    // S5: middle vertical stick — highlighted red (to be moved)
+    s += stick(bx+sq, by, bx+sq, by+sq, MV.C.red, ' stroke-dasharray="8 4"');
+    s += '<text x="' + (bx+sq) + '" y="' + (by+sq/2+5) + '" text-anchor="middle" font-size="13" fill="' +
+         MV.C.red + '">移这根</text>';
+
+    // After state: fragment 1 — show diagonal (moved stick becomes hypotenuse of right triangle pair)
+    // Move S5 (mid-vert) to diagonal: (bx, by+sq) → (bx+2*sq, by)
+    s += '<g class="fragment" data-fragment-index="1">';
+    s += '<text x="' + (bx+sq) + '" y="' + (by+sq+40) + '" text-anchor="middle" font-size="14" fill="#27ae60">移后（两个直角三角形）</text>';
+    s += stick(bx, by+sq, bx+2*sq, by, MV.C.green, ' stroke-width="8"');
+    // Cross out the middle vert
+    s += '<line x1="' + (bx+sq-14) + '" y1="' + (by+sq/2-14) + '" x2="' + (bx+sq+14) + '" y2="' + (by+sq/2+14) +
+         '" stroke="#e74c3c" stroke-width="3" opacity=".6"/>';
+    s += '</g>';
+
+    return '<div style="text-align:center">' + MV.svg(3*sq+120, sq+100, s) + '</div>' +
+      MV.fragDiv(MV.tip('移走中间竖根（红色），放成斜边（绿色对角线）→ 两个全等直角三角形'), 2);
+  }());
+
+  /* ─── S3: L2 数列策略 ───────────────────────────────── */
+  document.getElementById('s3-seq-strategy').innerHTML =
+    '<p style="font-size:.95em;margin:.2em 0 .6em">找规律三步法：</p>' +
+    MV.row(
+      MV.col(MV.step('<b>① 作差</b><br>相邻项相减<br>看差是否相等', MV.C.blue)),
+      MV.col(MV.step('<b>② 作商</b><br>相邻项相除<br>看比是否相等', MV.C.green)),
+      MV.col(MV.step('<b>③ 找周期</b><br>差/商若有规律<br>则为二级数列', MV.C.orange))
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.col('<div style="text-align:center;padding:8px 12px;background:#d6eaf8;border-radius:8px;border:2px solid #2980b9"><b>等差数列</b><br><span style="font-size:.85em">差固定 → 末项=首项+公差×(n-1)</span></div>'),
+        MV.col('<div style="text-align:center;padding:8px 12px;background:#d5f5e3;border-radius:8px;border:2px solid #27ae60"><b>等比数列</b><br><span style="font-size:.85em">比固定 → 乘公比递推</span></div>'),
+        MV.col('<div style="text-align:center;padding:8px 12px;background:#fdebd0;border-radius:8px;border:2px solid #e67e22"><b>Fibonacci型</b><br><span style="font-size:.85em">后项=前两项之和</span></div>')
+      ), 1
+    ) +
+    MV.fragDiv(MV.tip('口诀：<b>先作差，差恒→等差；再作商，商恒→等比；都不对→Fibonacci或周期</b>'), 2);
+
+  /* ─── S4: L2 4道例题 ─────────────────────────────────── */
+  document.getElementById('s4-seq-examples').innerHTML = (function () {
+    var rows = [
+      { q:'2, 5, 8, 11, 14, <b>__</b>',      type:'等差 d=3',  ans:'17', color:MV.C.blue   },
+      { q:'3, 6, 12, 24, 48, <b>__</b>',     type:'等比 q=2',  ans:'96', color:MV.C.green  },
+      { q:'1, 1, 2, 3, 5, 8, <b>__</b>',     type:'Fibonacci', ans:'13', color:MV.C.orange },
+      { q:'1, 3, 2, 4, 3, 5, 4, <b>__</b>',  type:'周期差列',  ans:'6',  color:MV.C.purple },
+    ];
+    var html = '';
+    rows.forEach(function (r, i) {
+      html += '<div style="display:flex;align-items:center;margin:.35em 0;gap:10px">' +
+        '<span style="min-width:48px;font-size:.82em;color:#fff;background:' + r.color +
+        ';border-radius:5px;padding:2px 8px;text-align:center">' + r.type + '</span>' +
+        '<span style="font-size:.9em;flex:1">' + r.q + '</span>' +
+        MV.frag('<span style="background:#fff3cd;border:1.5px solid #f39c12;border-radius:5px;' +
+                'padding:2px 12px;font-weight:bold;color:#6d4c00">答：' + r.ans + '</span>', i+1) +
+        '</div>';
+    });
+    return html + MV.fragDiv(MV.tip('做题时把每步差/比写出来，规律一眼即见'), 5);
+  }());
+
+  /* ─── S5: L3 图形规律 ──────────────────────────────────── */
+  document.getElementById('s5-shape').innerHTML = (function () {
+    /* Draw a sequence of shapes: 1 square, 2 squares, 3 squares (staircase) */
+    var W = 500, H = 150, s = '';
+    var colors = [MV.C.blue, MV.C.green, MV.C.orange, MV.C.purple];
+    var sz = 38;
+    // Group n: staircase of n squares placed top-right corner aligned
+    function drawGroup(n, ox, oy, label) {
+      var g = '';
+      for (var r = 0; r < n; r++) {
+        for (var c = 0; c < n-r; c++) {
+          var x = ox + c*sz, y = oy + r*sz;
+          g += '<rect x="' + x + '" y="' + y + '" width="' + (sz-2) + '" height="' + (sz-2) +
+               '" fill="' + colors[n-1] + '" opacity=".6" stroke="#fff" stroke-width="2"/>';
+        }
+      }
+      g += '<text x="' + (ox + (n*sz)/2 - sz/2) + '" y="' + (oy + n*sz + 16) +
+           '" text-anchor="middle" font-size="13" fill="' + colors[n-1] + '">第 ' + n + ' 组（' +
+           (n*(n+1)/2) + ' 格）</text>';
+      return g;
+    }
+    var startX = [20, 110, 220, 350];
+    for (var n = 1; n <= 4; n++) {
+      s += '<g class="fragment" data-fragment-index="' + n + '">' +
+           drawGroup(n, startX[n-1], 10, n) + '</g>';
+    }
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>' +
+      '<p style="text-align:center;font-size:.88em;color:#555;margin:.3em 0">每组格子数 = 1, 3, 6, 10, … → 三角数 T(n) = n(n+1)/2</p>' +
+      MV.fragDiv(
+        MV.tip('看图形规律：<b>先数个数，再找差/比，差仍有规律→二阶差分</b>') +
+        '<p style="font-size:.88em;margin:.4em 0">第 100 组格子数 = 100×101÷2 = <b>5050</b></p>',
+        5
+      );
+  }());
+
+  /* ─── S6: 鸽巢原理核心 ──────────────────────────────────── */
+  document.getElementById('s6-pigeon-core').innerHTML = (function () {
+    var W = 500, H = 115, s = '';
+    // Draw 4 pigeonhole boxes
+    var boxW = 90, boxH = 70, gap = 12, startX = 30, topY = 20;
+    var bcolors = [MV.C.blue, MV.C.green, MV.C.orange, MV.C.purple];
+    for (var i = 0; i < 4; i++) {
+      var bx2 = startX + i*(boxW+gap);
+      s += '<rect x="' + bx2 + '" y="' + topY + '" width="' + boxW + '" height="' + boxH +
+           '" fill="' + bcolors[i] + '" opacity=".18" stroke="' + bcolors[i] + '" stroke-width="2" rx="6"/>';
+      s += '<text x="' + (bx2+boxW/2) + '" y="' + (topY+boxH+16) +
+           '" text-anchor="middle" font-size="13" fill="' + bcolors[i] + '">盒子 ' + (i+1) + '</text>';
+    }
+    // Pigeon dot in each box (static)
+    for (var j = 0; j < 4; j++) {
+      var px = startX + j*(boxW+gap) + boxW/2;
+      s += '<circle cx="' + px + '" cy="' + (topY+35) + '" r="14" fill="' + bcolors[j] + '" opacity=".7"/>';
+      s += '<text x="' + px + '" y="' + (topY+40) + '" text-anchor="middle" font-size="12" fill="#fff">🐦</text>';
+    }
+    // 5th pigeon doubled in box 0 (fragment)
+    var px5 = startX + boxW/2 + 18;
+    s += '<g class="fragment" data-fragment-index="1">';
+    s += '<circle cx="' + px5 + '" cy="' + (topY+20) + '" r="14" fill="' + MV.C.red + '" opacity=".85"/>';
+    s += '<text x="' + px5 + '" y="' + (topY+25) + '" text-anchor="middle" font-size="12" fill="#fff">🐦</text>';
+    s += '<text x="' + (startX+boxW/2) + '" y="' + (topY+boxH+32) +
+         '" text-anchor="middle" font-size="12" fill="' + MV.C.red + '" font-weight="bold">必有两只！</text>';
+    s += '</g>';
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>' +
+      '<p style="font-size:.9em;text-align:center;margin:.3em 0"><b>4 个盒子，放 5 只鸽子</b> → 至少一个盒子里有 ≥ 2 只</p>' +
+      MV.fragDiv(
+        MV.tip('<b>鸽巢原理</b>：n 个盒子放 n+1 件物品，至少一个盒子有 2 件以上') +
+        '<p style="font-size:.88em;margin:.3em 0">公式：最少取件数 = 盒子数 + 1（<b>最坏情况</b>：每盒先放一件，再放一件）</p>',
+        2
+      );
+  }());
+
+  /* ─── S7: 袜子动画 ─────────────────────────────────────── */
+  document.getElementById('s7-sock-anim').innerHTML = (function () {
+    var W = 500, H = 130;
+    var s = '';
+    var colors = [MV.C.blue, MV.C.green, MV.C.orange, MV.C.purple];
+    var labels = ['红色', '蓝色', '黑色', '白色'];
+    var boxW = 85, boxH = 70, gap = 14, startX = 22, topY = 15;
+
+    // 4 color boxes
+    for (var i = 0; i < 4; i++) {
+      var bx2 = startX + i*(boxW+gap);
+      s += '<rect x="' + bx2 + '" y="' + topY + '" width="' + boxW + '" height="' + boxH +
+           '" fill="' + colors[i] + '" opacity=".15" stroke="' + colors[i] + '" stroke-width="2" rx="6"/>';
+      s += '<text x="' + (bx2+boxW/2) + '" y="' + (topY+boxH+16) +
+           '" text-anchor="middle" font-size="13" fill="' + colors[i] + '">' + labels[i] + '</text>';
+    }
+
+    // Socks appearing one by one (fragments 1-4: one per color box)
+    for (var j = 0; j < 4; j++) {
+      var sx = startX + j*(boxW+gap) + boxW/2;
+      s += '<g class="fragment" data-fragment-index="' + (j+1) + '">';
+      s += '<circle cx="' + sx + '" cy="' + (topY+35) + '" r="16" fill="' + colors[j] + '" opacity=".8"/>';
+      s += '<text x="' + sx + '" y="' + (topY+40) + '" text-anchor="middle" font-size="16" fill="#fff">🧦</text>';
+      s += '</g>';
+    }
+
+    // 5th sock: goes into first box → match! (fragment 5)
+    s += '<g class="fragment" data-fragment-index="5">';
+    var sx5 = startX + boxW/2;
+    s += '<circle cx="' + (sx5+20) + '" cy="' + (topY+18) + '" r="16" fill="' + MV.C.red + '" opacity=".85"/>';
+    s += '<text x="' + (sx5+20) + '" y="' + (topY+23) + '" text-anchor="middle" font-size="16" fill="#fff">🧦</text>';
+    s += '<text x="' + (sx5+20) + '" y="' + (topY+boxH+32) +
+         '" text-anchor="middle" font-size="13" fill="' + MV.C.red + '" font-weight="bold">配对！</text>';
+    s += '</g>';
+
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>' +
+      '<p style="text-align:center;font-size:.9em;margin:.4em 0">4 种颜色的袜子混在抽屉里，<b>至少取几只才能保证有一双同色</b>？</p>' +
+      MV.fragDiv('<div class="big-ans">答：至少取 5 只（4+1）</div>' +
+                 MV.tip('最坏情况：4只各不同色；第5只必与其中一只同色'), 6);
+  }());
+
+  /* ─── S8: 鸽巢 3 道例题 ─────────────────────────────────── */
+  document.getElementById('s8-pigeon-ex').innerHTML = (function () {
+    var qs = [
+      {
+        q:'从 1 到 10 中任取 6 个数，证明其中必有两个数之和为 11。',
+        hint:'盒子：(1,10),(2,9),(3,8),(4,7),(5,6) → 5 个盒子，取 6 个 → 鸽巢',
+        ans:'5 对互补数对，取 6 个数必有两个同对 → 和为 11 ✓',
+        idx:1
+      },
+      {
+        q:'某班 40 人，证明必有至少 4 人同月份生日。',
+        hint:'12 个月份 = 12 个盒子，40 人 = 40 只鸽子',
+        ans:'40 ÷ 12 = 3 余 4 → ⌊40/12⌋+1 = 4，至少 4 人同月 ✓',
+        idx:2
+      },
+      {
+        q:'从 1 到 2n 中任取 n+1 个整数，证明必有一个整除另一个。',
+        hint:'任意整数可写成 2^k × m（m 为奇数），1~2n 中奇数有 n 个',
+        ans:'n 个奇数"盒子"，n+1 个数必有两数奇数部分相同 → 一个整除另一个 ✓',
+        idx:3
+      }
+    ];
+    var html = '';
+    qs.forEach(function (q) {
+      html += '<div style="margin:.4em 0;padding:6px 10px;background:#f8f8f8;border-radius:6px;border-left:4px solid ' + MV.C.blue + '">' +
+        '<span style="font-size:.88em"><b>题：</b>' + q.q + '</span><br>' +
+        MV.frag('<span style="font-size:.82em;color:#555"><b>思路：</b>' + q.hint + '</span>', q.idx) + '<br>' +
+        MV.frag('<span style="font-size:.82em;color:' + MV.C.green + '"><b>答：</b>' + q.ans + '</span>', q.idx) +
+        '</div>';
+    });
+    return html;
+  }());
+
+  /* ─── S9: 逻辑推理介绍 ──────────────────────────────────── */
+  document.getElementById('s9-logic-intro').innerHTML =
+    MV.row(
+      MV.col(MV.step('<b>L7 条件分析</b><br>已知条件→直接推断<br>正向推理', MV.C.blue)),
+      MV.col(MV.step('<b>L8 表格排除</b><br>画对应表格<br>逐格填✓✗', MV.C.green)),
+      MV.col(MV.step('<b>L9 假设验证</b><br>假设一种情况<br>推出矛盾→排除', MV.C.orange))
+    ) +
+    MV.fragDiv(
+      '<p style="font-size:.9em;margin:.5em 0"><b>解题步骤：</b></p>' +
+      '<ol style="font-size:.88em;margin:.2em 0;padding-left:1.5em">' +
+      '<li>读完所有条件，找最强限制（最多排除的条件）先用</li>' +
+      '<li>画表格：行=人，列=选项；填 ✓ 或 ✗</li>' +
+      '<li>一行/列确定后立刻排除同行列的其他选项</li>' +
+      '<li>若遇到真假话，先假设一个是真话，推导看矛盾</li>' +
+      '</ol>', 1
+    ) +
+    MV.fragDiv(MV.tip('口诀：<b>找最强条件 → 填表排除 → 验证答案</b>'), 2);
+
+  /* ─── S10: 逻辑表格动画 ─────────────────────────────────── */
+  document.getElementById('s10-logic-table').innerHTML = (function () {
+    /* Conditions: A不书法, B不围棋且不绘画, C不绘画
+       → Solution: A=绘画, B=书法, C=围棋  */
+    var W = 380, H = 178, s = '';
+    var cols = ['书法', '围棋', '绘画'];
+    var rows2 = ['A', 'B', 'C'];
+    var cw = 80, rh = 42, ox = 60, oy = 30;
+
+    // Header row
+    s += '<rect x="' + ox + '" y="' + oy + '" width="' + (3*cw) + '" height="' + rh +
+         '" fill="' + MV.C.blue + '" opacity=".15" rx="4"/>';
+    for (var ci = 0; ci < 3; ci++) {
+      s += '<text x="' + (ox+(ci+0.5)*cw) + '" y="' + (oy+rh/2+5) +
+           '" text-anchor="middle" font-size="15" fill="' + MV.C.blue + '" font-weight="bold">' +
+           cols[ci] + '</text>';
+    }
+
+    // Row headers
+    for (var ri = 0; ri < 3; ri++) {
+      s += '<rect x="' + (ox-cw) + '" y="' + (oy+(ri+1)*rh) + '" width="' + cw + '" height="' + rh +
+           '" fill="' + MV.C.green + '" opacity=".12" rx="4"/>';
+      s += '<text x="' + (ox-cw/2) + '" y="' + (oy+(ri+1.5)*rh+2) +
+           '" text-anchor="middle" font-size="16" fill="' + MV.C.green + '" font-weight="bold">' +
+           rows2[ri] + '</text>';
+      // Cell borders
+      for (var ci2 = 0; ci2 < 3; ci2++) {
+        s += '<rect x="' + (ox+ci2*cw) + '" y="' + (oy+(ri+1)*rh) + '" width="' + cw + '" height="' + rh +
+             '" fill="none" stroke="#ccc" stroke-width="1.5"/>';
+      }
+    }
+
+    function cell(r, c) { return { x: ox+c*cw+cw/2, y: oy+(r+1)*rh+rh/2+5 }; }
+    function mark(r, c, sym, col, fragIdx) {
+      var p = cell(r, c);
+      return '<text x="' + p.x + '" y="' + p.y + '" text-anchor="middle" font-size="20" fill="' +
+             col + '" class="fragment" data-fragment-index="' + fragIdx + '">' + sym + '</text>';
+    }
+
+    // Fragment 1: A不书法 → A-书法=✗
+    s += mark(0, 0, '✗', MV.C.red,    1);
+    // Fragment 2: B不围棋,B不绘画 → B-围棋=✗, B-绘画=✗ → B-书法=✓
+    s += mark(1, 1, '✗', MV.C.red,    2);
+    s += mark(1, 2, '✗', MV.C.red,    2);
+    s += mark(1, 0, '✓', MV.C.green,  2);
+    // Fragment 3: B=书法确定 → A-书法=✗(已有), C-书法=✗; C不绘画→C-绘画=✗ → C-围棋=✓
+    s += mark(2, 0, '✗', MV.C.red,    3);
+    s += mark(2, 2, '✗', MV.C.red,    3);
+    s += mark(2, 1, '✓', MV.C.green,  3);
+    // Fragment 4: C=围棋 → A-围棋=✗ → A-绘画=✓
+    s += mark(0, 1, '✗', MV.C.red,    4);
+    s += mark(0, 2, '✓', MV.C.green,  4);
+
+    return '<p style="font-size:.88em;margin:.2em 0"><b>已知：</b>A不学书法；B不学围棋且不学绘画；C不学绘画</p>' +
+      '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>' +
+      MV.fragDiv('<div class="big-ans">结论：A=绘画，B=书法，C=围棋</div>', 5);
+  }());
+
+  /* ─── S11: L9 真假话 ────────────────────────────────────── */
+  document.getElementById('s11-truth').innerHTML = (function () {
+    var html = '<p style="font-size:.9em;margin:.3em 0"><b>题：</b>甲、乙、丙三人，只有一人说真话。</p>' +
+      '<div style="font-size:.88em;margin:.3em 0 .6em;padding:8px 12px;background:#f8f8f8;border-radius:6px;">' +
+      '甲说：乙在说谎。&nbsp;&nbsp;乙说：丙在说谎。&nbsp;&nbsp;丙说：甲乙都在说谎。</div>';
+
+    html += MV.row(
+      MV.col(
+        MV.fragDiv(
+          '<div style="padding:8px;background:#d6eaf8;border-radius:8px;border:2px solid #2980b9;font-size:.85em">' +
+          '<b>假设甲说真话</b><br>→ 乙在说谎<br>→ 丙说真话（乙谎=丙真？）<br>→ 矛盾（两人真话）✗</div>', 1
+        )
+      ),
+      MV.col(
+        MV.fragDiv(
+          '<div style="padding:8px;background:#d5f5e3;border-radius:8px;border:2px solid #27ae60;font-size:.85em">' +
+          '<b>假设乙说真话</b><br>→ 丙在说谎<br>→ "甲乙都在说谎"为假<br>→ 甲或乙有真话 ✓<br>→ 乙真，甲丙谎，自洽！</div>', 2
+        )
+      ),
+      MV.col(
+        MV.fragDiv(
+          '<div style="padding:8px;background:#fdebd0;border-radius:8px;border:2px solid #e67e22;font-size:.85em">' +
+          '<b>假设丙说真话</b><br>→ 甲乙都在说谎<br>→ 甲谎：乙说真<br>→ 矛盾（乙真=甲真）✗</div>', 3
+        )
+      )
+    );
+    html += MV.fragDiv('<div class="big-ans">答：乙说的是真话</div>' +
+                       MV.tip('假设法：逐一假设，推出矛盾即排除；只有一个不矛盾的就是答案'), 4);
+    return html;
+  }());
+
+  /* ─── S12: 易错点 ──────────────────────────────────────── */
+  document.getElementById('s12-warn').innerHTML =
+    MV.warn('移火柴：<b>必须验证</b>移完后等式/图形是否真的满足要求，不能靠感觉') +
+    MV.warn('数列规律：差的差（二阶差分）也是常见规律，一阶差不等不代表无规律') +
+    MV.warn('鸽巢原理：<b>最坏情况</b>思维——答案是"保证"的最小数，而非最好情况') +
+    MV.warn('逻辑表格：一列确定✓后，<b>同列其他格必须填✗</b>，一行同理') +
+    MV.warn('真假话：题目若没说"只有一个真话"，则假设法可能有多解，需注意题意');
+
+  /* ─── S13: 练习题 ──────────────────────────────────────── */
+  document.getElementById('s13-prac').innerHTML =
+    '<ol style="font-size:.88em;margin:.2em 0;padding-left:1.4em">' +
+    '<li class="prac-q">用 6 根火柴摆成 4 个等边三角形（不能折断），怎么摆？画出示意图并说明理由。</li>' +
+    '<li class="prac-q">找规律填空：3, 5, 9, 15, 23, <b>__</b>，说明依据。</li>' +
+    '<li class="prac-q">抽屉里有红、黄、蓝三色铅笔各 5 支（共 15 支），至少取几支才能保证取到 2 支同色？</li>' +
+    '<li class="prac-q">甲说颜色是红色，乙说不是红色，丙说是蓝或绿色。<br>' +
+    '&emsp;已知只有一人说错了，求颜色是什么。</li>' +
+    '</ol>';
+
+  /* ─── S14: 参考答案 ─────────────────────────────────────── */
+  document.getElementById('s14-ans').innerHTML =
+    '<table class="ans-table">' +
+    '<tr><th>题号</th><th>答案</th><th>关键步骤</th></tr>' +
+    '<tr><td>1</td><td>立体三棱锥（正四面体）</td><td>平面无法 4 个等边三角形各 3 根共享→立体；每面一个三角形</td></tr>' +
+    '<tr><td>2</td><td><b>33</b></td><td>差：2,4,6,8,10→等差数列；下一差=10，23+10=33</td></tr>' +
+    '<tr><td>3</td><td><b>4 支</b></td><td>3 色 = 3 盒；最坏：每色各 1 支取 3 支；再取 1 支必同色 → 4 支</td></tr>' +
+    '<tr><td>4</td><td><b>蓝色或绿色</b></td><td>若红：甲✓乙✗丙✗→两人错，矛盾；若蓝/绿：甲✗乙✓丙✓→一人错 ✓</td></tr>' +
+    '</table>';
+
+});
+</script>
+</body>
+</html>
