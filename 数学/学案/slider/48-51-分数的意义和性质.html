@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>第48–51课 · 分数的意义和性质</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.reveal h2 { font-size: 1.35em; color: #2980b9; margin: .12em 0 .28em; }
+.reveal h3 { font-size: 1em; color: #444; margin: .15em 0; }
+.lec-badge {
+  display: inline-block; background: #2980b9; color: white;
+  border-radius: 20px; padding: 2px 14px; font-size: .75em;
+  vertical-align: middle; margin-right: 6px;
+}
+.lec-badge.orange { background: #e67e22; }
+.lec-badge.green  { background: #27ae60; }
+.lec-badge.purple { background: #8e44ad; }
+.eq-arrow { font-size: 1.4em; color: #999; padding: 0 6px; line-height: 1; }
+.mv-info  { background: #d6eaf8; border-left: 3px solid #2980b9; padding: 5px 10px; border-radius: 4px; margin: 3px 0; text-align: left; line-height: 1.5; }
+.zone-label {
+  font-size: .78em; font-weight: bold; text-align: center;
+  padding: 3px 8px; border-radius: 10px; margin-top: 3px;
+}
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ═══════════════════════════════════════════════
+     封面
+══════════════════════════════════════════════════ -->
+<section>
+<div style="text-align:center;padding:14px 0">
+  <div class="mv-chap-title">分数的意义和性质</div>
+  <div class="mv-chap-sub">第48–51课 · 真假带分数 · 分数的意义 · 基本性质 · 约分 · 通分</div>
+  <div class="mv-row" style="margin-top:26px" id="cover-row"></div>
+  <div style="margin-top:18px;font-size:.82em;color:#aaa">小学数学 · 人教版五年级下册</div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     L48：真分数 · 假分数 · 带分数
+══════════════════════════════════════════════════ -->
+<section>
+
+<!-- L48-1 定义表 -->
+<section>
+<h2><span class="lec-badge">第48课</span>真分数 · 假分数 · 带分数</h2>
+<table class="mv-qt" style="width:97%;margin-top:6px;font-size:.88em">
+  <tr>
+    <th>类型</th><th>条件</th><th>例子</th><th>与 1 的关系</th>
+  </tr>
+  <tr>
+    <td style="color:#2980b9;font-weight:bold">真分数</td>
+    <td>分子 &lt; 分母</td>
+    <td id="def-true-ex"></td>
+    <td>真分数 &lt; 1</td>
+  </tr>
+  <tr>
+    <td style="color:#e67e22;font-weight:bold">假分数</td>
+    <td>分子 ≥ 分母</td>
+    <td id="def-improper-ex"></td>
+    <td>假分数 ≥ 1</td>
+  </tr>
+  <tr>
+    <td style="color:#27ae60;font-weight:bold">带分数</td>
+    <td>整数 + 真分数</td>
+    <td id="def-mixed-ex"></td>
+    <td>带分数 &gt; 1</td>
+  </tr>
+</table>
+<div class="mv-row" style="margin-top:12px" id="def-circles"></div>
+<div class="mv-tip" style="margin-top:8px">带分数一定大于1；真分数一定小于1；假分数等于1时就是整数</div>
+</section>
+
+<!-- L48-2 数轴分类 -->
+<section>
+<h2><span class="lec-badge">第48课</span>在数轴上认识三类分数</h2>
+<div id="nl-demo" style="text-align:center;margin:12px 0"></div>
+<div class="mv-row" style="gap:16px;margin-top:6px">
+  <div class="mv-col">
+    <div class="zone-label" style="background:#d6eaf8;color:#2980b9">真分数区域</div>
+    <div style="font-size:.8em;color:#555">0 ~ 1 之间</div>
+    <div id="nl-true-ex" style="font-size:.88em"></div>
+  </div>
+  <div class="mv-col">
+    <div class="zone-label" style="background:#fdebd0;color:#e67e22">假分数（=1）</div>
+    <div style="font-size:.8em;color:#555">分子 = 分母</div>
+    <div id="nl-eq-ex" style="font-size:.88em"></div>
+  </div>
+  <div class="mv-col">
+    <div class="zone-label" style="background:#fadbd8;color:#e74c3c">假分数（&gt;1）</div>
+    <div style="font-size:.8em;color:#555">可化为带分数</div>
+    <div id="nl-gt-ex" style="font-size:.88em"></div>
+  </div>
+</div>
+<div class="mv-warn" style="margin-top:8px">注意：<span id="nl-warn-frac"></span> = 1 是假分数，但不能写成带分数！</div>
+</section>
+
+<!-- L48-3 互化 -->
+<section>
+<h2><span class="lec-badge">第48课</span>带分数 ↔ 假分数 互化</h2>
+<div class="mv-row" style="align-items:flex-start;gap:22px">
+  <div style="flex:1;min-width:200px">
+    <h3 style="color:#e67e22">假分数 → 带分数（11÷4）</h3>
+    <div id="itm-circles" style="text-align:center;margin:6px 0"></div>
+    <div class="mv-step" id="itm-step"></div>
+  </div>
+  <div style="flex:1;min-width:200px">
+    <h3 style="color:#27ae60">带分数 → 假分数</h3>
+    <div id="mti-circles" style="text-align:center;margin:6px 0"></div>
+    <div class="mv-step" id="mti-step"></div>
+  </div>
+</div>
+<div class="mv-tip" style="margin-top:10px">口诀（带→假）：<strong>整数 × 分母 + 分子，放在分子上，分母不变</strong></div>
+</section>
+
+</section><!-- END L48 -->
+
+<!-- ═══════════════════════════════════════════════
+     L49：分数的意义
+══════════════════════════════════════════════════ -->
+<section>
+
+<!-- L49-1 定义 -->
+<section>
+<h2><span class="lec-badge orange">第49课</span>分数的意义</h2>
+<div class="mv-row" style="align-items:flex-start;gap:18px">
+  <div style="flex:1;min-width:200px">
+    <div class="mv-info">把<strong>单位 1</strong> 平均分成 <em>d</em> 份，取其中 <em>n</em> 份，就是 <span id="meaning-nd"></span></div>
+    <div id="meaning-rects" style="text-align:center;margin:12px 0"></div>
+    <div class="mv-tip" style="font-size:.9em">单位1可以是：一个物体、一条线段、一个整体……</div>
+  </div>
+  <div style="flex:1;min-width:200px">
+    <table class="mv-qt" style="width:100%;font-size:.86em">
+      <tr><th>单位1</th><th>等分份数</th><th>取份数</th><th>分数</th></tr>
+      <tr><td>1条绳子</td><td>8段</td><td>3段</td><td id="mt1"></td></tr>
+      <tr><td>1个圆饼</td><td>6份</td><td>5份</td><td id="mt2"></td></tr>
+      <tr><td>1小时</td><td>4份</td><td>1份</td><td id="mt3"></td></tr>
+      <tr><td>1千克</td><td>5份</td><td>3份</td><td id="mt4"></td></tr>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- L49-2 分数 = 除法 -->
+<section>
+<h2><span class="lec-badge orange">第49课</span>分数 = 除法</h2>
+<div class="mv-row" style="align-items:flex-start;gap:20px">
+  <div class="mv-col" style="flex:1">
+    <div class="mv-info" style="font-size:.95em;text-align:left">
+      <strong>a ÷ b = </strong><span id="div-rule-frac"></span> （b ≠ 0）<br>
+      <small>被除数 = 分子，除数 = 分母</small>
+    </div>
+    <div style="margin:10px 0;font-size:.95em" id="div-examples"></div>
+  </div>
+  <div class="mv-col" style="flex:1">
+    <div id="div-circles" style="text-align:center"></div>
+    <div style="font-size:.83em;color:#555;margin-top:4px">
+      3个饼平均分给4人，每人得 <span id="div-each"></span> 个
+    </div>
+  </div>
+</div>
+<div class="mv-warn" style="margin-top:8px"><strong>分母不能为 0！</strong>（除数不能为 0，故分母不为 0）</div>
+</section>
+
+</section><!-- END L49 -->
+
+<!-- ═══════════════════════════════════════════════
+     L50：分数基本性质 · 约分
+══════════════════════════════════════════════════ -->
+<section>
+
+<!-- L50-1 基本性质 -->
+<section>
+<h2><span class="lec-badge green">第50课</span>分数的基本性质</h2>
+<div class="mv-tip" style="font-size:1em;margin-bottom:10px">
+  分子和分母同时<strong>乘以</strong>或<strong>除以</strong>同一个<strong>不为 0</strong> 的数，<strong>分数的值不变</strong>
+</div>
+<div class="mv-row" style="gap:6px;margin-top:4px" id="prop-rects"></div>
+<div class="mv-row" style="margin-top:10px;font-size:1.05em" id="prop-formula"></div>
+<div class="mv-step" style="margin-top:10px;max-width:500px;margin-left:auto;margin-right:auto" id="prop-mult-steps"></div>
+</section>
+
+<!-- L50-2 约分原理 -->
+<section>
+<h2><span class="lec-badge green">第50课</span>约分 — 化为最简分数</h2>
+<div class="mv-row" style="align-items:flex-start;gap:16px">
+  <div style="flex:1">
+    <div class="mv-info" style="font-size:.88em">把分子和分母都除以它们的<strong>公因数</strong>，直到分子分母<strong>互质</strong>（最大公因数 = 1）为止</div>
+    <div class="mv-row" style="margin:10px 0" id="reduce-trees"></div>
+  </div>
+  <div style="flex:1">
+    <div class="mv-step" id="reduce-steps"></div>
+    <div style="margin-top:10px" id="reduce-rect-compare"></div>
+    <div class="mv-tip" style="margin-top:6px;font-size:.88em">最简分数：分子分母的最大公因数 = 1</div>
+  </div>
+</div>
+</section>
+
+<!-- L50-3 约分步骤演示 -->
+<section>
+<h2><span class="lec-badge green">第50课</span>约分步骤演示</h2>
+<div id="reduce-demo" style="text-align:center;margin:8px 0"></div>
+<table class="mv-qt" style="width:92%;margin-top:8px;font-size:.85em" id="reduce-table">
+  <tr>
+    <th>步骤</th><th>操作</th><th>结果</th><th>还能继续？</th>
+  </tr>
+  <tr>
+    <td>①</td>
+    <td id="rd-op1"></td>
+    <td id="rd-r1"></td>
+    <td>GCD = <span id="rd-g1"></span></td>
+  </tr>
+  <tr>
+    <td>②</td>
+    <td id="rd-op2"></td>
+    <td id="rd-r2"></td>
+    <td id="rd-g2"></td>
+  </tr>
+</table>
+<div class="mv-warn" style="margin-top:8px">技巧：直接找 GCD，<strong>一步到位</strong>效率最高</div>
+</section>
+
+</section><!-- END L50 -->
+
+<!-- ═══════════════════════════════════════════════
+     L51：通分
+══════════════════════════════════════════════════ -->
+<section>
+
+<!-- L51-1 通分原理 -->
+<section>
+<h2><span class="lec-badge purple">第51课</span>通分</h2>
+<div class="mv-info" style="font-size:.95em">
+  把分母不同的分数化为<strong>分母相同</strong>的分数，叫做<strong>通分</strong><br>
+  步骤：① 求分母的 <strong>最小公倍数（LCM）</strong>　② 以 LCM 为公分母，分别转化
+</div>
+<div class="mv-row" style="margin-top:12px;gap:20px" id="tongfen-trees"></div>
+<div class="mv-step" style="margin-top:10px;max-width:440px;margin-left:auto;margin-right:auto" id="tongfen-steps"></div>
+</section>
+
+<!-- L51-2 通分可视化 -->
+<section>
+<h2><span class="lec-badge purple">第51课</span>通分可视化：<span id="tf-vis-title"></span></h2>
+<div id="tf-visual" style="text-align:center;margin:10px 0"></div>
+<div class="mv-tip" style="margin-top:8px">
+  两段矩形总宽相同：将 <span id="tf-tip-frac"></span> 的格子细分两倍，就和 <span id="tf-tip-frac2"></span> 对齐了
+</div>
+</section>
+
+</section><!-- END L51 -->
+
+<!-- ═══════════════════════════════════════════════
+     综合练习
+══════════════════════════════════════════════════ -->
+<section>
+
+<!-- 练习 1–6 -->
+<section>
+<h2>综合练习（一）</h2>
+<div style="font-size:.85em">
+  <p><strong>1.</strong> 真分数总<strong>（　）</strong>1。
+    &emsp;答：<span class="fragment" data-fragment-index="1" style="color:#e74c3c">小于</span></p>
+
+  <p><strong>2.</strong> 分子不小于分母的分数叫做（　）分数。
+    &emsp;答：<span class="fragment" data-fragment-index="2" style="color:#e74c3c">假</span></p>
+
+  <p><strong>3.</strong> 把 <span id="q3f"></span> 化成带分数是（　）。
+    &emsp;答：<span class="fragment" data-fragment-index="3" style="color:#e74c3c">2 又 <span id="q3a"></span></span></p>
+
+  <p><strong>4.</strong> 通分 <span id="q4f1"></span> 和 <span id="q4f2"></span>，公分母是（　）。
+    &emsp;答：<span class="fragment" data-fragment-index="4" style="color:#e74c3c">20</span></p>
+
+  <p><strong>5.</strong> 约分：<span id="q5f"></span> =（　）。
+    &emsp;答：<span class="fragment" data-fragment-index="5" style="color:#e74c3c"><span id="q5a"></span></span></p>
+
+  <p><strong>6.</strong> 判断：0 是最小的分数。（　）
+    &emsp;答：<span class="fragment" data-fragment-index="6" style="color:#e74c3c">×（0 不是分数）</span></p>
+</div>
+</section>
+
+<!-- 练习 7–12 -->
+<section>
+<h2>综合练习（二）</h2>
+<div style="font-size:.85em">
+  <p><strong>7.</strong> 判断：假分数都大于 1。（　）
+    &emsp;答：<span class="fragment" data-fragment-index="1" style="color:#e74c3c">×（分子=分母时等于1）</span></p>
+
+  <p><strong>8.</strong> 判断：最简分数的分子和分母互质。（　）
+    &emsp;答：<span class="fragment" data-fragment-index="2" style="color:#e74c3c">√</span></p>
+
+  <p><strong>9.</strong> 把 <span id="q9f"></span> 化成带分数是（　）。
+    &emsp;答：<span class="fragment" data-fragment-index="3" style="color:#e74c3c">2 又 <span id="q9a"></span></span></p>
+
+  <p><strong>10.</strong> 通分 <span id="q10f1"></span> 和 <span id="q10f2"></span>，结果是（　）。
+    &emsp;答：<span class="fragment" data-fragment-index="4" style="color:#e74c3c"><span id="q10a"></span></span></p>
+
+  <p><strong>11.</strong> <span id="q11f"></span> = □/25，□ 中填（　）。
+    &emsp;答：<span class="fragment" data-fragment-index="5" style="color:#e74c3c">10/25（即 <span id="q11a"></span>）</span></p>
+
+  <p><strong>12.</strong> 约分：<span id="q12f"></span> =（　）。
+    &emsp;答：<span class="fragment" data-fragment-index="6" style="color:#e74c3c"><span id="q12a"></span></span></p>
+</div>
+</section>
+
+</section><!-- END 综合练习 -->
+
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+
+Reveal.initialize({
+  hash: true,
+  transition: 'slide',
+  width: 960,
+  height: 700,
+  margin: 0.04,
+  plugins: []
+});
+
+// ─────────────────────────────────────────────
+// 封面
+// ─────────────────────────────────────────────
+document.getElementById('cover-row').innerHTML =
+  MV.col(
+    MV.fracCircle(6, 5, 88, MV.C.blue),
+    MV.label(MV.frac(5,6) + ' <strong style="color:#2980b9">真分数</strong>')
+  ) +
+  '&emsp;' +
+  MV.col(
+    MV.fracCircle(7, 7, 88, MV.C.orange) + MV.fracCircle(7, 2, 88, MV.C.orange),
+    MV.label(MV.frac(9,7) + ' <strong style="color:#e67e22">假分数</strong>')
+  ) +
+  '&emsp;' +
+  MV.col(
+    MV.fracCircle(3, 3, 88, MV.C.green) + MV.fracCircle(3, 3, 88, MV.C.green) + MV.fracCircle(3, 1, 88, MV.C.green),
+    MV.label('2' + MV.frac(1,3) + ' <strong style="color:#27ae60">带分数</strong>')
+  );
+
+// ─────────────────────────────────────────────
+// L48 定义
+// ─────────────────────────────────────────────
+document.getElementById('def-true-ex').innerHTML =
+  MV.frac(5,6) + '，' + MV.frac(3,8) + '，' + MV.frac(1,2);
+document.getElementById('def-improper-ex').innerHTML =
+  MV.frac(9,7) + '，' + MV.frac(7,7) + '，' + MV.frac(5,3);
+document.getElementById('def-mixed-ex').innerHTML =
+  '2' + MV.frac(1,3) + '，1' + MV.frac(3,4);
+
+document.getElementById('def-circles').innerHTML =
+  MV.col(
+    MV.fracCircle(6, 5, 72, MV.C.blue),
+    MV.label(MV.frac(5,6) + ' 真')
+  ) +
+  MV.col(
+    MV.fracCircle(7, 7, 72, MV.C.orange) + MV.fracCircle(7, 2, 72, MV.C.orange),
+    MV.label(MV.frac(9,7) + ' 假')
+  ) +
+  MV.col(
+    MV.fracCircle(4, 4, 72, MV.C.red) + MV.fracCircle(4, 3, 72, MV.C.red),
+    MV.label('1' + MV.frac(3,4) + ' 带')
+  ) +
+  MV.col(
+    MV.fracCircle(3, 3, 72, MV.C.green) + MV.fracCircle(3, 3, 72, MV.C.green) + MV.fracCircle(3, 1, 72, MV.C.green),
+    MV.label('2' + MV.frac(1,3) + ' 带')
+  );
+
+// ─────────────────────────────────────────────
+// L48 数轴
+// ─────────────────────────────────────────────
+document.getElementById('nl-demo').innerHTML =
+  MV.numberLine(0, 2, [
+    { val: 0,   label: '0', dot: true, color: '#333' },
+    { val: 1,   label: '1', dot: true, color: '#333' },
+    { val: 2,   label: '2', dot: true, color: '#333' },
+    { val: 5/6, above: '5/6', dot: true, color: MV.C.blue },
+    { val: 3/8, above: '3/8', dot: true, color: MV.C.blue },
+    { val: 7/7, above: '7/7', dot: true, color: MV.C.orange },
+    { val: 9/7, above: '9/7', dot: true, color: MV.C.red },
+    { val: 5/3, above: '5/3', dot: true, color: MV.C.red }
+  ], 520);
+
+document.getElementById('nl-true-ex').innerHTML =
+  MV.frac(5,6) + '，' + MV.frac(3,8) + ' …';
+document.getElementById('nl-eq-ex').innerHTML =
+  MV.frac(7,7) + ' = 1';
+document.getElementById('nl-gt-ex').innerHTML =
+  MV.frac(9,7) + '，' + MV.frac(5,3) + ' …';
+document.getElementById('nl-warn-frac').innerHTML = MV.frac(7,7);
+
+// ─────────────────────────────────────────────
+// L48 互化
+// ─────────────────────────────────────────────
+// 假 → 带：11/4 = 2¾（两整圆 + 3/4 圆）
+document.getElementById('itm-circles').innerHTML =
+  MV.row(
+    MV.col(MV.fracCircle(4, 4, 66, MV.C.orange), MV.label('1')),
+    MV.col(MV.fracCircle(4, 4, 66, MV.C.orange), MV.label('1')),
+    MV.col(MV.fracCircle(4, 3, 66, MV.C.orange), MV.label(MV.frac(3,4)))
+  );
+document.getElementById('itm-step').innerHTML =
+  '11 ÷ 4 = <strong>2</strong> ……余 <strong>3</strong><br>' +
+  MV.frac(11,4) + ' = <strong>2</strong>' + MV.frac(3,4);
+
+// 带 → 假：2⅓ = 7/3
+document.getElementById('mti-circles').innerHTML =
+  MV.row(
+    MV.col(MV.fracCircle(3, 3, 66, MV.C.green), MV.label('1')),
+    MV.col(MV.fracCircle(3, 3, 66, MV.C.green), MV.label('1')),
+    MV.col(MV.fracCircle(3, 1, 66, MV.C.green), MV.label(MV.frac(1,3)))
+  );
+document.getElementById('mti-step').innerHTML =
+  '2 × 3 + 1 = <strong>7</strong><br>' +
+  '2' + MV.frac(1,3) + ' = ' + MV.frac(7,3);
+
+// ─────────────────────────────────────────────
+// L49 分数的意义
+// ─────────────────────────────────────────────
+document.getElementById('meaning-nd').innerHTML = MV.frac('n','d');
+document.getElementById('meaning-rects').innerHTML =
+  MV.row(
+    MV.col(
+      MV.fracRect(8, 3, 220, 38, MV.C.blue),
+      MV.label(MV.frac(3,8) + ' 条绳子（8等份取3份）')
+    ),
+    MV.col(
+      MV.fracRect(6, 5, 220, 38, MV.C.orange),
+      MV.label(MV.frac(5,6) + ' 个圆饼（6等份取5份）')
+    )
+  );
+document.getElementById('mt1').innerHTML = MV.frac(3,8);
+document.getElementById('mt2').innerHTML = MV.frac(5,6);
+document.getElementById('mt3').innerHTML = MV.frac(1,4);
+document.getElementById('mt4').innerHTML = MV.frac(3,5);
+
+// ─────────────────────────────────────────────
+// L49 分数 = 除法
+// ─────────────────────────────────────────────
+document.getElementById('div-rule-frac').innerHTML = MV.frac('a','b');
+document.getElementById('div-examples').innerHTML =
+  '3 ÷ 5 = ' + MV.frac(3,5) + '&emsp;&emsp;' +
+  MV.frac(7,4) + ' = 7 ÷ 4 = 1.75<br>' +
+  '1 ÷ 3 = ' + MV.frac(1,3) + '&emsp;&emsp;' +
+  MV.frac(11,4) + ' = 11 ÷ 4 = 2.75';
+
+// 3个饼分给4人 → 每人3/4（每个饼切4份，每人各取3个饼的1/4）
+document.getElementById('div-circles').innerHTML =
+  MV.row(
+    MV.col(MV.fracCircle(4, 1, 64, MV.C.blue),  MV.label('饼①')),
+    MV.col(MV.fracCircle(4, 1, 64, MV.C.green), MV.label('饼②')),
+    MV.col(MV.fracCircle(4, 1, 64, MV.C.orange),MV.label('饼③'))
+  );
+document.getElementById('div-each').innerHTML = MV.frac(3,4);
+
+// ─────────────────────────────────────────────
+// L50 基本性质
+// ─────────────────────────────────────────────
+// 3/4 = 6/8 = 12/16（等宽矩形，格数不同但涂色占比相同）
+document.getElementById('prop-rects').innerHTML =
+  MV.col(
+    MV.fracRect(4, 3, 216, 36, MV.C.blue),
+    MV.label(MV.frac(3,4))
+  ) +
+  '<div class="eq-arrow">＝</div>' +
+  MV.col(
+    MV.fracConvRect(8, 6, 216, 36, MV.C.green),
+    MV.label(MV.frac(6,8))
+  ) +
+  '<div class="eq-arrow">＝</div>' +
+  MV.col(
+    MV.fracConvRect(16, 12, 216, 36, MV.C.orange),
+    MV.label(MV.frac(12,16))
+  );
+
+document.getElementById('prop-formula').innerHTML =
+  MV.frac(3,4) +
+  ' <span style="color:#888;font-size:.9em">×2/×2</span> = ' + MV.frac(6,8) +
+  ' <span style="color:#888;font-size:.9em">×2/×2</span> = ' + MV.frac(12,16) +
+  '&emsp;&emsp;' +
+  MV.frac(12,16) +
+  ' <span style="color:#888;font-size:.9em">÷4/÷4</span> = ' + MV.frac(3,4);
+
+document.getElementById('prop-mult-steps').innerHTML =
+  MV.frac(3,4) + '：分子×2=6，分母×2=8 → ' + MV.frac(6,8) + '；同除以4 → ' + MV.frac(3,4) + '（还原）';
+
+// ─────────────────────────────────────────────
+// L50 约分原理（18/24）
+// ─────────────────────────────────────────────
+document.getElementById('reduce-trees').innerHTML =
+  MV.col(
+    MV.factorTree(18, { w: 140, h: 145 }),
+    MV.label('18 = 2 × 3 × 3')
+  ) +
+  MV.col(
+    MV.factorTree(24, { w: 140, h: 145 }),
+    MV.label('24 = 2 × 2 × 2 × 3')
+  );
+
+document.getElementById('reduce-steps').innerHTML =
+  '<strong>约分 ' + MV.frac(18,24) + '：</strong><br>' +
+  '18 = 2 × 3²<br>' +
+  '24 = 2³ × 3<br>' +
+  'GCD(18, 24) = 2 × 3 = <strong style="color:#e74c3c">6</strong><br>' +
+  MV.frac(18,24) + ' ÷ ' + MV.frac(6,6) + ' = ' + MV.frac(3,4);
+
+document.getElementById('reduce-rect-compare').innerHTML =
+  MV.row(
+    MV.col(MV.fracRect(24, 18, 180, 30, MV.C.blue), MV.label(MV.frac(18,24))),
+    '<div class="eq-arrow">⟹</div>',
+    MV.col(MV.fracRect(4, 3, 180, 30, MV.C.green), MV.label(MV.frac(3,4) + ' 最简'))
+  );
+
+// ─────────────────────────────────────────────
+// L50 约分步骤演示（36/48）
+// ─────────────────────────────────────────────
+document.getElementById('reduce-demo').innerHTML =
+  MV.row(
+    MV.col(
+      MV.fracRect(48, 36, 260, 34, MV.C.blue),
+      MV.label(MV.frac(36,48) + ' 原始')
+    ),
+    '<span style="font-size:1.6em;color:#999">⇒</span>',
+    MV.col(
+      MV.fracRect(4, 3, 260, 34, MV.C.green),
+      MV.label(MV.frac(3,4) + ' 最简')
+    )
+  );
+
+document.getElementById('rd-op1').innerHTML =
+  MV.frac(36,48) + ' ÷ ' + MV.frac(2,2) + ' = ?';
+document.getElementById('rd-r1').innerHTML = MV.frac(18,24);
+document.getElementById('rd-g1').innerHTML = '<strong style="color:#e74c3c">6 ≠ 1，继续</strong>';
+document.getElementById('rd-op2').innerHTML =
+  MV.frac(18,24) + ' ÷ ' + MV.frac(6,6) + ' = ?';
+document.getElementById('rd-r2').innerHTML =
+  '<strong style="color:#27ae60">' + MV.frac(3,4) + '</strong>';
+document.getElementById('rd-g2').innerHTML =
+  '<strong style="color:#27ae60">GCD = 1，完成！</strong>';
+
+// ─────────────────────────────────────────────
+// L51 通分（2/3 和 5/6）
+// ─────────────────────────────────────────────
+document.getElementById('tongfen-trees').innerHTML =
+  MV.col(
+    MV.factorTree(3, { w: 100, h: 82 }),
+    MV.label('分母 3')
+  ) +
+  MV.col(
+    MV.factorTree(6, { w: 100, h: 82 }),
+    MV.label('分母 6')
+  ) +
+  MV.col(
+    '<div class="mv-step" style="font-size:.88em;padding:8px 16px">' +
+    'LCM(3, 6) = <strong style="color:#e74c3c">6</strong></div>',
+    MV.label('公分母')
+  );
+
+document.getElementById('tongfen-steps').innerHTML =
+  MV.frac(2,3) + ' = ' + MV.frac('2×2','3×2') + ' = ' + MV.frac(4,6) +
+  '&emsp;&emsp;（分子分母同乘 2）<br>' +
+  MV.frac(5,6) + ' 分母已是 6，不变<br>' +
+  '<strong>结果：</strong>' + MV.frac(4,6) + ' 和 ' + MV.frac(5,6);
+
+document.getElementById('tf-vis-title').innerHTML =
+  MV.frac(2,3) + ' 和 ' + MV.frac(5,6);
+document.getElementById('tf-tip-frac').innerHTML = MV.frac(2,3);
+document.getElementById('tf-tip-frac2').innerHTML = MV.frac(5,6);
+
+document.getElementById('tf-visual').innerHTML =
+  // 原始 2/3
+  MV.row(
+    MV.col(
+      MV.fracRect(3, 2, 280, 38, MV.C.blue),
+      MV.label(MV.frac(2,3) + '（3等份）')
+    )
+  ) +
+  // 细分后 4/6
+  '<div style="text-align:center;font-size:.82em;color:#888;margin:3px 0">↓ 每格再分2份 ↓</div>' +
+  MV.row(
+    MV.col(
+      MV.fracConvRect(6, 4, 280, 38, MV.C.blue),
+      MV.label(MV.frac(4,6) + ' = ' + MV.frac(2,3) + '（细分为6等份）')
+    )
+  ) +
+  // 5/6
+  MV.row(
+    MV.col(
+      MV.fracRect(6, 5, 280, 38, MV.C.orange),
+      MV.label(MV.frac(5,6) + '（6等份，不变）')
+    )
+  );
+
+// ─────────────────────────────────────────────
+// 练习题
+// ─────────────────────────────────────────────
+document.getElementById('q3f').innerHTML  = MV.frac(16, 7);
+document.getElementById('q3a').innerHTML  = MV.frac(2, 7);
+
+document.getElementById('q4f1').innerHTML = MV.frac(3, 4);
+document.getElementById('q4f2').innerHTML = MV.frac(1, 5);
+
+document.getElementById('q5f').innerHTML  = MV.frac(12, 15);
+document.getElementById('q5a').innerHTML  = MV.frac(4, 5);
+
+document.getElementById('q9f').innerHTML  = MV.frac(7, 3);
+document.getElementById('q9a').innerHTML  = MV.frac(1, 3);
+
+document.getElementById('q10f1').innerHTML = MV.frac(3, 8);
+document.getElementById('q10f2').innerHTML = MV.frac(5, 12);
+document.getElementById('q10a').innerHTML  = MV.frac(9, 24) + ' 和 ' + MV.frac(10, 24);
+
+document.getElementById('q11f').innerHTML  = MV.frac(2, 5);
+document.getElementById('q11a').innerHTML  = MV.frac(10, 25);
+
+document.getElementById('q12f').innerHTML  = MV.frac(6, 9);
+document.getElementById('q12a').innerHTML  = MV.frac(2, 3);
+
+</script>
+</body>
+</html>
