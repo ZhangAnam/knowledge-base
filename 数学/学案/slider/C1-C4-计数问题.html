@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数 C1–C4 · 计数问题</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.result-box {
+  display:inline-block; background:#fff8e1; border:2px solid #f39c12;
+  border-radius:6px; padding:4px 14px; font-size:1.05em;
+  font-weight:bold; color:#6d4c00; margin:3px;
+}
+.big-ans { font-size:1.55em; font-weight:bold; color:#e74c3c; text-align:center; margin:10px 0; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- 1. Cover -->
+<section>
+  <div style="color:#888;font-size:.85em;margin-bottom:.4em">二至四年级 · 奥数计数 C1–C4</div>
+  <h1 style="font-size:1.75em;color:#2980b9;margin:.1em 0">计数问题入门</h1>
+  <div style="color:#555;font-size:.88em;margin-bottom:18px">有序枚举 · 分类枚举 · 排列 · 组合</div>
+  <div id="s0-vis"></div>
+</section>
+
+<!-- 2. C1 有序枚举 -->
+<section>
+  <h2>C1 · 有序枚举</h2>
+  <div id="s1-c1"></div>
+</section>
+
+<!-- 3. C1 树状图 -->
+<section>
+  <h2>🌳 树状图：用 1、2、3 组成两位数</h2>
+  <div id="s2-tree1"></div>
+</section>
+
+<!-- 4. C2 分类枚举 -->
+<section>
+  <h2>C2 · 分类枚举</h2>
+  <div id="s3-c2"></div>
+</section>
+
+<!-- 5. C2 例题 -->
+<section>
+  <h2>📋 分类枚举例题：两位偶数</h2>
+  <div id="s4-c2ex"></div>
+</section>
+
+<!-- 6. C3 排列 -->
+<section>
+  <h2>C3 · 排列：顺序不同算不同</h2>
+  <div id="s5-c3"></div>
+</section>
+
+<!-- 7. C3 树图 -->
+<section>
+  <h2>🌳 班长副班长：甲乙丙选 2 人</h2>
+  <div id="s6-tree2"></div>
+</section>
+
+<!-- 8. C4 组合 -->
+<section>
+  <h2>C4 · 组合：只看选了谁</h2>
+  <div id="s7-c4"></div>
+</section>
+
+<!-- 9. 排列 vs 组合 -->
+<section>
+  <h2>⚖️ 排列 vs 组合：直观对比</h2>
+  <div id="s8-cmp"></div>
+</section>
+
+<!-- 10. 综合例题 -->
+<section>
+  <h2>🔑 综合例题：先抓限制位</h2>
+  <div id="s9-ex"></div>
+</section>
+
+<!-- 11. 易错点 -->
+<section>
+  <h2>⚠️ 易错点总结</h2>
+  <div id="s10-warn"></div>
+</section>
+
+<!-- 12. 练习题 -->
+<section>
+  <h2>✏️ 练习题</h2>
+  <div id="s11-prac"></div>
+</section>
+
+<!-- 13. 答案 -->
+<section>
+  <h2>✅ 参考答案</h2>
+  <div id="s12-ans"></div>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+
+  /* ── SVG tree helpers ─────────────────────────────── */
+  function nd(cx, cy, txt, col) {
+    col = col || MV.C.blue;
+    return '<circle cx="' + cx + '" cy="' + cy + '" r="21" fill="' + col + '" opacity=".9"/>' +
+           '<text x="' + cx + '" y="' + (cy + 5) + '" text-anchor="middle" font-size="14" ' +
+           'fill="white" font-weight="bold">' + txt + '</text>';
+  }
+  function lf(cx, cy, txt) {
+    return '<rect x="' + (cx - 24) + '" y="' + (cy - 15) + '" width="48" height="28" rx="5" ' +
+           'fill="#fff8e1" stroke="#f39c12" stroke-width="1.5"/>' +
+           '<text x="' + cx + '" y="' + (cy + 5) + '" text-anchor="middle" font-size="13" ' +
+           'fill="#5d4037" font-weight="bold">' + txt + '</text>';
+  }
+  function ln(x1, y1, x2, y2) {
+    return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 +
+           '" stroke="#ccc" stroke-width="2"/>';
+  }
+
+  /* ── S0: Cover ──────────────────────────────────────── */
+  document.getElementById('s0-vis').innerHTML = (function () {
+    var W = 560, H = 112, s = '';
+    var items = [
+      { id: 'C1', sub: '有序枚举', c: MV.C.blue   },
+      { id: 'C2', sub: '分类枚举', c: MV.C.green  },
+      { id: 'C3', sub: '排列',     c: MV.C.orange },
+      { id: 'C4', sub: '组合',     c: MV.C.purple },
+    ];
+    var xs = [65, 210, 355, 498];
+    s += '<defs><marker id="arr0" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">' +
+         '<path d="M0,0 L8,4 L0,8 Z" fill="#ccc"/></marker></defs>';
+    items.forEach(function (it, i) {
+      var x = xs[i];
+      s += '<rect x="' + (x - 58) + '" y="10" width="116" height="82" rx="12" fill="' +
+           it.c + '" opacity=".13" stroke="' + it.c + '" stroke-width="2"/>';
+      s += '<text x="' + x + '" y="50" text-anchor="middle" font-size="22" fill="' +
+           it.c + '" font-weight="bold">' + it.id + '</text>';
+      s += '<text x="' + x + '" y="73" text-anchor="middle" font-size="14" fill="' +
+           it.c + '">' + it.sub + '</text>';
+      if (i < 3) {
+        s += '<line x1="' + (x + 60) + '" y1="51" x2="' + (xs[i + 1] - 60) + '" y2="51" ' +
+             'stroke="#ccc" stroke-width="2" marker-end="url(#arr0)"/>';
+      }
+    });
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>';
+  }()) +
+  MV.tip('计数核心目标：<b>不重不漏</b> — 每种情况只算一次，一种都不遗漏');
+
+  /* ── S1: C1 有序枚举 ─────────────────────────────────── */
+  document.getElementById('s1-c1').innerHTML =
+    '<p style="font-size:.95em;margin:.25em 0 .6em">枚举法 = 把所有可能<b>一个一个写出来</b></p>' +
+    MV.row(
+      MV.col(MV.step('<b>① 有顺序</b><br><span style="font-size:.88em">先固定第一位<br>再变第二位</span>', MV.C.blue)),
+      MV.col(MV.step('<b>② 不重复</b><br><span style="font-size:.88em">同一种情况<br>只算一次</span>', MV.C.green)),
+      MV.col(MV.step('<b>③ 不遗漏</b><br><span style="font-size:.88em">所有情况<br>全部列到</span>', MV.C.orange))
+    ) +
+    MV.fragDiv(
+      '<p style="font-size:.9em;margin:.6em 0 .3em;font-weight:bold">常用工具：</p>' +
+      MV.row(
+        MV.col('<div style="text-align:center;padding:8px;background:#d6eaf8;border-radius:8px;' +
+               'border:2px solid #2980b9"><b>🌳 树状图</b></div>'),
+        MV.col('<div style="text-align:center;padding:8px;background:#d5f5e3;border-radius:8px;' +
+               'border:2px solid #27ae60"><b>📊 表格</b></div>'),
+        MV.col('<div style="text-align:center;padding:8px;background:#fdebd0;border-radius:8px;' +
+               'border:2px solid #e67e22"><b>📝 有序列举</b></div>')
+      ), 1
+    ) +
+    MV.fragDiv(MV.tip('口诀：<b>先固定一位，再换另一位</b>，顺序写到底，回头查漏'), 2);
+
+  /* ── S2: 树状图 1、2、3 两位数 ────────────────────────── */
+  document.getElementById('s2-tree1').innerHTML = (function () {
+    var W = 560, H = 218, s = '';
+    var rx = 270, ry = 28;
+    var l1x = [90, 270, 450], l1y = 100;
+    var l2x = [35, 148, 210, 330, 392, 505], l2y = 183;
+    var digits   = ['1', '2', '3'];
+    var leaves   = ['12', '13', '21', '23', '31', '32'];
+    var bColors  = [MV.C.blue, MV.C.green, MV.C.orange];
+
+    s += nd(rx, ry, '?', '#95a5a6');
+    s += '<text x="' + rx + '" y="63" text-anchor="middle" font-size="11" fill="#aaa">从1,2,3选十位</text>';
+
+    for (var b = 0; b < 3; b++) {
+      s += '<g class="fragment" data-fragment-index="' + (b + 1) + '">';
+      s += ln(rx, ry + 21, l1x[b], l1y - 21);
+      s += nd(l1x[b], l1y, digits[b], bColors[b]);
+      s += '<text x="' + l1x[b] + '" y="' + (l1y + 34) + '" text-anchor="middle" ' +
+           'font-size="11" fill="' + bColors[b] + '">十位=' + digits[b] + '</text>';
+      var c0 = l2x[b * 2], c1 = l2x[b * 2 + 1];
+      s += ln(l1x[b], l1y + 21, c0, l2y - 15);
+      s += ln(l1x[b], l1y + 21, c1, l2y - 15);
+      s += lf(c0, l2y, leaves[b * 2]);
+      s += lf(c1, l2y, leaves[b * 2 + 1]);
+      s += '</g>';
+    }
+
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>' +
+      MV.fragDiv(
+        '<div style="text-align:center;font-size:1.05em;margin:6px 0">' +
+        '共 <b style="color:#e74c3c;font-size:1.3em">6</b> 个：12，13，21，23，31，32</div>' +
+        MV.tip('每条从根到叶的路径就是一个结果；树确保不重不漏'), 4);
+  }());
+
+  /* ── S3: C2 分类枚举 ────────────────────────────────── */
+  document.getElementById('s3-c2').innerHTML =
+    '<p style="font-size:.93em;margin:.2em 0 .5em">题目中存在<b>多种类型</b>时，直接列举容易漏 → 先<b>分类</b>再分别数</p>' +
+    MV.row(
+      MV.col(MV.step(
+        '<b>常见分类标准</b>' +
+        '<ul style="text-align:left;margin:6px 0;padding-left:18px;font-size:.9em">' +
+        '<li>按首位（最高位）</li>' +
+        '<li>按末位（个位）</li>' +
+        '<li>按奇偶性</li>' +
+        '<li>按是否含某数字</li>' +
+        '</ul>', MV.C.blue)),
+      MV.col(MV.step(
+        '<b>分类两条铁律</b><br><br>' +
+        '① 各类之间 <span style="color:#e74c3c;font-weight:bold">不重叠</span><br><br>' +
+        '② 所有情况 <span style="color:#27ae60;font-weight:bold">都分进去</span>',
+        MV.C.orange))
+    ) +
+    MV.fragDiv(MV.tip('结构：<b>找标准 → 各类分别数 → 最后全部相加</b>'), 1);
+
+  /* ── S4: C2 例题 ─────────────────────────────────────── */
+  document.getElementById('s4-c2ex').innerHTML =
+    '<p style="font-size:.9em;margin:.1em 0 .5em">' +
+    '用 0、1、2、3 组成无重复数字的<b>两位偶数</b>，共几个？</p>' +
+    MV.step('<b>分析：</b> 偶数末位必须是偶数 → 先看<b>个位</b>！个位只能是 <b>0</b> 或 <b>2</b>', MV.C.blue) +
+    MV.row(
+      MV.col(
+        '<div style="background:#d6eaf8;border:2px solid #2980b9;border-radius:10px;padding:12px;text-align:center">' +
+        '<div style="font-weight:bold;color:#2980b9;margin-bottom:6px">第 1 类：个位 = 0</div>' +
+        '<div style="font-size:.85em;color:#555">十位从 1, 2, 3 中选（不能是0）</div>' +
+        MV.fragDiv(
+          '<div style="margin-top:8px">' +
+          '<span class="result-box">10</span><span class="result-box">20</span><span class="result-box">30</span>' +
+          '</div><div style="color:#2980b9;font-weight:bold;margin-top:6px">3 个</div>', 1) +
+        '</div>'
+      ),
+      MV.col(
+        '<div style="background:#fdebd0;border:2px solid #e67e22;border-radius:10px;padding:12px;text-align:center">' +
+        '<div style="font-weight:bold;color:#e67e22;margin-bottom:6px">第 2 类：个位 = 2</div>' +
+        '<div style="font-size:.85em;color:#555">十位不能是 0 或 2，只能是 1, 3</div>' +
+        MV.fragDiv(
+          '<div style="margin-top:8px">' +
+          '<span class="result-box">12</span><span class="result-box">32</span>' +
+          '</div><div style="color:#e67e22;font-weight:bold;margin-top:6px">2 个</div>', 2) +
+        '</div>'
+      )
+    ) +
+    MV.fragDiv(
+      '<div class="big-ans">3 + 2 = <b>5</b> 个</div>' +
+      MV.warn('十位不能是 0！"02" 不是两位数'), 3);
+
+  /* ── S5: C3 排列 ──────────────────────────────────────── */
+  document.getElementById('s5-c3').innerHTML =
+    '<p style="font-size:.93em;margin:.2em 0 .5em">排列 = 从若干对象中取出几个，<b>按顺序排成一列</b></p>' +
+    MV.step(
+      '<b>核心判断：</b> 调换两人位置后，结果还算同一种吗？<br>' +
+      '<span style="font-size:.9em">如果 <b>算不同</b> → 是排列</span>', MV.C.blue) +
+    MV.fragDiv(
+      MV.row(
+        MV.col(
+          '<div style="background:#d6eaf8;border-radius:8px;padding:10px;font-size:.9em">' +
+          '<b style="color:#2980b9">属于排列的场合</b>' +
+          '<ul style="margin:6px 0;padding-left:16px">' +
+          '<li>班长、副班长</li>' +
+          '<li>密码（1234 ≠ 4321）</li>' +
+          '<li>赛跑第一、二名</li>' +
+          '<li>座位安排</li>' +
+          '</ul></div>'
+        ),
+        MV.col(
+          '<div style="background:#fdebd0;border-radius:8px;padding:10px;text-align:center">' +
+          '<b style="color:#e67e22">从 n 个选 2 个排列</b><br><br>' +
+          '<span style="font-size:1.6em;font-weight:bold">n × (n−1)</span><br><br>' +
+          '<span style="font-size:.9em;color:#555">3 人选 2：</span>' +
+          '<b style="color:#e74c3c"> 3 × 2 = 6 种</b>' +
+          '</div>'
+        )
+      ), 1
+    ) +
+    MV.fragDiv(MV.tip('甲乙当班长副班长 ≠ 乙甲当班长副班长 → 这是<b>两种</b>不同排列'), 2);
+
+  /* ── S6: 树状图 甲乙丙选2人 (排列) ───────────────────── */
+  document.getElementById('s6-tree2').innerHTML = (function () {
+    var W = 560, H = 220, s = '';
+    var rx = 270, ry = 28;
+    var l1x = [90, 270, 450], l1y = 100;
+    var l2x = [35, 148, 210, 330, 392, 505], l2y = 183;
+    var names   = ['甲', '乙', '丙'];
+    var results = [['甲→乙', '甲→丙'], ['乙→甲', '乙→丙'], ['丙→甲', '丙→乙']];
+    var bColors = [MV.C.blue, MV.C.green, MV.C.orange];
+
+    s += nd(rx, ry, '3人', '#95a5a6');
+    s += '<text x="' + rx + '" y="63" text-anchor="middle" font-size="11" fill="#aaa">甲乙丙</text>';
+
+    for (var b = 0; b < 3; b++) {
+      s += '<g class="fragment" data-fragment-index="' + (b + 1) + '">';
+      s += ln(rx, ry + 21, l1x[b], l1y - 21);
+      s += nd(l1x[b], l1y, names[b], bColors[b]);
+      s += '<text x="' + l1x[b] + '" y="' + (l1y + 34) + '" text-anchor="middle" ' +
+           'font-size="11" fill="' + bColors[b] + '">班长=' + names[b] + '</text>';
+      var c0 = l2x[b * 2], c1 = l2x[b * 2 + 1];
+      s += ln(l1x[b], l1y + 21, c0, l2y - 15);
+      s += ln(l1x[b], l1y + 21, c1, l2y - 15);
+      s += lf(c0, l2y, results[b][0]);
+      s += lf(c1, l2y, results[b][1]);
+      s += '</g>';
+    }
+
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>' +
+      MV.fragDiv(
+        '<div style="text-align:center;font-size:1.05em;margin:6px 0">' +
+        '共 <b style="color:#e74c3c;font-size:1.3em">6</b> 种排法 = 3 × 2</div>' +
+        MV.tip('每片叶子是一种排列。箭头左 = 班长，箭头右 = 副班长'), 4);
+  }());
+
+  /* ── S7: C4 组合 ──────────────────────────────────────── */
+  document.getElementById('s7-c4').innerHTML =
+    '<p style="font-size:.93em;margin:.2em 0 .5em">组合 = 从若干对象中取出几个，<b>不考虑顺序</b></p>' +
+    MV.step(
+      '<b>核心判断：</b> 只关心"选了谁"，不关心"谁排第几"<br>' +
+      '<span style="font-size:.9em">甲乙 和 乙甲 → 是 <b>同一种</b> 组合</span>', MV.C.purple) +
+    MV.fragDiv(
+      MV.row(
+        MV.col(
+          '<div style="background:#e8daef;border-radius:8px;padding:10px;font-size:.9em">' +
+          '<b style="color:#8e44ad">属于组合的场合</b>' +
+          '<ul style="margin:6px 0;padding-left:16px">' +
+          '<li>选值日生（不区分先后）</li>' +
+          '<li>选参赛代表</li>' +
+          '<li>组成小组</li>' +
+          '<li>选几本书带走</li>' +
+          '</ul></div>'
+        ),
+        MV.col(
+          '<div style="background:#e8daef;border-radius:8px;padding:10px;text-align:center">' +
+          '<b style="color:#8e44ad">甲乙丙选 2 人值日</b><br>' +
+          '<div style="margin:8px 0">' +
+          '<span class="result-box">甲乙</span><span class="result-box">甲丙</span><span class="result-box">乙丙</span>' +
+          '</div>' +
+          '<div style="font-weight:bold;color:#8e44ad">共 3 种</div>' +
+          '<div style="font-size:.84em;color:#555;margin-top:6px">组合 = 排列 ÷ 重复次数 = 6 ÷ 2</div>' +
+          '</div>'
+        )
+      ), 1
+    ) +
+    MV.fragDiv(MV.tip('每对人在排列中算了 <b>2次</b>（甲乙、乙甲），组合只算 <b>1次</b>'), 2);
+
+  /* ── S8: 排列 vs 组合 对比 ───────────────────────────── */
+  document.getElementById('s8-cmp').innerHTML = (function () {
+    var W = 600, H = 210, s = '';
+    var pairCols = [MV.C.blue, MV.C.green, MV.C.orange];
+
+    // ── Left panel: 排列 (6 items, 2 columns × 3 rows) ──
+    var permItems = ['甲→乙', '甲→丙', '乙→甲', '乙→丙', '丙→甲', '丙→乙'];
+    var pxs = [10, 108, 10, 108, 10, 108];
+    var pys = [32,  32, 90,  90, 150, 150];
+    var pcols = [MV.C.blue, MV.C.blue, MV.C.green, MV.C.green, MV.C.orange, MV.C.orange];
+    s += '<rect x="0" y="0" width="220" height="210" rx="10" fill="#d6eaf8" opacity=".25"/>';
+    s += '<text x="110" y="20" text-anchor="middle" font-size="14" fill="' + MV.C.blue +
+         '" font-weight="bold">排列（有顺序）6 种</text>';
+    permItems.forEach(function (p, i) {
+      s += '<rect x="' + (pxs[i] + 2) + '" y="' + pys[i] + '" width="90" height="34" rx="6" ' +
+           'fill="' + pcols[i] + '" opacity=".2" stroke="' + pcols[i] + '" stroke-width="1.5"/>';
+      s += '<text x="' + (pxs[i] + 47) + '" y="' + (pys[i] + 22) + '" ' +
+           'text-anchor="middle" font-size="13" fill="' + pcols[i] + '" font-weight="bold">' + p + '</text>';
+    });
+    // Pair brackets
+    [[0, 2], [1, 3], [4, 5]].forEach(function (pair, pi) {
+      var bx = 213;
+      var yt = pys[pair[0]] + 17, yb = pys[pair[1]] + 17;
+      s += '<path d="M' + (bx - 6) + ',' + yt + ' L' + bx + ',' + yt +
+           ' L' + bx + ',' + yb + ' L' + (bx - 6) + ',' + yb +
+           '" fill="none" stroke="' + pairCols[pi] + '" stroke-width="2"/>';
+    });
+
+    // ── Arrow ──
+    s += '<text x="298" y="114" text-anchor="middle" font-size="28" fill="#bbb">⇒</text>';
+    s += '<text x="298" y="132" text-anchor="middle" font-size="11" fill="#bbb">÷ 2</text>';
+
+    // ── Right panel: 组合 (3 items) ──
+    var combItems = ['甲 & 乙', '甲 & 丙', '乙 & 丙'];
+    s += '<rect x="370" y="0" width="220" height="210" rx="10" fill="#e8daef" opacity=".3"/>';
+    s += '<text x="480" y="20" text-anchor="middle" font-size="14" fill="' + MV.C.purple +
+         '" font-weight="bold">组合（无顺序）3 种</text>';
+    combItems.forEach(function (c, i) {
+      s += '<rect x="400" y="' + (36 + i * 56) + '" width="160" height="42" rx="8" fill="' +
+           pairCols[i] + '" opacity=".2" stroke="' + pairCols[i] + '" stroke-width="2"/>';
+      s += '<text x="480" y="' + (36 + i * 56 + 26) + '" text-anchor="middle" font-size="15" ' +
+           'fill="' + pairCols[i] + '" font-weight="bold">' + c + '</text>';
+    });
+
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>' +
+      MV.row(
+        MV.col(MV.warn('排列：<b>甲→乙 ≠ 乙→甲</b>（职位不同算两种）')),
+        MV.col(MV.tip('组合：<b>甲乙 = 乙甲</b>（只是同一对人）'))
+      );
+  }());
+
+  /* ── S9: 综合例题 ──────────────────────────────────────── */
+  document.getElementById('s9-ex').innerHTML =
+    '<p style="font-size:.9em;margin:.1em 0 .5em">' +
+    '用 1、2、3、4、5 组成无重复三位数，要求<b>个位 &gt; 十位</b>，共几个？</p>' +
+    MV.step('<b>思路：先处理有限制的位置（十位和个位的大小关系）</b>', MV.C.blue) +
+    MV.fragDiv(
+      MV.step(
+        '<b>第 1 步：</b>从 5 个数字中选 2 个作为十位和个位<br>' +
+        '选出任意两个数，<b>较小的放十位，较大的放个位</b>（唯一放法）<br>' +
+        'C(5, 2) = <b>10</b> 种选法',
+        MV.C.green), 1) +
+    MV.fragDiv(
+      MV.step(
+        '<b>第 2 步：</b>百位从剩余 3 个数字中选 1 个<br>共 <b>3</b> 种',
+        MV.C.orange), 2) +
+    MV.fragDiv(
+      '<div class="big-ans">10 × 3 = <b>30</b> 个</div>' +
+      MV.tip('关键：先抓最受限制的位置，其余位置再相乘'), 3);
+
+  /* ── S10: 易错点 ────────────────────────────────────────── */
+  document.getElementById('s10-warn').innerHTML =
+    MV.warn('<b>错误 1：枚举没有顺序</b> — 写着写着跳来跳去，漏掉情况') +
+    MV.fragDiv(MV.warn('<b>错误 2：排列组合混淆</b> — "班长副班长"有顺序；"选值日生"不看顺序'), 1) +
+    MV.fragDiv(MV.warn('<b>错误 3：最高位为 0</b> — "023" 不是三位数！两位数/三位数的最高位<b>不能为 0</b>'), 2) +
+    MV.fragDiv(MV.warn('<b>错误 4：分类出现重叠</b> — 分类标准要让各类之间<b>互不重叠</b>'), 3) +
+    MV.fragDiv(MV.tip('<b>做题四步：</b>① 读懂题意 ② 判断有无顺序 ③ 找最受限的位置 ④ 按顺序枚举/计算'), 4);
+
+  /* ── S11: 练习题 ─────────────────────────────────────────── */
+  document.getElementById('s11-prac').innerHTML =
+    '<ol style="font-size:.87em;line-height:2.1em;margin:0;padding-left:1.4em">' +
+    '<li>用 1, 2, 3 组成无重复两位数，写出所有结果，共几个？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">6 个</b>', 1) + '</li>' +
+    '<li>4 本不同的书排成一排，有多少种排法？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">24 种</b>', 2) + '</li>' +
+    '<li>5 名同学中选 2 名值日生，有多少种选法？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">10 种</b>', 3) + '</li>' +
+    '<li>用 0, 2, 4 组成无重复两位数，有多少个？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">4 个</b>', 4) + '</li>' +
+    '<li>6 名同学中选班长和副班长各 1 名，有多少种选法？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">30 种</b>', 5) + '</li>' +
+    '<li>用 1, 2, 3, 4 组成无重复三位奇数，有多少个？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">12 个</b>', 6) + '</li>' +
+    '<li>从 A, B, C, D 中选 3 个排成一排，有多少种排法？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">24 种</b>', 7) + '</li>' +
+    '</ol>' +
+    '<p style="font-size:.8em;color:#999;margin-top:8px">点击空白处逐步显示答案 →</p>';
+
+  /* ── S12: 答案 ──────────────────────────────────────────── */
+  document.getElementById('s12-ans').innerHTML =
+    '<table style="border-collapse:collapse;width:92%;margin:0 auto;font-size:.84em">' +
+    '<tr style="background:#d6eaf8">' +
+    '<th style="padding:7px 10px;border:1px solid #ccc">题号</th>' +
+    '<th style="padding:7px 10px;border:1px solid #ccc">答案</th>' +
+    '<th style="padding:7px 10px;border:1px solid #ccc">解题要点</th></tr>' +
+    [
+      ['1', '6 个',  '12, 13, 21, 23, 31, 32 — 先固定十位，再列个位'],
+      ['2', '24 种', '4 × 3 × 2 × 1 = 24，全排列'],
+      ['3', '10 种', 'C(5,2)=10，组合（不看顺序）'],
+      ['4', '4 个',  '十位不能是0 → 20, 40, 24, 42，共 4 个'],
+      ['5', '30 种', '6 × 5 = 30，排列（职位不同）'],
+      ['6', '12 个', '个位先选1或3（2种），百十位从余3个选2排：3×2=6，共 2×6=12'],
+      ['7', '24 种', '4 × 3 × 2 = 24，排列 A(4,3)'],
+    ].map(function (r) {
+      return '<tr>' +
+        '<td style="padding:6px 10px;border:1px solid #eee;text-align:center;font-weight:bold">' + r[0] + '</td>' +
+        '<td style="padding:6px 10px;border:1px solid #eee;text-align:center;color:#e74c3c;font-weight:bold">' + r[1] + '</td>' +
+        '<td style="padding:6px 10px;border:1px solid #eee;color:#555;font-size:.9em">' + r[2] + '</td></tr>';
+    }).join('') +
+    '</table>';
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>奥数 C5–C10 · 计数与容斥</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="stylesheet" href="math-viz.css">
+<style>
+.result-box {
+  display:inline-block; background:#fff8e1; border:2px solid #f39c12;
+  border-radius:6px; padding:4px 14px; font-weight:bold; color:#6d4c00; margin:3px;
+}
+.big-ans { font-size:1.5em; font-weight:bold; color:#e74c3c; text-align:center; margin:10px 0; }
+.formula-box {
+  background:#f8f9fa; border:2px solid #2980b9; border-radius:10px;
+  padding:13px 20px; font-size:1.05em; text-align:center;
+  margin:10px 0; font-weight:bold; color:#2c3e50;
+}
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- 1. Cover -->
+<section>
+  <div style="color:#888;font-size:.85em;margin-bottom:.4em">三至五年级 · 奥数计数 C5–C10</div>
+  <h1 style="font-size:1.7em;color:#2980b9;margin:.1em 0">计数与容斥原理</h1>
+  <div style="color:#555;font-size:.88em;margin-bottom:16px">加法原理 · 乘法原理 · 加乘综合 · 排列组合 · 容斥原理</div>
+  <div id="s0-vis"></div>
+</section>
+
+<!-- 2. C5 加法原理 -->
+<section>
+  <h2>C5 · 加法原理</h2>
+  <div id="s1-c5"></div>
+</section>
+
+<!-- 3. C6 乘法原理 -->
+<section>
+  <h2>C6 · 乘法原理</h2>
+  <div id="s2-c6"></div>
+</section>
+
+<!-- 4. C5 vs C6 对比 -->
+<section>
+  <h2>⚖️ 加法 vs 乘法：一步判断</h2>
+  <div id="s3-cmp"></div>
+</section>
+
+<!-- 5. C7 加乘综合 -->
+<section>
+  <h2>C7 · 加乘综合</h2>
+  <div id="s4-c7"></div>
+</section>
+
+<!-- 6. C8 排列组合综合 -->
+<section>
+  <h2>C8 · 排列组合综合</h2>
+  <div id="s5-c8"></div>
+</section>
+
+<!-- 7. C9 两量容斥公式 -->
+<section>
+  <h2>C9 · 两量容斥原理</h2>
+  <div id="s6-c9"></div>
+</section>
+
+<!-- 8. C9 例题 -->
+<section>
+  <h2>📊 容斥例题：跳绳和踢毽</h2>
+  <div id="s7-c9ex"></div>
+</section>
+
+<!-- 9. C10 三量容斥公式 -->
+<section>
+  <h2>C10 · 三量容斥原理</h2>
+  <div id="s8-c10"></div>
+</section>
+
+<!-- 10. C10 三圆例题 -->
+<section>
+  <h2>🔵🟢🟡 三个社团人数问题</h2>
+  <div id="s9-c10ex"></div>
+</section>
+
+<!-- 11. 易错点 -->
+<section>
+  <h2>⚠️ 易错点总结</h2>
+  <div id="s10-warn"></div>
+</section>
+
+<!-- 12. 练习题 -->
+<section>
+  <h2>✏️ 练习题</h2>
+  <div id="s11-prac"></div>
+</section>
+
+<!-- 13. 答案 -->
+<section>
+  <h2>✅ 参考答案</h2>
+  <div id="s12-ans"></div>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="math-viz.js"></script>
+<script>
+MV.init();
+MV.setup(function () {
+
+  /* ── S0: Cover ──────────────────────────────────────── */
+  document.getElementById('s0-vis').innerHTML = (function () {
+    var W = 680, H = 115, s = '';
+    var items = [
+      { id: 'C5',  sub: '加法原理', c: MV.C.blue   },
+      { id: 'C6',  sub: '乘法原理', c: MV.C.green  },
+      { id: 'C7',  sub: '加乘综合', c: MV.C.orange },
+      { id: 'C8',  sub: '排组综合', c: MV.C.teal   },
+      { id: 'C9',  sub: '两量容斥', c: MV.C.red    },
+      { id: 'C10', sub: '三量容斥', c: MV.C.purple },
+    ];
+    var xs = [52, 162, 272, 400, 520, 630];
+    s += '<defs><marker id="arr0" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">' +
+         '<path d="M0,0 L8,4 L0,8 Z" fill="#ccc"/></marker></defs>';
+    items.forEach(function (it, i) {
+      var x = xs[i];
+      s += '<rect x="' + (x - 50) + '" y="10" width="100" height="80" rx="10" fill="' +
+           it.c + '" opacity=".13" stroke="' + it.c + '" stroke-width="2"/>';
+      s += '<text x="' + x + '" y="48" text-anchor="middle" font-size="19" fill="' +
+           it.c + '" font-weight="bold">' + it.id + '</text>';
+      s += '<text x="' + x + '" y="70" text-anchor="middle" font-size="12" fill="' +
+           it.c + '">' + it.sub + '</text>';
+      if (i < 5) {
+        s += '<line x1="' + (x + 52) + '" y1="50" x2="' + (xs[i + 1] - 52) + '" y2="50" ' +
+             'stroke="#ddd" stroke-width="2" marker-end="url(#arr0)"/>';
+      }
+    });
+    return '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>';
+  }()) +
+  MV.tip('核心问题：这件事是"<b>选其中一个就行</b>"还是"<b>每步都不能少</b>"？');
+
+  /* ── S1: C5 加法原理 ─────────────────────────────────── */
+  document.getElementById('s1-c5').innerHTML = (function () {
+    var W = 460, H = 162, s = '';
+    var ax = 55, bx = 395, my = 80;
+    var roadColors = [MV.C.blue, MV.C.green, MV.C.orange];
+
+    // Arrow marker for roads
+    s += '<defs>' +
+         '<marker id="rarr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">' +
+         '<path d="M0,0 L8,4 L0,8 Z" fill="' + MV.C.orange + '"/></marker>' +
+         '</defs>';
+
+    // A and B circles
+    s += '<circle cx="' + ax + '" cy="' + my + '" r="26" fill="' + MV.C.blue + '" opacity=".85"/>';
+    s += '<text x="' + ax + '" y="' + (my + 6) + '" text-anchor="middle" font-size="18" fill="white" font-weight="bold">A</text>';
+    s += '<circle cx="' + bx + '" cy="' + my + '" r="26" fill="' + MV.C.green + '" opacity=".85"/>';
+    s += '<text x="' + bx + '" y="' + (my + 6) + '" text-anchor="middle" font-size="18" fill="white" font-weight="bold">B</text>';
+
+    // 3 curved paths
+    var curves = [
+      { cy: my - 55, label: '路 1' },
+      { cy: my,      label: '路 2' },
+      { cy: my + 55, label: '路 3' },
+    ];
+    var midx = (ax + bx) / 2;
+    curves.forEach(function (p, i) {
+      var col = roadColors[i];
+      if (p.cy === my) {
+        s += '<line x1="' + (ax + 28) + '" y1="' + my + '" x2="' + (bx - 28) + '" y2="' + my +
+             '" stroke="' + col + '" stroke-width="2.5" stroke-dasharray="7,3"/>';
+      } else {
+        s += '<path d="M' + (ax + 28) + ',' + my + ' Q' + midx + ',' + p.cy + ' ' +
+             (bx - 28) + ',' + my + '" fill="none" stroke="' + col +
+             '" stroke-width="2.5" stroke-dasharray="7,3"/>';
+      }
+      s += '<text x="' + midx + '" y="' + (p.cy - 8) + '" text-anchor="middle" ' +
+           'font-size="13" fill="' + col + '" font-weight="bold">' + p.label + '</text>';
+    });
+    s += '<text x="' + midx + '" y="155" text-anchor="middle" font-size="13" fill="#888">' +
+         '选其中一条 → 3 种走法</text>';
+
+    return '<p style="font-size:.9em;margin:.1em 0 .45em">' +
+           '完成一件事有<b>几类</b>方法，各类互不重叠，选<b>其中一类</b>就行</p>' +
+           '<div class="formula-box">总数 = 第一类 + 第二类 + 第三类 + ……</div>' +
+           '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>' +
+           MV.tip('关键词：<b>"或者"、"也可以走"、"只选其中一种"</b> → 用<b>加法</b>');
+  }());
+
+  /* ── S2: C6 乘法原理 ─────────────────────────────────── */
+  document.getElementById('s2-c6').innerHTML = (function () {
+    // 3 shirts × 4 pants outfit grid
+    var lw = 58, lh = 38, cw = 70, ch = 46;
+    var ox = lw, oy = lh;
+    var W = ox + 4 * cw + 8, H = oy + 3 * ch + 8;
+    var shirtCols = [MV.C.blue, MV.C.green, MV.C.orange];
+    var pantCols  = [MV.C.blue, MV.C.purple, MV.C.teal, MV.C.red];
+    var s = '';
+
+    // Column headers (pants)
+    for (var j = 0; j < 4; j++) {
+      s += '<rect x="' + (ox + j * cw + 3) + '" y="3" width="' + (cw - 6) + '" height="' +
+           (lh - 6) + '" rx="5" fill="' + pantCols[j] + '" opacity=".22"/>';
+      s += '<text x="' + (ox + j * cw + cw / 2) + '" y="24" text-anchor="middle" font-size="13" ' +
+           'fill="' + pantCols[j] + '" font-weight="bold">裤 ' + (j + 1) + '</text>';
+    }
+    // Row headers (shirts)
+    for (var i = 0; i < 3; i++) {
+      s += '<rect x="3" y="' + (oy + i * ch + 3) + '" width="' + (lw - 6) + '" height="' +
+           (ch - 6) + '" rx="5" fill="' + shirtCols[i] + '" opacity=".22"/>';
+      s += '<text x="' + (lw / 2) + '" y="' + (oy + i * ch + ch / 2 + 5) +
+           '" text-anchor="middle" font-size="13" fill="' + shirtCols[i] +
+           '" font-weight="bold">衫 ' + (i + 1) + '</text>';
+    }
+    // Grid cells
+    for (var i = 0; i < 3; i++) {
+      for (var j = 0; j < 4; j++) {
+        var cx = ox + j * cw + 3, cy = oy + i * ch + 3;
+        var bg = (i + j) % 2 === 0 ? '#eaf4ff' : '#f0fff4';
+        s += '<rect x="' + cx + '" y="' + cy + '" width="' + (cw - 6) + '" height="' +
+             (ch - 6) + '" rx="4" fill="' + bg + '" stroke="#ccc" stroke-width="1"/>';
+        s += '<text x="' + (cx + (cw - 6) / 2) + '" y="' + (cy + (ch - 6) / 2 + 5) +
+             '" text-anchor="middle" font-size="11" fill="#555">S' + (i + 1) + '·P' + (j + 1) + '</text>';
+      }
+    }
+
+    return '<p style="font-size:.9em;margin:.1em 0 .45em">' +
+           '完成一件事要经过<b>每一步</b>，缺一步都不行 → <b>各步方法数相乘</b></p>' +
+           '<div class="formula-box">总数 = 第一步 × 第二步 × 第三步 × ……</div>' +
+           '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>' +
+           '<div style="text-align:center;font-size:.92em;margin:5px 0">' +
+           '3 件衬衫 × 4 条裤子 = <b style="color:#e74c3c;font-size:1.2em">12</b> 种搭配</div>' +
+           MV.tip('关键词：<b>"先…再…"、"一套搭配"、"每步都要选"</b> → 用<b>乘法</b>');
+  }());
+
+  /* ── S3: 加法 vs 乘法 ───────────────────────────────── */
+  document.getElementById('s3-cmp').innerHTML =
+    '<p style="font-size:.9em;margin:.1em 0 .5em;text-align:center">' +
+    '先问自己：<b>选其中一个就行</b>，还是<b>每个都得选</b>？</p>' +
+    MV.row(
+      MV.col(
+        '<div style="background:#d6eaf8;border:2px solid #2980b9;border-radius:12px;padding:14px">' +
+        '<div style="font-size:1.2em;color:#2980b9;font-weight:bold;text-align:center;margin-bottom:8px">➕ 加法原理</div>' +
+        '<ul style="font-size:.88em;line-height:1.8em;margin:0;padding-left:18px">' +
+        '<li>几类方法，互不重叠</li>' +
+        '<li>选<b>其中一类</b>就完成</li>' +
+        '<li>关键词：<b>或者 / 也可以</b></li>' +
+        '</ul>' +
+        '<div style="text-align:center;margin-top:10px;font-size:.9em">' +
+        '例：3本故事书 <b>或</b> 2本科普书<br>' +
+        '选1本 → 3 + 2 = <b style="color:#2980b9">5 种</b></div>' +
+        '</div>'
+      ),
+      MV.col(
+        '<div style="background:#d5f5e3;border:2px solid #27ae60;border-radius:12px;padding:14px">' +
+        '<div style="font-size:1.2em;color:#27ae60;font-weight:bold;text-align:center;margin-bottom:8px">✖️ 乘法原理</div>' +
+        '<ul style="font-size:.88em;line-height:1.8em;margin:0;padding-left:18px">' +
+        '<li>每步都必须完成</li>' +
+        '<li>缺<b>任意一步</b>都不行</li>' +
+        '<li>关键词：<b>先…再… / 一套</b></li>' +
+        '</ul>' +
+        '<div style="text-align:center;margin-top:10px;font-size:.9em">' +
+        '例：选衬衫 <b>再</b> 选裤子<br>' +
+        '一套搭配 → 3 × 4 = <b style="color:#27ae60">12 种</b></div>' +
+        '</div>'
+      )
+    ) +
+    MV.fragDiv(MV.warn('最常见的错误：把"或者"题用了乘法，把"先…再…"题用了加法！'), 1);
+
+  /* ── S4: C7 加乘综合 ─────────────────────────────────── */
+  document.getElementById('s4-c7').innerHTML =
+    '<p style="font-size:.9em;margin:.1em 0 .5em">很多题既要<b>分类</b>（加法），又要<b>分步</b>（乘法）</p>' +
+    MV.step('<b>结构：先按大情况分类，每类内再分步相乘，最后各类相加</b>', MV.C.blue) +
+    MV.fragDiv(
+      '<div style="background:#fef9e7;border:2px solid #f39c12;border-radius:10px;padding:14px;font-size:.9em">' +
+      '<b>例题：</b>从家去公园有两个方案<br>' +
+      '<span style="display:inline-block;margin-top:6px">方案一：坐公交（2 种）<b>再</b>坐地铁（3 种）</span><br>' +
+      '<span style="display:inline-block;margin-top:2px">方案二：直接打车（1 种）</span>' +
+      '</div>', 1
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.col(MV.step('<b>方案一</b>（分步）<br>2 × 3 = <b>6</b> 种', MV.C.green)),
+        MV.col(MV.step('<b>方案二</b>（单步）<br>1 种', MV.C.orange)),
+        MV.col(MV.step('<b>总计</b>（分类相加）<br>6 + 1 = <b>7</b> 种', MV.C.red))
+      ), 2
+    ) +
+    MV.fragDiv(MV.tip('模板：<b>总数 = (类1内部乘法) + (类2内部乘法) + ……</b>'), 3);
+
+  /* ── S5: C8 排列组合综合 ─────────────────────────────── */
+  document.getElementById('s5-c8').innerHTML =
+    '<p style="font-size:.9em;margin:.1em 0 .5em">综合题常见两种思路：</p>' +
+    MV.row(
+      MV.col(
+        MV.step(
+          '<b>思路一：先选后排</b><br><br>' +
+          '<span style="font-size:.88em">先用组合选出对象<br>' +
+          '再用排列安排位置</span>', MV.C.blue)
+      ),
+      MV.col(
+        MV.step(
+          '<b>思路二：先定限制位</b><br><br>' +
+          '<span style="font-size:.88em">哪个位置限制最多<br>' +
+          '就先处理那个位</span>', MV.C.orange)
+      )
+    ) +
+    MV.fragDiv(
+      '<div style="background:#e8f8f5;border:2px solid #1abc9c;border-radius:10px;padding:12px;font-size:.88em;margin-top:8px">' +
+      '<b>例：5 名同学中，选 3 人分别站在第一、二、三名领奖台</b><br>' +
+      '<span style="color:#555;font-size:.95em">有顺序（职位不同）→ 排列</span><br>' +
+      '第一名：5 种 &ensp;第二名：4 种 &ensp;第三名：3 种<br>' +
+      '共 5 × 4 × 3 = <b style="color:#e74c3c">60 种</b>' +
+      '</div>', 1
+    ) +
+    MV.fragDiv(
+      '<div style="background:#f0e6ff;border:2px solid #8e44ad;border-radius:10px;padding:12px;font-size:.88em;margin-top:8px">' +
+      '<b>例：5 名同学中，选 3 人参加合唱</b><br>' +
+      '<span style="color:#555;font-size:.95em">无顺序（只看选了谁）→ 组合</span><br>' +
+      'C(5,3) = 5×4×3 ÷ (3×2×1) = <b style="color:#e74c3c">10 种</b>' +
+      '</div>', 2
+    ) +
+    MV.fragDiv(MV.tip('判断关键：<b>领奖台/职位/密码</b> → 排列；<b>小组/代表/值日</b> → 组合'), 3);
+
+  /* ── S6: C9 两量容斥 ─────────────────────────────────── */
+  document.getElementById('s6-c9').innerHTML =
+    '<p style="font-size:.9em;margin:.1em 0 .4em">' +
+    '如果两个集合中有人<b>同时属于两类</b>，直接相加会多算 → 需要减掉重复部分</p>' +
+    '<div class="formula-box" style="font-size:1.1em">' +
+    '|A ∪ B| = |A| + |B| − |A ∩ B|' +
+    '</div>' +
+    MV.fragDiv(
+      '<div style="text-align:center">' +
+      MV.venn2(
+        '集合 A', '集合 B',
+        ['只属于 A', 'a 人'],
+        ['只属于 B', 'b 人'],
+        ['A 和 B', '都有', 'c 人'],
+        { cA: MV.C.blue, cB: MV.C.orange }
+      ) +
+      '</div>', 1
+    ) +
+    MV.fragDiv(
+      MV.row(
+        MV.col(MV.step('A + B 加起来<br><b>多算了 c 人</b>（被加了 2 次）', MV.C.red)),
+        MV.col(MV.step('所以要 <b>减去一次</b> c<br>恢复正确人数', MV.C.green))
+      ), 2
+    ) +
+    MV.fragDiv(MV.tip('推论：<b>两者都不在</b> = 总人数 − |A ∪ B|'), 3);
+
+  /* ── S7: C9 例题 ─────────────────────────────────────── */
+  document.getElementById('s7-c9ex').innerHTML =
+    '<p style="font-size:.88em;margin:.1em 0 .4em">' +
+    '班里 40 名同学：参加跳绳 18 人，参加踢毽 25 人，两项都参加 10 人</p>' +
+    '<div style="text-align:center;margin:6px 0">' +
+    MV.venn2(
+      '跳绳', '踢毽',
+      ['仅跳绳', '18−10=8 人'],
+      ['仅踢毽', '25−10=15 人'],
+      ['两项', '都参加', '10 人'],
+      { cA: MV.C.blue, cB: MV.C.orange }
+    ) +
+    '</div>' +
+    MV.fragDiv(
+      MV.step(
+        '<b>至少参加一项：</b> 18 + 25 − 10 = <b style="color:#e74c3c">33 人</b>', MV.C.green), 1
+    ) +
+    MV.fragDiv(
+      MV.step(
+        '<b>两项都不参加：</b> 40 − 33 = <b style="color:#e74c3c">7 人</b>', MV.C.orange), 2
+    ) +
+    MV.fragDiv(MV.tip('注意：10 人被加了两次（跳绳18 + 踢毽25），所以减掉一个 10'), 3);
+
+  /* ── S8: C10 三量容斥公式 ───────────────────────────── */
+  document.getElementById('s8-c10').innerHTML =
+    '<p style="font-size:.88em;margin:.1em 0 .4em">' +
+    '三个集合时，两两有重叠，还有三者都属于的部分</p>' +
+    '<div class="formula-box" style="font-size:.98em;line-height:1.9em">' +
+    '|A ∪ B ∪ C|<br>' +
+    '= |A| + |B| + |C|<br>' +
+    '&ensp;− |A∩B| − |A∩C| − |B∩C|<br>' +
+    '&ensp;+ |A∩B∩C|' +
+    '</div>' +
+    MV.fragDiv(
+      MV.row(
+        MV.col(MV.step('<b>第一步：</b>加 A + B + C<br><span style="font-size:.85em">两两重叠各算了 2 次，三重叠算了 3 次</span>', MV.C.blue)),
+        MV.col(MV.step('<b>第二步：</b>减 A∩B, A∩C, B∩C<br><span style="font-size:.85em">三重叠被减了 3 次，过量减了</span>', MV.C.red)),
+        MV.col(MV.step('<b>第三步：</b>加回 A∩B∩C<br><span style="font-size:.85em">补回一次三重叠</span>', MV.C.green))
+      ), 1
+    ) +
+    MV.fragDiv(MV.tip('记忆法：<b>加三个 → 减三个两两交 → 加回三重交</b>'), 2);
+
+  /* ── S9: C10 三圆 Venn 例题 ──────────────────────────── */
+  document.getElementById('s9-c10ex').innerHTML = (function () {
+    // Example: 50 students, math=22, science=18, calligraphy=15
+    // math∩sci=8, math∩cal=6, sci∩cal=5, all=2
+    // Region counts:
+    //   only math:        22 - 8 - 6 + 2 = 10
+    //   only science:     18 - 8 - 5 + 2 = 7
+    //   only calligraphy: 15 - 6 - 5 + 2 = 6
+    //   math∩sci only:    8 - 2 = 6
+    //   math∩cal only:    6 - 2 = 4
+    //   sci∩cal only:     5 - 2 = 3
+    //   all 3:            2    total = 38
+
+    var W = 460, H = 320, s = '';
+    var cA = MV.C.blue, cB = MV.C.green, cC = MV.C.orange;
+    var r = 85;
+    // Circle centers (triangle arrangement)
+    var Ax = 160, Ay = 140;
+    var Bx = 300, By = 140;
+    var Cx = 230, Cy = 250;
+
+    // Draw circles
+    s += '<circle cx="' + Ax + '" cy="' + Ay + '" r="' + r + '" fill="' + cA +
+         '" opacity=".18" stroke="' + cA + '" stroke-width="2"/>';
+    s += '<circle cx="' + Bx + '" cy="' + By + '" r="' + r + '" fill="' + cB +
+         '" opacity=".18" stroke="' + cB + '" stroke-width="2"/>';
+    s += '<circle cx="' + Cx + '" cy="' + Cy + '" r="' + r + '" fill="' + cC +
+         '" opacity=".18" stroke="' + cC + '" stroke-width="2"/>';
+
+    // Circle labels
+    s += '<text x="' + (Ax - 40) + '" y="55" text-anchor="middle" font-size="14" ' +
+         'fill="' + cA + '" font-weight="bold">数学社</text>';
+    s += '<text x="' + (Ax - 40) + '" y="73" text-anchor="middle" font-size="13" ' +
+         'fill="' + cA + '">22人</text>';
+    s += '<text x="' + (Bx + 40) + '" y="55" text-anchor="middle" font-size="14" ' +
+         'fill="' + cB + '" font-weight="bold">科学社</text>';
+    s += '<text x="' + (Bx + 40) + '" y="73" text-anchor="middle" font-size="13" ' +
+         'fill="' + cB + '">18人</text>';
+    s += '<text x="' + Cx + '" y="312" text-anchor="middle" font-size="14" ' +
+         'fill="' + cC + '" font-weight="bold">书法社 15人</text>';
+
+    // Region labels (7 regions)
+    // Only A (数学 only): left of A circle
+    s += '<text x="112" y="140" text-anchor="middle" font-size="14" fill="' + cA + '" font-weight="bold">10</text>';
+    // Only B (科学 only): right of B circle
+    s += '<text x="350" y="140" text-anchor="middle" font-size="14" fill="' + cB + '" font-weight="bold">7</text>';
+    // Only C (书法 only): bottom of C circle
+    s += '<text x="230" y="295" text-anchor="middle" font-size="14" fill="' + cC + '" font-weight="bold">6</text>';
+    // A∩B only (between A and B, above C)
+    s += '<text x="230" y="120" text-anchor="middle" font-size="13" fill="#555" font-weight="bold">6</text>';
+    // A∩C only (lower-left)
+    s += '<text x="163" y="213" text-anchor="middle" font-size="13" fill="#555" font-weight="bold">4</text>';
+    // B∩C only (lower-right)
+    s += '<text x="299" y="213" text-anchor="middle" font-size="13" fill="#555" font-weight="bold">3</text>';
+    // A∩B∩C center
+    s += '<text x="230" y="178" text-anchor="middle" font-size="14" fill="#e74c3c" font-weight="bold">2</text>';
+
+    var diagram = '<div style="text-align:center">' + MV.svg(W, H, s) + '</div>';
+
+    var calc =
+      MV.fragDiv(
+        MV.step(
+          '<b>至少参加一个：</b><br>' +
+          '22 + 18 + 15 − 8 − 6 − 5 + 2 = <b style="color:#e74c3c">38 人</b>',
+          MV.C.green), 1
+      ) +
+      MV.fragDiv(
+        MV.step(
+          '<b>三个社团都不参加：</b><br>' +
+          '50 − 38 = <b style="color:#e74c3c">12 人</b>',
+          MV.C.orange), 2
+      );
+
+    return '<div style="font-size:.84em;margin:.1em 0 .4em">' +
+           '50 名同学：数学 22，科学 18，书法 15；两两重叠：数∩科=8，数∩书=6，科∩书=5；三者都参加=2</div>' +
+           MV.row(
+             MV.col(diagram),
+             MV.col(calc)
+           );
+  }());
+
+  /* ── S10: 易错点 ─────────────────────────────────────── */
+  document.getElementById('s10-warn').innerHTML =
+    MV.warn('<b>错误 1：把"分类"题用了乘法</b> — "走东门 <b>或</b> 西门"是加法，不是乘法') +
+    MV.fragDiv(MV.warn('<b>错误 2：把"分步"题用了加法</b> — "先选上衣 <b>再</b> 选裤子"要乘，不要加'), 1) +
+    MV.fragDiv(MV.warn('<b>错误 3：容斥题忘了减重复</b> — 直接相加会让答案偏大'), 2) +
+    MV.fragDiv(MV.warn('<b>错误 4：三量容斥减过头</b> — 三者都在的部分被减了 3 次，必须<b>加回来 1 次</b>'), 3) +
+    MV.fragDiv(MV.warn('<b>错误 5：排列组合综合题不先定限制</b> — 先处理最受限的位置，再乘其余位'), 4) +
+    MV.fragDiv(MV.tip('<b>做题三问：</b>① 选一类还是每步都要？ ② 有无顺序？ ③ 有没有重复算过的？'), 5);
+
+  /* ── S11: 练习题 ─────────────────────────────────────── */
+  document.getElementById('s11-prac').innerHTML =
+    '<ol style="font-size:.86em;line-height:2em;margin:0;padding-left:1.4em">' +
+    '<li>文具盒里有 4 支铅笔、3 块橡皮，选 1 件文具，共几种？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">7 种</b>', 1) + '</li>' +
+    '<li>有 2 件外套、4 顶帽子，各选 1 件搭配，共几种？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">8 种</b>', 2) + '</li>' +
+    '<li>A→B 有 3 条路，B→C 有 2 条路，另外 A 直接到 C 有 1 条路。A→C 共几种走法？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">7 种</b>', 3) + '</li>' +
+    '<li>6 名同学中选 2 名代表，有几种选法？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">15 种</b>', 4) + '</li>' +
+    '<li>6 名同学中选班长、学委、体委各 1 名，有几种选法？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">120 种</b>', 5) + '</li>' +
+    '<li>45 名学生中，会游泳 20 人，会跳绳 28 人，两项都会 9 人。至少会一项几人？两项都不会几人？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">39 人；6 人</b>', 6) + '</li>' +
+    '<li>60 名同学参加 A、B、C 三项活动：32、25、20 人；A∩B=10，A∩C=8，B∩C=6，三项都参加=3。至少参加一项几人？都不参加几人？ ' +
+      MV.frag('&ensp;<b style="color:#e74c3c">56 人；4 人</b>', 7) + '</li>' +
+    '</ol>' +
+    '<p style="font-size:.8em;color:#999;margin-top:6px">点击空白处逐步显示答案 →</p>';
+
+  /* ── S12: 答案 ──────────────────────────────────────── */
+  document.getElementById('s12-ans').innerHTML =
+    '<table style="border-collapse:collapse;width:93%;margin:0 auto;font-size:.83em">' +
+    '<tr style="background:#d6eaf8">' +
+    '<th style="padding:7px 10px;border:1px solid #ccc">题号</th>' +
+    '<th style="padding:7px 10px;border:1px solid #ccc">答案</th>' +
+    '<th style="padding:7px 10px;border:1px solid #ccc">解题要点</th></tr>' +
+    [
+      ['1', '7 种',    '4 + 3 = 7，加法原理（选一类）'],
+      ['2', '8 种',    '2 × 4 = 8，乘法原理（两步都要选）'],
+      ['3', '7 种',    '方案一：3×2=6，方案二：1，加法：6+1=7，加乘综合'],
+      ['4', '15 种',   'C(6,2)=15，组合（只看选了谁）'],
+      ['5', '120 种',  '6×5×4=120，排列（三个职位有顺序）'],
+      ['6', '39人；6人', '至少一项：20+28-9=39；都不会：45-39=6'],
+      ['7', '56人；4人', '至少一项：32+25+20-10-8-6+3=56；都不参加：60-56=4'],
+    ].map(function (r) {
+      return '<tr>' +
+        '<td style="padding:6px 10px;border:1px solid #eee;text-align:center;font-weight:bold">' + r[0] + '</td>' +
+        '<td style="padding:6px 10px;border:1px solid #eee;text-align:center;color:#e74c3c;font-weight:bold">' + r[1] + '</td>' +
+        '<td style="padding:6px 10px;border:1px solid #eee;color:#555;font-size:.9em">' + r[2] + '</td></tr>';
+    }).join('') +
+    '</table>';
+
+});
+</script>
+</body>
+</html>
